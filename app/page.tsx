@@ -199,14 +199,19 @@ export default function HomePage() {
         <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-zinc-900">
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-600/20">
-                <Disc3 className="w-5 h-5 text-white animate-spin" style={{ animationDuration: '6s' }} />
+              <div className="relative w-11 h-11 rounded-xl overflow-hidden border border-rose-500/30 shadow-lg shadow-rose-600/25 bg-black shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="PlonkMemes Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
                   PLONKMEMES
                   <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                    MEMES
+                    SOUNDBOARD
                   </span>
                 </h1>
                 <p className="text-xs text-zinc-400">
