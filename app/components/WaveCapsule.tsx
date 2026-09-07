@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, Download, Heart, Check, Activity } from 'lucide-react';
+import { Share2, Download, Heart, Check, Activity, Play, Square } from 'lucide-react';
 import { SoundItem } from '../types';
 
 interface WaveCapsuleProps {
@@ -91,21 +91,48 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
         {sound.title}
       </h3>
 
-      {/* Acoustic Waveform Frequency Bars */}
-      <div className="h-9 w-full bg-zinc-950/70 border border-zinc-800/80 rounded-lg px-2 flex items-center justify-between gap-1 mb-2.5 overflow-hidden">
-        {waveBars.map((heightPercent, idx) => (
-          <div
-            key={idx}
-            className="flex-1 rounded-full transition-all"
-            style={{
-              height: isPlaying ? `${Math.max(20, (heightPercent * ((idx % 3) + 1)) % 100)}%` : '20%',
-              backgroundColor: isPlaying ? sound.color : '#3f3f46',
-              animation: isPlaying
-                ? `pulse 0.4s ease-in-out infinite alternate ${idx * 0.04}s`
-                : undefined,
-            }}
-          />
-        ))}
+      {/* Waveform & Tactile Play Trigger Row */}
+      <div className="flex items-center gap-2 mb-2.5">
+        {/* Unmistakable Play Button */}
+        <div
+          className={`h-9 px-3 shrink-0 rounded-xl flex items-center gap-1.5 text-[10px] font-black tracking-wider uppercase transition-all shadow-md ${
+            isPlaying
+              ? 'text-white scale-105 shadow-lg shadow-emerald-500/30 ring-2 ring-white/40 animate-pulse'
+              : 'bg-zinc-800 hover:bg-zinc-750 text-zinc-200 border border-zinc-700/90 group-hover:scale-105 group-hover:border-zinc-500'
+          }`}
+          style={{
+            backgroundColor: isPlaying ? sound.color : undefined,
+          }}
+        >
+          {isPlaying ? (
+            <>
+              <Square className="w-2.5 h-2.5 fill-current" />
+              <span>PARAR</span>
+            </>
+          ) : (
+            <>
+              <Play className="w-2.5 h-2.5 fill-current ml-0.5 text-emerald-400 group-hover:text-white" />
+              <span>PLAY</span>
+            </>
+          )}
+        </div>
+
+        {/* Acoustic Waveform Frequency Bars */}
+        <div className="h-9 flex-1 bg-zinc-950/70 border border-zinc-800/80 rounded-xl px-2.5 flex items-center justify-between gap-1 overflow-hidden">
+          {waveBars.map((heightPercent, idx) => (
+            <div
+              key={idx}
+              className="flex-1 rounded-full transition-all"
+              style={{
+                height: isPlaying ? `${Math.max(20, (heightPercent * ((idx % 3) + 1)) % 100)}%` : '20%',
+                backgroundColor: isPlaying ? sound.color : '#3f3f46',
+                animation: isPlaying
+                  ? `pulse 0.4s ease-in-out infinite alternate ${idx * 0.04}s`
+                  : undefined,
+              }}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Footer Details & Actions */}

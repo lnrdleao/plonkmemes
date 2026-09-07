@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, Download, Heart, Check } from 'lucide-react';
+import { Share2, Download, Heart, Check, Play, Square } from 'lucide-react';
 import { SoundItem } from '../types';
 
 interface CassetteTapeProps {
@@ -104,7 +104,7 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
         )}
 
         {/* Left Spool / Reel */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center shrink-0">
           <div
             className={`w-6 h-6 rounded-full border-2 border-zinc-600 bg-zinc-900 flex items-center justify-center ${
               isPlaying ? 'animate-spin' : ''
@@ -120,20 +120,34 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
           </div>
         </div>
 
-        {/* Central Tape View Window & Reel Bar */}
-        <div className="flex-1 mx-3 flex items-center justify-center">
-          <div className="w-full h-2 bg-zinc-900 rounded-full border border-zinc-800 overflow-hidden flex items-center px-1">
-            <div
-              className={`h-1 rounded-full transition-all ${
-                isPlaying ? 'w-full bg-rose-500 animate-pulse' : 'w-1/3 bg-zinc-700'
-              }`}
-              style={{ backgroundColor: isPlaying ? sound.color : undefined }}
-            />
+        {/* Central Play/Stop Trigger (Evident Functionality) */}
+        <div className="flex-1 mx-2 flex items-center justify-center z-10">
+          <div
+            className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase transition-all shadow-md ${
+              isPlaying
+                ? 'text-white scale-105 shadow-lg shadow-rose-500/30 ring-2 ring-white/40 animate-pulse'
+                : 'bg-zinc-850 hover:bg-zinc-750 text-zinc-200 border border-zinc-700/90 group-hover:scale-105 group-hover:border-zinc-500'
+            }`}
+            style={{
+              backgroundColor: isPlaying ? sound.color : undefined,
+            }}
+          >
+            {isPlaying ? (
+              <>
+                <Square className="w-2.5 h-2.5 fill-current" />
+                <span>PARAR</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-2.5 h-2.5 fill-current ml-0.5 text-rose-400 group-hover:text-white" />
+                <span>PLAY</span>
+              </>
+            )}
           </div>
         </div>
 
         {/* Right Spool / Reel */}
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center shrink-0">
           <div
             className={`w-6 h-6 rounded-full border-2 border-zinc-600 bg-zinc-900 flex items-center justify-center ${
               isPlaying ? 'animate-spin' : ''
