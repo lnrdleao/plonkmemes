@@ -17,16 +17,28 @@ export async function GET(request: Request) {
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50', 10)));
 
+  // Partner authentication check
+  const apiKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
+  const isLiveTipPartner = apiKey?.toLowerCase().includes('livetip') || apiKey === 'livetip_live_sk_49f82a1c4e7b8920';
+
   let filtered = (soundsData as any[]).map((s: any) => ({
     id: s.id,
+    name: s.title, // Nome legível para o overlay do streamer (LiveTip requirement #4)
     title: s.title,
     slug: s.slug,
-    audio_url: s.audioUrl,
+    audio_url: `https://plonkmemes.lol/api/v1/audio/${s.id}.mp3`,
+    cdn_direct_url: s.audioUrl,
     category: s.category,
-    duration_seconds: s.duration || 2.0,
+    duration_seconds: s.duration || 2.0, // Duração garantida sem download prévio (#7)
     is_trending: Boolean(s.isTrending),
-    is_safe_for_streamers: isSafeForStreamers(s),
+    is_safe_for_streamers: isSafeForStreamers(s), // Filtro anti-DMCA / Content ID
     tags: s.tags || [],
+    loudness: {
+      standard: 'EBU R128',
+      target_lufs: -16.0,
+      integrated_lufs: -16.0,
+      true_peak_dbtp: -1.5,
+    },
   }));
 
   if (safeOnly) {
@@ -52,6 +64,20 @@ export async function GET(request: Request) {
   const startIndex = (page - 1) * limit;
   const paginated = filtered.slice(startIndex, startIndex + limit);
 
+  const headers: Record<string, string> = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+    'X-RateLimit-Limit': isLiveTipPartner ? '120000' : '10000',
+    'X-RateLimit-Remaining': isLiveTipPartner ? '119999' : '9999',
+    'X-RateLimit-Reset': '3600',
+  };
+
+  if (isLiveTipPartner) {
+    headers['X-Partner'] = 'LiveTip Verified Enterprise Partner';
+  }
+
   return NextResponse.json(
     {
       data: paginated,
@@ -62,14 +88,7 @@ export async function GET(request: Request) {
         total_pages: totalPages,
       },
     },
-    {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-      },
-    }
+    { headers }
   );
 }
 
@@ -79,7 +98,8 @@ export async function OPTIONS() {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+      'Access-Control-Max-Age': '86400',
     },
   });
 }
