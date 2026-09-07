@@ -6,7 +6,6 @@ import {
   Volume2,
   VolumeX,
   Plus,
-  Link as LinkIcon,
   Flame,
   Radio,
   Sparkles,
@@ -19,7 +18,6 @@ import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
 import { CassetteTape } from './components/CassetteTape';
 import { WaveCapsule } from './components/WaveCapsule';
-import { ImportModal } from './components/ImportModal';
 import { UploadModal } from './components/UploadModal';
 
 export default function HomePage() {
@@ -32,8 +30,7 @@ export default function HomePage() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePlayingIds, setActivePlayingIds] = useState<string[]>([]);
 
-  // Modals state
-  const [isImportOpen, setIsImportOpen] = useState(false);
+  // Modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   // Audio references
@@ -60,7 +57,7 @@ export default function HomePage() {
         setViewMode(savedView);
       }
     } catch {
-      // ignore JSON parse errors
+      // ignore parse errors
     }
   }, []);
 
@@ -124,15 +121,6 @@ export default function HomePage() {
     setActivePlayingIds([]);
   };
 
-  const handleImportSuccess = (newSound: SoundItem) => {
-    setSounds((prev) => [newSound, ...prev]);
-    try {
-      const saved = localStorage.getItem('memesounds_custom');
-      const customList = saved ? JSON.parse(saved) : [];
-      localStorage.setItem('memesounds_custom', JSON.stringify([newSound, ...customList]));
-    } catch {}
-  };
-
   const handleUploadSuccess = (newSound: SoundItem) => {
     setSounds((prev) => [newSound, ...prev]);
     try {
@@ -192,14 +180,6 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setIsImportOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 hover:border-zinc-700 transition-all shadow-sm cursor-pointer"
-            >
-              <LinkIcon className="w-3.5 h-3.5 text-rose-400" />
-              <span>Importar do MyInstants</span>
-            </button>
-
             <button
               onClick={() => setIsUploadOpen(true)}
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
@@ -375,13 +355,13 @@ export default function HomePage() {
             <VolumeX className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
             <h3 className="text-base font-bold text-zinc-200">Nenhum som encontrado</h3>
             <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">
-              Não encontramos nenhum áudio para &quot;{searchQuery}&quot;. Você pode importar este som direto do MyInstants no botão acima!
+              Não encontramos nenhum áudio para &quot;{searchQuery}&quot;. Você pode subir este som agora mesmo!
             </p>
             <button
-              onClick={() => setIsImportOpen(true)}
+              onClick={() => setIsUploadOpen(true)}
               className="mt-4 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white transition-all shadow-lg cursor-pointer"
             >
-              Puxar som do MyInstants
+              Subir este som agora
             </button>
           </div>
         ) : (
@@ -423,12 +403,6 @@ export default function HomePage() {
           </p>
         </footer>
       </div>
-
-      <ImportModal
-        isOpen={isImportOpen}
-        onClose={() => setIsImportOpen(false)}
-        onImportSuccess={handleImportSuccess}
-      />
 
       <UploadModal
         isOpen={isUploadOpen}

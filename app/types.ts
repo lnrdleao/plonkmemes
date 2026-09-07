@@ -16,9 +16,3 @@ export interface SoundItem {
   tags: string[];
   isCustom?: boolean;
 }
-
-export interface ImportResponse {
-  success: boolean;
-  sound?: SoundItem;
-  error?: string;
-}
