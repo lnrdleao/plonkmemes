@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Guia de Integração Técnica - PlonkMemes & LiveTip</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    @page {
+      size: A4;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0d0e12;
+      color: #e4e4e7;
+      line-height: 1.45;
+      font-size: 12.5px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #121318;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #27272a;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-box {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #e11d48, #f59e0b);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
+    }
+
+    .logo-vinyl {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #18181b;
+      border: 2px solid #fff;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-label {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f43f5e;
+      border: 1px solid #fff;
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.4px;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: #a1a1aa;
+    }
+
+    .badge-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 14px;
+      background: #1c1d24;
+      border: 1px solid #3f3f46;
+      color: #d4d4d8;
+    }
+
+    .badge-primary {
+      background: rgba(225, 29, 72, 0.15);
+      border-color: rgba(225, 29, 72, 0.4);
+      color: #fb7185;
+    }
+
+    .badge-success {
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin: 18px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #20222a;
+      padding-bottom: 5px;
+    }
+
+    h2 .num {
+      background: #e11d48;
+      color: #fff;
+      font-size: 10px;
+      width: 17px;
+      height: 17px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    h3 {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #f4f4f5;
+      margin: 10px 0 4px 0;
+    }
+
+    p {
+      margin-bottom: 6px;
+      color: #d4d4d8;
+    }
+
+    ul {
+      margin-left: 18px;
+      margin-bottom: 8px;
+      color: #d4d4d8;
+    }
+
+    li {
+      margin-bottom: 3px;
+    }
+
+    .callout {
+      background: #181a22;
+      border-left: 4px solid #e11d48;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 8px 0;
+    }
+
+    .callout-success {
+      border-left-color: #22c55e;
+      background: #141f18;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #fff;
+      font-size: 11.5px;
+      margin-bottom: 2px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 11px;
+      background: #15171e;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #27272a;
+    }
+
+    th, td {
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 1px solid #20222a;
+    }
+
+    th {
+      background: #1c1e27;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    td {
+      color: #d4d4d8;
+    }
+
+    pre {
+      background: #090a0f;
+      border: 1px solid #27272a;
+      border-radius: 6px;
+      padding: 8px 10px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #38bdf8;
+      margin: 6px 0;
+      line-height: 1.35;
+      page-break-inside: avoid;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: #20222b;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #f43f5e;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid #27272a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #71717a;
+    }
+
+    .avoid-break {
+      page-break-inside: avoid;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #111;
+      }
+      .container {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        background: #fff;
+        max-width: 100%;
+      }
+      .header, .footer, h2 {
+        border-color: #e2e8f0;
+      }
+      .brand-text h1, h2, h3, .callout-title, th {
+        color: #0f172a;
+      }
+      p, li, td {
+        color: #334155;
+      }
+      .callout {
+        background: #f8fafc;
+        border-color: #e11d48;
+      }
+      .callout-success {
+        background: #f0fdf4;
+        border-color: #16a34a;
+      }
+      table {
+        background: #fff;
+        border-color: #cbd5e1;
+      }
+      th {
+        background: #f1f5f9;
+      }
+      td {
+        border-color: #e2e8f0;
+      }
+      pre {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #0369a1;
+      }
+      code {
+        background: #f1f5f9;
+        color: #be123c;
+      }
+      .badge {
+        border: 1px solid #cbd5e1;
+        background: #f8fafc;
+        color: #334155;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <div class="logo-box">
+        <div class="logo-vinyl">
+          <div class="logo-label"></div>
+        </div>
+      </div>
+      <div class="brand-text">
+        <h1>PlonkMemes ↔ LiveTip</h1>
+        <p>Especificação Técnica de Integração & Alertas para Live Streaming</p>
+      </div>
+    </div>
+    <div class="badge-group">
+      <span class="badge badge-primary">API v1</span>
+      <span class="badge badge-success">Produção Ativa</span>
+      <span class="badge">CEF / OBS Ready</span>
+    </div>
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-title">✅ Resumo Executivo da Parceria</div>
+    Este documento apresenta a especificação técnica para que a <strong>LiveTip</strong> integre o catálogo de efeitos e memes sonoros da <strong>PlonkMemes</strong> em sua plataforma de doações (Pix, Tips e Alertas sonoros) para streamers no <strong>OBS Studio</strong> e <strong>Streamlabs</strong>.
+  </div>
+
+  <!-- Bloco 1: Inegociáveis -->
+  <h2><span class="num">1</span> Diretrizes e Compliance de Streaming (Anti-DMCA)</h2>
+  
+  <h3>1.1. Licença Comercial para Streamers</h3>
+  <p>Todos os áudios disponibilizados pela API v1 e identificados como seguros estão autorizados para execução pública em transmissões ao vivo monetizadas e gravação permanente de VODs na <strong>LiveTip</strong> e plataformas parceiras (Twitch, YouTube Gaming, Kick, TikTok Live).</p>
+
+  <h3>1.2. Proteção Anti-Content ID (YouTube / Twitch Safe)</h3>
+  <p>Para proteger criadores contra silenciamento de áudio em VODs ou perda de monetização, a API dispõe de curadoria algorítmica de fonogramas protegidos:</p>
+  <ul>
+    <li>A LiveTip deve sempre realizar consultas com o parâmetro: <code>GET /api/v1/sounds?safe_only=true</code>.</li>
+    <li>Músicas comerciais registradas em gravadoras e fonogramas sob direitos autorais estritos são filtrados automaticamente.</li>
+  </ul>
+
+  <h3>1.3. Espelhamento e Cache Soberano (S3 / Cloudflare R2)</h3>
+  <p>A <strong>LiveTip possui permissão explícita</strong> para realizar cache, espelhamento e download dos arquivos <code>.mp3</code> diretamente para seu próprio storage de CDN caso opte por controle local de tráfego e latência.</p>
+
+  <!-- Bloco 2: Requisitos Técnicos -->
+  <h2><span class="num">2</span> Requisitos Técnicos de Áudio & OBS (CEF)</h2>
+  
+  <div class="callout">
+    <div class="callout-title">⚠️ Particularidade Crítica do OBS Studio (CEF)</div>
+    O navegador interno do OBS Studio (Chromium Embedded Framework) requer suporte a cabeçalhos <code>Range: bytes</code> (HTTP 206) e CORS irrestrito para calcular o buffer sem congelar a reprodução do alerta.
+  </div>
+
+  <ul>
+    <li><strong>Formato do Arquivo:</strong> MP3 (<code>audio/mpeg</code>), 44.1 kHz, 16-bit, bitrate médio 128 kbps a 192 kbps.</li>
+    <li><strong>CORS:</strong> Cabeçalho <code>Access-Control-Allow-Origin: *</code> habilitado globalmente na API e na CDN.</li>
+    <li><strong>HTTP 206 Partial Content:</strong> Suporte comprovado a Range Requests para pré-carregamento imediato.</li>
+    <li><strong>Normalização de Volume (EBU R128):</strong> Teto recomendado de <strong>-16 LUFS</strong> no player de overlay para evitar que memes com pico elevado prejudiquem o áudio da transmissão.</li>
+  </ul>
+
+  <!-- Bloco 3: Endpoints -->
+  <h2><span class="num">3</span> Documentação da API REST (v1)</h2>
+  <p><strong>Base URL de Produção:</strong> <code>https://plonkmemes.lol/api/v1</code> (Fallback: <code>https://plonkmemes.vercel.app/api/v1</code>)</p>
+
+  <h3>3.1. Listar Catálogo de Sons (<code>GET /api/v1/sounds</code>)</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Parâmetro</th>
+        <th>Tipo</th>
+        <th>Padrão</th>
+        <th>Descrição</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>safe_only</code></td>
+        <td>boolean</td>
+        <td><code>false</code></td>
+        <td><strong>Obrigatório para LiveTip:</strong> Retorna exclusivamente sons livres de Content ID.</td>
+      </tr>
+      <tr>
+        <td><code>q</code></td>
+        <td>string</td>
+        <td>-</td>
+        <td>Busca textual por título ou tags (ex: <code>pou</code>, <code>grosso</code>).</td>
+      </tr>
+      <tr>
+        <td><code>category</code></td>
+        <td>string</td>
+        <td><code>todos</code></td>
+        <td>Filtra por categoria (<code>memes</code>, <code>efeitos</code>, <code>jogos</code>, etc.).</td>
+      </tr>
+      <tr>
+        <td><code>trending</code></td>
+        <td>boolean</td>
+        <td><code>false</code></td>
+        <td>Filtra apenas sons em alta.</td>
+      </tr>
+      <tr>
+        <td><code>page</code> / <code>limit</code></td>
+        <td>integer</td>
+        <td>1 / 50</td>
+        <td>Paginação de resultados (limite máx: 100 por requisição).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Exemplo de Resposta (200 OK):</h4>
+<pre><code>{
+  "data": [
+    {
+      "id": "pou-estourado-48183",
+      "title": "POU ESTOURADO",
+      "slug": "pou-estourado-48183",
+      "audio_url": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/pou-estourado-48183.mp3",
+      "category": "efeitos",
+      "duration_seconds": 2.0,
+      "is_trending": true,
+      "is_safe_for_streamers": true,
+      "tags": ["pou", "estourado"]
+    }
+  ],
+  "pagination": { "page": 1, "limit": 1, "total": 2266, "total_pages": 2266 }
+}</code></pre>
+
+  <h3>3.2. Detalhes de um Som (<code>GET /api/v1/sounds/:id</code>)</h3>
+  <p>Retorna metadados e URL de áudio direta através do ID ou slug do som.</p>
+
+  <h3>3.3. Sincronização de Depreciações (<code>GET /api/v1/sounds/deprecations</code>)</h3>
+  <p>Parâmetro <code>?since=ISO_TIMESTAMP</code>. Permite à LiveTip inativar periodicamente sons descontinuados ou removidos.</p>
+
+  <!-- Bloco 4: Código -->
+  <div class="avoid-break">
+    <h2><span class="num">4</span> Snippet: Player de Overlay para OBS Studio (Zero Latency)</h2>
+    <p>Implementação leve com limitador de volume dinâmico (DynamicsCompressor) para proteger os ouvidos do streamer:</p>
+
+<pre><code>// Browser Source OBS - Web Audio com proteção de pico auditivo
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+const compressor = audioCtx.createDynamicsCompressor();
+compressor.threshold.setValueAtTime(-18, audioCtx.currentTime);
+compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
+
+const masterGain = audioCtx.createGain();
+masterGain.gain.setValueAtTime(0.85, audioCtx.currentTime); // Volume padrão 85%
+
+compressor.connect(masterGain);
+masterGain.connect(audioCtx.destination);
+
+async function triggerLiveTipAlert(audioUrl) {
+  if (audioCtx.state === 'suspended') await audioCtx.resume();
+  
+  const response = await fetch(audioUrl, { mode: 'cors' });
+  const arrayBuffer = await response.arrayBuffer();
+  const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(compressor);
+  source.start(0);
+}</code></pre>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div>PlonkMemes © 2026 • Domínio Oficial: <strong>https://plonkmemes.lol</strong></div>
+    <div>Documentação Técnica da API v1 • Suporte de Engenharia: lnrdleao@gmail.com</div>
+  </div>
+</div>
+
+</body>
+</html>
