@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'MemeSounds - A Soundboard Definitiva de Memes & Efeitos',
+  title: 'PlonkMemes - A Soundboard Definitiva de Memes & Efeitos',
   description: 'A soundboard definitiva de memes, virais e efeitos sonoros com reprodução instantânea.',
 };
 
