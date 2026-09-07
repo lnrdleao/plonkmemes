@@ -93,9 +93,9 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
 
       {/* Waveform & Tactile Play Trigger Row */}
       <div className="flex items-center gap-2 mb-2.5">
-        {/* Unmistakable Play Button */}
+        {/* Play / Stop Symbol Button */}
         <div
-          className={`h-9 px-3 shrink-0 rounded-xl flex items-center gap-1.5 text-[10px] font-black tracking-wider uppercase transition-all shadow-md ${
+          className={`w-9 h-9 shrink-0 rounded-xl flex items-center justify-center transition-all shadow-md ${
             isPlaying
               ? 'text-white scale-105 shadow-lg shadow-emerald-500/30 ring-2 ring-white/40 animate-pulse'
               : 'bg-zinc-800 hover:bg-zinc-750 text-zinc-200 border border-zinc-700/90 group-hover:scale-105 group-hover:border-zinc-500'
@@ -105,15 +105,9 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
           }}
         >
           {isPlaying ? (
-            <>
-              <Square className="w-2.5 h-2.5 fill-current" />
-              <span>PARAR</span>
-            </>
+            <Square className="w-3.5 h-3.5 fill-current" />
           ) : (
-            <>
-              <Play className="w-2.5 h-2.5 fill-current ml-0.5 text-emerald-400 group-hover:text-white" />
-              <span>PLAY</span>
-            </>
+            <Play className="w-3.5 h-3.5 fill-current ml-0.5 text-emerald-400 group-hover:text-white" />
           )}
         </div>
 
