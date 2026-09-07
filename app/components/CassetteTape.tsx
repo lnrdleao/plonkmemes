@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, Download, Heart, Check, Play, Square } from 'lucide-react';
+import { Share2, Download, Heart, Check, Play, Square, Trash2 } from 'lucide-react';
 import { SoundItem } from '../types';
 
 interface CassetteTapeProps {
@@ -10,6 +10,7 @@ interface CassetteTapeProps {
   onPlay: (sound: SoundItem) => void;
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export const CassetteTape: React.FC<CassetteTapeProps> = ({
@@ -18,6 +19,7 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
   onPlay,
   isFavorite = false,
   onToggleFavorite,
+  onDelete,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -38,6 +40,11 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onToggleFavorite) onToggleFavorite(sound.id);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onDelete) onDelete(sound.id);
   };
 
   return (
@@ -79,6 +86,11 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
             {sound.isTrending && (
               <span className="shrink-0 px-1 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold tracking-tight">
                 🔥 EM ALTA
+              </span>
+            )}
+            {sound.isCustom && (
+              <span className="shrink-0 px-1 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold tracking-tight">
+                ENVIADO
               </span>
             )}
           </div>
@@ -178,6 +190,16 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
 
         {/* Action icons */}
         <div className="flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+          {sound.isCustom && onDelete && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              title="Excluir este som"
+              className="p-1 text-zinc-400 hover:text-rose-400 transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={handleShare}

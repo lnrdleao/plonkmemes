@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Share2, Download, Heart, Check, Battery, Volume2 } from 'lucide-react';
+import { Share2, Download, Heart, Check, Battery, Volume2, Trash2 } from 'lucide-react';
 import { SoundItem } from '../types';
 
 interface PocketPlayerProps {
@@ -10,6 +10,7 @@ interface PocketPlayerProps {
   onPlay: (sound: SoundItem) => void;
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export const PocketPlayer: React.FC<PocketPlayerProps> = ({
@@ -18,6 +19,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
   onPlay,
   isFavorite = false,
   onToggleFavorite,
+  onDelete,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -38,6 +40,11 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (onToggleFavorite) onToggleFavorite(sound.id);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onDelete) onDelete(sound.id);
   };
 
   return (
@@ -91,6 +98,11 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
           {sound.isTrending && (
             <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[8px] font-bold">
               🔥 EM ALTA
+            </span>
+          )}
+          {sound.isCustom && (
+            <span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[8px] font-bold">
+              ENVIADO
             </span>
           )}
 
@@ -188,6 +200,16 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
 
         {/* Quick Action Icons */}
         <div className="flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+          {sound.isCustom && onDelete && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              title="Excluir este som"
+              className="p-1 text-zinc-400 hover:text-rose-400 transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={handleShare}

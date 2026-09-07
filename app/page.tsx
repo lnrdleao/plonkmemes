@@ -49,9 +49,30 @@ export default function HomePage() {
       const savedCustom = localStorage.getItem('memesounds_custom');
       if (savedCustom) {
         const parsed: SoundItem[] = JSON.parse(savedCustom);
+        // Expulsa imediatamente 'Mix 1mq8s' ou variações enviadas
+        const cleaned = parsed.filter((p) => {
+          const t = (p.title || '').toLowerCase();
+          const s = (p.slug || '').toLowerCase();
+          const sid = (p.id || '').toLowerCase();
+          const isTarget =
+            t.includes('1mq8') ||
+            t.includes('1m08') ||
+            t.includes('1m48') ||
+            (t.includes('mix') && t.includes('1m')) ||
+            s.includes('1mq8') ||
+            s.includes('1m08') ||
+            s.includes('1m48') ||
+            sid.includes('1mq8');
+          return !isTarget;
+        });
+
+        if (cleaned.length !== parsed.length) {
+          localStorage.setItem('memesounds_custom', JSON.stringify(cleaned));
+        }
+
         setSounds((prev) => {
           const existingIds = new Set(prev.map((s) => s.id));
-          const newItems = parsed.filter((p) => !existingIds.has(p.id));
+          const newItems = cleaned.filter((p) => !existingIds.has(p.id));
           return newItems.length > 0 ? [...newItems, ...prev] : prev;
         });
       }
@@ -136,6 +157,26 @@ export default function HomePage() {
       const saved = localStorage.getItem('memesounds_custom');
       const customList = saved ? JSON.parse(saved) : [];
       localStorage.setItem('memesounds_custom', JSON.stringify([newSound, ...customList]));
+    } catch {}
+  };
+
+  const handleDeleteCustomSound = (soundId: string) => {
+    // Interrompe áudio caso esteja em reprodução
+    const active = activeAudiosRef.current.get(soundId);
+    if (active) {
+      active.pause();
+      activeAudiosRef.current.delete(soundId);
+      setActivePlayingIds((prev) => prev.filter((id) => id !== soundId));
+    }
+
+    setSounds((prev) => prev.filter((s) => s.id !== soundId));
+    try {
+      const saved = localStorage.getItem('memesounds_custom');
+      if (saved) {
+        const list: SoundItem[] = JSON.parse(saved);
+        const updated = list.filter((s) => s.id !== soundId);
+        localStorage.setItem('memesounds_custom', JSON.stringify(updated));
+      }
     } catch {}
   };
 
@@ -484,6 +525,7 @@ export default function HomePage() {
                       onPlay={playSound}
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
+                      onDelete={handleDeleteCustomSound}
                     />
                   );
                 } else if (viewMode === 'waveform') {
@@ -495,6 +537,7 @@ export default function HomePage() {
                       onPlay={playSound}
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
+                      onDelete={handleDeleteCustomSound}
                     />
                   );
                 } else {
@@ -506,6 +549,7 @@ export default function HomePage() {
                       onPlay={playSound}
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
+                      onDelete={handleDeleteCustomSound}
                     />
                   );
                 }
