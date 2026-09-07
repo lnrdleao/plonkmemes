@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'MemeSounds - A Soundboard Definitiva de Memes & Efeitos',
-  description: 'A soundboard definitiva de memes, virais e efeitos sonoros. Sons rápidos, sem botões comuns e sem fotos.',
+  description: 'A soundboard definitiva de memes, virais e efeitos sonoros com reprodução instantânea.',
 };
 
 export default function RootLayout({

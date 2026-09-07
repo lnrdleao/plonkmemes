@@ -164,7 +164,7 @@ export default function HomePage() {
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-rose-950/40 via-zinc-900 to-zinc-950 border-b border-zinc-800/60 px-4 py-1.5 text-center text-xs text-zinc-400">
         <span className="font-semibold text-rose-400 mr-1.5">⚡ MemeSounds:</span>
-        A soundboard definitiva de memes, virais e efeitos sonoros. Sem botões comuns, sem fotos pesadas.
+        A soundboard definitiva de memes, virais e efeitos sonoros.
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
