@@ -5,15 +5,6 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://plonkmemes.vercel.app'),
   title: 'PlonkMemes - A Soundboard Definitiva de Memes & Efeitos',
   description: 'A soundboard definitiva de memes, virais e efeitos sonoros com reprodução instantânea.',
-  icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
-  },
-  openGraph: {
-    title: 'PlonkMemes - Soundboard de Memes & Efeitos',
-    description: 'Mais de 2.300 áudios e memes prontos para tocar em lives, Discord e zueiras.',
-    images: ['/logo.jpg'],
-  },
 };
 
 export default function RootLayout({
