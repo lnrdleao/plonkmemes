@@ -1,6 +1,4 @@
-import { SoundItem } from '../types';
-
-export const INITIAL_SOUNDS: SoundItem[] = [
+[
   {
     "id": "setembro-vai-entrar-o-grosso-lula-68611",
     "title": "SETEMBRO VAI ENTRAR O GROSSO ( LULA )",
@@ -34803,4 +34801,4 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "truck"
     ]
   }
-];
+]

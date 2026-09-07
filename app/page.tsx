@@ -32,6 +32,7 @@ export default function HomePage() {
 
   // Modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(40);
 
   // Audio references
   const activeAudiosRef = useRef<Map<string, HTMLAudioElement>>(new Map());
@@ -148,6 +149,15 @@ export default function HomePage() {
       return true;
     });
   }, [sounds, selectedCategory, favorites, searchQuery]);
+
+  // Reset pagination when searching or changing category
+  useEffect(() => {
+    setVisibleCount(40);
+  }, [searchQuery, selectedCategory]);
+
+  const displayedSounds = useMemo(() => {
+    return filteredSounds.slice(0, visibleCount);
+  }, [filteredSounds, visibleCount]);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-rose-500 selection:text-white">
@@ -365,32 +375,46 @@ export default function HomePage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5">
-            {filteredSounds.map((sound) => {
-              const isPlaying = activePlayingIds.includes(sound.id);
-              const isFav = favorites.includes(sound.id);
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5">
+              {displayedSounds.map((sound) => {
+                const isPlaying = activePlayingIds.includes(sound.id);
+                const isFav = favorites.includes(sound.id);
 
-              return viewMode === 'cassette' ? (
-                <CassetteTape
-                  key={sound.id}
-                  sound={sound}
-                  isPlaying={isPlaying}
-                  onPlay={playSound}
-                  isFavorite={isFav}
-                  onToggleFavorite={toggleFavorite}
-                />
-              ) : (
-                <WaveCapsule
-                  key={sound.id}
-                  sound={sound}
-                  isPlaying={isPlaying}
-                  onPlay={playSound}
-                  isFavorite={isFav}
-                  onToggleFavorite={toggleFavorite}
-                />
-              );
-            })}
-          </div>
+                return viewMode === 'cassette' ? (
+                  <CassetteTape
+                    key={sound.id}
+                    sound={sound}
+                    isPlaying={isPlaying}
+                    onPlay={playSound}
+                    isFavorite={isFav}
+                    onToggleFavorite={toggleFavorite}
+                  />
+                ) : (
+                  <WaveCapsule
+                    key={sound.id}
+                    sound={sound}
+                    isPlaying={isPlaying}
+                    onPlay={playSound}
+                    isFavorite={isFav}
+                    onToggleFavorite={toggleFavorite}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Load More Button */}
+            {visibleCount < filteredSounds.length && (
+              <div className="flex justify-center mt-10">
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 40)}
+                  className="px-6 py-2.5 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-850 text-zinc-200 border border-zinc-800 hover:border-zinc-700 shadow-md cursor-pointer transition-all"
+                >
+                  Carregar mais sons ({filteredSounds.length - visibleCount} restantes)
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         {/* Footer */}
