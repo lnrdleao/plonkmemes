@@ -40,7 +40,7 @@ def upload_file(filename):
             "Authorization": f"Bearer {SERVICE_KEY}",
             "Content-Type": "audio/mpeg",
             "x-upsert": "true",
-            "cache-control": "31536000"
+            "cache-control": "public, max-age=31536000, immutable"
         },
         method="POST"
     )

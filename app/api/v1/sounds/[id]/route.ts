@@ -24,48 +24,41 @@ export async function GET(
     return NextResponse.json({ error: 'Sound not found' }, { status: 404 });
   }
 
-  // Strict API Key Validation (LiveTip Divergência C)
+  // Autenticação Estrita Obrigatória
   const rawKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
-  let isLiveTipPartner = false;
 
-  if (rawKey) {
-    if (VALID_LIVETIP_KEYS.has(rawKey)) {
-      isLiveTipPartner = true;
-    } else {
-      return NextResponse.json(
-        {
-          error: 'Unauthorized',
-          message: 'Invalid or expired API Key. Access denied.',
+  if (!rawKey) {
+    return NextResponse.json(
+      {
+        error: 'Unauthorized',
+        message: 'API key required. Please provide a valid partner key in the X-API-Key or Authorization header.',
+      },
+      {
+        status: 401,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
         },
-        {
-          status: 401,
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
-          },
-        }
-      );
-    }
+      }
+    );
   }
 
-  const headers: Record<string, string> = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
-    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-  };
-
-  if (isLiveTipPartner) {
-    headers['X-Partner'] = 'LiveTip Verified Enterprise Partner';
-    headers['X-RateLimit-Limit'] = '120000';
-    headers['X-RateLimit-Remaining'] = '119999';
-    headers['X-RateLimit-Reset'] = '3600';
-  } else {
-    headers['X-Partner'] = 'Public Free Tier';
-    headers['X-RateLimit-Limit'] = '1000';
-    headers['X-RateLimit-Remaining'] = '999';
-    headers['X-RateLimit-Reset'] = '3600';
+  if (!VALID_LIVETIP_KEYS.has(rawKey)) {
+    return NextResponse.json(
+      {
+        error: 'Unauthorized',
+        message: 'Invalid or revoked API Key. Access denied.',
+      },
+      {
+        status: 401,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+        },
+      }
+    );
   }
 
   return NextResponse.json(
@@ -89,7 +82,17 @@ export async function GET(
         loudness_range_lra: 1.0,
       },
     },
-    { headers }
+    {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+        'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+        'X-Partner': 'LiveTip Verified Enterprise Partner',
+        'X-RateLimit-Limit': '120000',
+        'X-RateLimit-Remaining': '119999',
+      },
+    }
   );
 }
 
