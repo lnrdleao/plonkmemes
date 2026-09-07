@@ -72,10 +72,17 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
         }}
       >
         <div className="flex items-center justify-between gap-1 mb-1">
-          <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400">
-            LADO A • {sound.category.toUpperCase()}
-          </span>
-          <span className="text-[10px] font-mono text-zinc-400">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 truncate">
+              LADO A • {sound.category.toUpperCase()}
+            </span>
+            {sound.isTrending && (
+              <span className="shrink-0 px-1 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold tracking-tight">
+                🔥 EM ALTA
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] font-mono text-zinc-400 shrink-0">
             {sound.duration ? `${sound.duration}s` : '0:02'}
           </span>
         </div>

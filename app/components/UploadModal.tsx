@@ -29,7 +29,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   onUploadSuccess,
 }) => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<SoundCategory>('memes-web');
+  const [category, setCategory] = useState<SoundCategory>('memes');
   const [color, setColor] = useState(COLOR_OPTIONS[0]);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>('');
@@ -190,10 +190,13 @@ export const UploadModal: React.FC<UploadModalProps> = ({
               onChange={(e) => setCategory(e.target.value as SoundCategory)}
               className="w-full rounded-xl bg-zinc-950 border border-zinc-800 px-3.5 py-2 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
             >
-              <option value="tv-radio">TV & Rádio</option>
-              <option value="memes-web">Memes da Web</option>
-              <option value="efeitos">Efeitos Sonoros</option>
-              <option value="bordoes">Bordões</option>
+              <option value="memes">🎭 Memes & Zueira</option>
+              <option value="games">🎮 Games & Discord</option>
+              <option value="tv-filmes">📺 TV, Filmes & Séries</option>
+              <option value="efeitos">🔊 Efeitos Sonoros</option>
+              <option value="streamers">🎙️ Streamers & Famosos</option>
+              <option value="musica">🎵 Música & Vinhetas</option>
+              <option value="bordoes">🗣️ Bordões Curtos</option>
             </select>
           </div>
 

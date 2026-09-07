@@ -1,6 +1,13 @@
-export type SoundCategory = 'tv-radio' | 'memes-web' | 'efeitos' | 'bordoes';
+export type SoundCategory =
+  | 'memes'
+  | 'games'
+  | 'tv-filmes'
+  | 'efeitos'
+  | 'streamers'
+  | 'musica'
+  | 'bordoes';
 
-export type CategoryFilter = 'todos' | SoundCategory;
+export type CategoryFilter = 'todos' | 'em-alta' | SoundCategory;
 
 export type ViewMode = 'cassette' | 'waveform';
 
@@ -15,4 +22,6 @@ export interface SoundItem {
   duration?: number; // seconds
   tags: string[];
   isCustom?: boolean;
+  isTrending?: boolean;
 }
+

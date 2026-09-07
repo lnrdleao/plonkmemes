@@ -64,19 +64,24 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
 
       {/* Header with Category & Duration */}
       <div className="flex items-center justify-between gap-1 mb-2">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 min-w-0">
           <span
-            className="w-2 h-2 rounded-full transition-transform"
+            className="w-2 h-2 rounded-full transition-transform shrink-0"
             style={{
               backgroundColor: sound.color,
               transform: isPlaying ? 'scale(1.2)' : 'scale(1)',
             }}
           />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 truncate">
             {sound.category}
           </span>
+          {sound.isTrending && (
+            <span className="shrink-0 px-1 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold tracking-tight">
+              🔥 EM ALTA
+            </span>
+          )}
         </div>
-        <span className="text-[10px] font-mono text-zinc-500">
+        <span className="text-[10px] font-mono text-zinc-500 shrink-0">
           {sound.duration ? `${sound.duration}s` : '0:02'}
         </span>
       </div>

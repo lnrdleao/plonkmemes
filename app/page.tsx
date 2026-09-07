@@ -7,12 +7,16 @@ import {
   VolumeX,
   Plus,
   Flame,
-  Radio,
   Sparkles,
   Zap,
   Disc3,
   Waves,
   Heart,
+  Gamepad2,
+  Tv,
+  Mic,
+  Music,
+  MessageSquare,
 } from 'lucide-react';
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
@@ -131,10 +135,33 @@ export default function HomePage() {
     } catch {}
   };
 
+  const categoryCounts = useMemo(() => {
+    const c: Record<string, number> = {
+      todos: sounds.length,
+      'em-alta': 0,
+      memes: 0,
+      games: 0,
+      'tv-filmes': 0,
+      efeitos: 0,
+      streamers: 0,
+      musica: 0,
+      bordoes: 0,
+    };
+    sounds.forEach((s) => {
+      if (s.isTrending) c['em-alta']++;
+      if (c[s.category] !== undefined) {
+        c[s.category]++;
+      }
+    });
+    return c;
+  }, [sounds]);
+
   const filteredSounds = useMemo(() => {
     return sounds.filter((item) => {
       if (selectedCategory === 'favoritos') {
         if (!favorites.includes(item.id)) return false;
+      } else if (selectedCategory === 'em-alta') {
+        if (!item.isTrending) return false;
       } else if (selectedCategory !== 'todos' && item.category !== selectedCategory) {
         return false;
       }
@@ -287,6 +314,18 @@ export default function HomePage() {
           {/* Categories */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
             <button
+              onClick={() => setSelectedCategory('em-alta')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'em-alta'
+                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-lg shadow-amber-500/20'
+                  : 'bg-zinc-900 text-amber-400 hover:bg-zinc-800 hover:text-amber-300 border border-amber-500/30'
+              }`}
+            >
+              <Flame className={`w-3.5 h-3.5 ${selectedCategory === 'em-alta' ? 'fill-zinc-950 text-zinc-950' : 'fill-amber-400 text-amber-400'}`} />
+              <span>Em Alta ({categoryCounts['em-alta']})</span>
+            </button>
+
+            <button
               onClick={() => setSelectedCategory('todos')}
               className={`px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
                 selectedCategory === 'todos'
@@ -294,31 +333,43 @@ export default function HomePage() {
                   : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
               }`}
             >
-              🔥 Todos ({sounds.length})
+              ✨ Todos ({categoryCounts.todos})
             </button>
 
             <button
-              onClick={() => setSelectedCategory('tv-radio')}
+              onClick={() => setSelectedCategory('memes')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
-                selectedCategory === 'tv-radio'
-                  ? 'bg-rose-600 text-white font-bold shadow'
-                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
-              }`}
-            >
-              <Radio className="w-3 h-3" />
-              <span>TV & Rádio</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedCategory('memes-web')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
-                selectedCategory === 'memes-web'
+                selectedCategory === 'memes'
                   ? 'bg-purple-600 text-white font-bold shadow'
                   : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
               }`}
             >
               <Sparkles className="w-3 h-3" />
-              <span>Memes da Web</span>
+              <span>Memes ({categoryCounts.memes})</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('games')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'games'
+                  ? 'bg-emerald-600 text-white font-bold shadow'
+                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
+              }`}
+            >
+              <Gamepad2 className="w-3 h-3" />
+              <span>Games ({categoryCounts.games})</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('tv-filmes')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'tv-filmes'
+                  ? 'bg-rose-600 text-white font-bold shadow'
+                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
+              }`}
+            >
+              <Tv className="w-3 h-3" />
+              <span>TV & Filmes ({categoryCounts['tv-filmes']})</span>
             </button>
 
             <button
@@ -330,19 +381,43 @@ export default function HomePage() {
               }`}
             >
               <Volume2 className="w-3 h-3" />
-              <span>Efeitos Sonoros</span>
+              <span>Efeitos ({categoryCounts.efeitos})</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('streamers')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'streamers'
+                  ? 'bg-indigo-600 text-white font-bold shadow'
+                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
+              }`}
+            >
+              <Mic className="w-3 h-3" />
+              <span>Streamers ({categoryCounts.streamers})</span>
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory('musica')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'musica'
+                  ? 'bg-pink-600 text-white font-bold shadow'
+                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
+              }`}
+            >
+              <Music className="w-3 h-3" />
+              <span>Música ({categoryCounts.musica})</span>
             </button>
 
             <button
               onClick={() => setSelectedCategory('bordoes')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
                 selectedCategory === 'bordoes'
-                  ? 'bg-emerald-600 text-white font-bold shadow'
+                  ? 'bg-orange-600 text-white font-bold shadow'
                   : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
               }`}
             >
-              <Flame className="w-3 h-3" />
-              <span>Bordões Curtos</span>
+              <MessageSquare className="w-3 h-3" />
+              <span>Bordões ({categoryCounts.bordoes})</span>
             </button>
 
             <button
