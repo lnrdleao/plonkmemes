@@ -79,6 +79,17 @@ export default function HomePage() {
   };
 
   const playSound = (sound: SoundItem) => {
+    // 1. Se o som já estiver tocando, interrompe imediatamente
+    const existing = activeAudiosRef.current.get(sound.id);
+    if (existing) {
+      existing.pause();
+      existing.currentTime = 0;
+      activeAudiosRef.current.delete(sound.id);
+      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
+      return;
+    }
+
+    // 2. Se não estiver no Modo Caos, interrompe outros sons ativos
     if (!chaosMode) {
       activeAudiosRef.current.forEach((audio) => {
         audio.pause();
@@ -86,15 +97,6 @@ export default function HomePage() {
       });
       activeAudiosRef.current.clear();
       setActivePlayingIds([]);
-    }
-
-    const existing = activeAudiosRef.current.get(sound.id);
-    if (existing && !chaosMode) {
-      existing.pause();
-      existing.currentTime = 0;
-      activeAudiosRef.current.delete(sound.id);
-      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
-      return;
     }
 
     const audio = new Audio(sound.audioUrl);
