@@ -9,7 +9,7 @@ export type SoundCategory =
 
 export type CategoryFilter = 'todos' | 'em-alta' | SoundCategory;
 
-export type ViewMode = 'cassette' | 'waveform';
+export type ViewMode = 'cassette' | 'waveform' | 'pocket';
 
 export interface SoundItem {
   id: string;

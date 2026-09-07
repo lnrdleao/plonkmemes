@@ -17,11 +17,13 @@ import {
   Mic,
   Music,
   MessageSquare,
+  Disc,
 } from 'lucide-react';
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
 import { CassetteTape } from './components/CassetteTape';
 import { WaveCapsule } from './components/WaveCapsule';
+import { PocketPlayer } from './components/PocketPlayer';
 import { UploadModal } from './components/UploadModal';
 
 export default function HomePage() {
@@ -58,7 +60,7 @@ export default function HomePage() {
         setFavorites(JSON.parse(savedFavs));
       }
       const savedView = localStorage.getItem('memesounds_view');
-      if (savedView === 'waveform' || savedView === 'cassette') {
+      if (savedView === 'waveform' || savedView === 'cassette' || savedView === 'pocket') {
         setViewMode(savedView);
       }
     } catch {
@@ -284,6 +286,21 @@ export default function HomePage() {
                   <Waves className="w-3.5 h-3.5" />
                   <span>Cápsula Wave</span>
                 </button>
+                <button
+                  onClick={() => {
+                    setViewMode('pocket');
+                    localStorage.setItem('memesounds_view', 'pocket');
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+                    viewMode === 'pocket'
+                      ? 'bg-zinc-800 text-amber-400 font-semibold shadow-sm'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                  title="Objeto Retrô Pod em alumínio colorido com Click Wheel tátil"
+                >
+                  <Disc className="w-3.5 h-3.5" />
+                  <span>Pocket Pod</span>
+                </button>
               </div>
 
               {/* Chaos Mode Toggle */}
@@ -458,25 +475,40 @@ export default function HomePage() {
                 const isPlaying = activePlayingIds.includes(sound.id);
                 const isFav = favorites.includes(sound.id);
 
-                return viewMode === 'cassette' ? (
-                  <CassetteTape
-                    key={sound.id}
-                    sound={sound}
-                    isPlaying={isPlaying}
-                    onPlay={playSound}
-                    isFavorite={isFav}
-                    onToggleFavorite={toggleFavorite}
-                  />
-                ) : (
-                  <WaveCapsule
-                    key={sound.id}
-                    sound={sound}
-                    isPlaying={isPlaying}
-                    onPlay={playSound}
-                    isFavorite={isFav}
-                    onToggleFavorite={toggleFavorite}
-                  />
-                );
+                if (viewMode === 'cassette') {
+                  return (
+                    <CassetteTape
+                      key={sound.id}
+                      sound={sound}
+                      isPlaying={isPlaying}
+                      onPlay={playSound}
+                      isFavorite={isFav}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  );
+                } else if (viewMode === 'waveform') {
+                  return (
+                    <WaveCapsule
+                      key={sound.id}
+                      sound={sound}
+                      isPlaying={isPlaying}
+                      onPlay={playSound}
+                      isFavorite={isFav}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  );
+                } else {
+                  return (
+                    <PocketPlayer
+                      key={sound.id}
+                      sound={sound}
+                      isPlaying={isPlaying}
+                      onPlay={playSound}
+                      isFavorite={isFav}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  );
+                }
               })}
             </div>
 
