@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import soundsData from '../../../../data/sounds.json';
 
+const VALID_LIVETIP_KEYS = new Set([
+  'livetip_live_sk_7e92b1a8f4c03d65e219',
+]);
+
 function isSafeForStreamers(sound: any): boolean {
   if (sound.category === 'musica') return false;
   const text = (sound.title + ' ' + (sound.tags || []).join(' ')).toLowerCase();
@@ -20,41 +24,69 @@ export async function GET(
     return NextResponse.json({ error: 'Sound not found' }, { status: 404 });
   }
 
-  const apiKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
-  const isLiveTipPartner = apiKey?.toLowerCase().includes('livetip') || apiKey === 'livetip_live_sk_49f82a1c4e7b8920';
+  // Strict API Key Validation (LiveTip Divergência C)
+  const rawKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
+  let isLiveTipPartner = false;
+
+  if (rawKey) {
+    if (VALID_LIVETIP_KEYS.has(rawKey)) {
+      isLiveTipPartner = true;
+    } else {
+      return NextResponse.json(
+        {
+          error: 'Unauthorized',
+          message: 'Invalid or expired API Key. Access denied.',
+        },
+        {
+          status: 401,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+          },
+        }
+      );
+    }
+  }
 
   const headers: Record<string, string> = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
-    'Cache-Control': 'public, s-maxage=86400, immutable',
-    'X-RateLimit-Limit': isLiveTipPartner ? '120000' : '10000',
-    'X-RateLimit-Remaining': isLiveTipPartner ? '119999' : '9999',
-    'X-RateLimit-Reset': '3600',
+    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
   };
 
   if (isLiveTipPartner) {
     headers['X-Partner'] = 'LiveTip Verified Enterprise Partner';
+    headers['X-RateLimit-Limit'] = '120000';
+    headers['X-RateLimit-Remaining'] = '119999';
+    headers['X-RateLimit-Reset'] = '3600';
+  } else {
+    headers['X-Partner'] = 'Public Free Tier';
+    headers['X-RateLimit-Limit'] = '1000';
+    headers['X-RateLimit-Remaining'] = '999';
+    headers['X-RateLimit-Reset'] = '3600';
   }
 
   return NextResponse.json(
     {
       id: sound.id,
-      name: sound.title, // Nome legível para o overlay do streamer (LiveTip requirement #4)
+      name: sound.title,
       title: sound.title,
       slug: sound.slug,
       audio_url: `https://plonkmemes.lol/api/v1/audio/${sound.id}.mp3`,
       cdn_direct_url: sound.audioUrl,
       category: sound.category,
-      duration_seconds: sound.duration || 2.0,
+      duration_seconds: typeof sound.duration === 'number' ? sound.duration : 2.0,
       is_trending: Boolean(sound.isTrending),
       is_safe_for_streamers: isSafeForStreamers(sound),
       tags: sound.tags || [],
-      loudness: {
+      loudness: sound.loudness || {
         standard: 'EBU R128',
         target_lufs: -16.0,
         integrated_lufs: -16.0,
         true_peak_dbtp: -1.5,
+        loudness_range_lra: 1.0,
       },
     },
     { headers }

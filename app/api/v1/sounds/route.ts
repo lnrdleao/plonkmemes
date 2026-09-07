@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import soundsData from '../../../data/sounds.json';
 
+const VALID_LIVETIP_KEYS = new Set([
+  'livetip_live_sk_7e92b1a8f4c03d65e219',
+]);
+
 function isSafeForStreamers(sound: any): boolean {
   if (sound.category === 'musica') return false;
   const text = (sound.title + ' ' + (sound.tags || []).join(' ')).toLowerCase();
@@ -14,35 +18,65 @@ export async function GET(request: Request) {
   const category = searchParams.get('category');
   const trending = searchParams.get('trending');
   const safeOnly = searchParams.get('safe_only') === 'true';
+  const maxDurationParam = searchParams.get('max_duration');
   const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
   const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50', 10)));
 
-  // Partner authentication check
-  const apiKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
-  const isLiveTipPartner = apiKey?.toLowerCase().includes('livetip') || apiKey === 'livetip_live_sk_49f82a1c4e7b8920';
+  // Strict API Key Validation (LiveTip Divergência C)
+  const rawKey = request.headers.get('x-api-key') || request.headers.get('authorization')?.replace('Bearer ', '');
+  let isLiveTipPartner = false;
+
+  if (rawKey) {
+    if (VALID_LIVETIP_KEYS.has(rawKey)) {
+      isLiveTipPartner = true;
+    } else {
+      return NextResponse.json(
+        {
+          error: 'Unauthorized',
+          message: 'Invalid or expired API Key. Access denied.',
+        },
+        {
+          status: 401,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+          },
+        }
+      );
+    }
+  }
 
   let filtered = (soundsData as any[]).map((s: any) => ({
     id: s.id,
-    name: s.title, // Nome legível para o overlay do streamer (LiveTip requirement #4)
+    name: s.title,
     title: s.title,
     slug: s.slug,
     audio_url: `https://plonkmemes.lol/api/v1/audio/${s.id}.mp3`,
     cdn_direct_url: s.audioUrl,
     category: s.category,
-    duration_seconds: s.duration || 2.0, // Duração garantida sem download prévio (#7)
+    duration_seconds: typeof s.duration === 'number' ? s.duration : 2.0,
     is_trending: Boolean(s.isTrending),
-    is_safe_for_streamers: isSafeForStreamers(s), // Filtro anti-DMCA / Content ID
+    is_safe_for_streamers: isSafeForStreamers(s),
     tags: s.tags || [],
-    loudness: {
+    loudness: s.loudness || {
       standard: 'EBU R128',
       target_lufs: -16.0,
       integrated_lufs: -16.0,
       true_peak_dbtp: -1.5,
+      loudness_range_lra: 1.0,
     },
   }));
 
   if (safeOnly) {
     filtered = filtered.filter((s) => s.is_safe_for_streamers);
+  }
+
+  if (maxDurationParam) {
+    const maxD = parseFloat(maxDurationParam);
+    if (!isNaN(maxD) && maxD > 0) {
+      filtered = filtered.filter((s) => s.duration_seconds <= maxD);
+    }
   }
 
   if (trending === 'true') {
@@ -68,14 +102,19 @@ export async function GET(request: Request) {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
-    'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
-    'X-RateLimit-Limit': isLiveTipPartner ? '120000' : '10000',
-    'X-RateLimit-Remaining': isLiveTipPartner ? '119999' : '9999',
-    'X-RateLimit-Reset': '3600',
+    'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
   };
 
   if (isLiveTipPartner) {
     headers['X-Partner'] = 'LiveTip Verified Enterprise Partner';
+    headers['X-RateLimit-Limit'] = '120000';
+    headers['X-RateLimit-Remaining'] = '119999';
+    headers['X-RateLimit-Reset'] = '3600';
+  } else {
+    headers['X-Partner'] = 'Public Free Tier';
+    headers['X-RateLimit-Limit'] = '1000';
+    headers['X-RateLimit-Remaining'] = '999';
+    headers['X-RateLimit-Reset'] = '3600';
   }
 
   return NextResponse.json(

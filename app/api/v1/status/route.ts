@@ -7,7 +7,7 @@ export async function GET() {
   return NextResponse.json(
     {
       status: 'operational',
-      version: '1.0.0',
+      version: '1.1.0',
       service: 'PlonkMemes API & CDN',
       sla: {
         uptime_target: '99.9%',
@@ -18,7 +18,9 @@ export async function GET() {
         total_sounds: (soundsData as any[]).length,
         audio_format: 'audio/mpeg (MP3)',
         sampling_rate_hz: 44100,
-        loudness_standard: 'EBU R128 (-16 LUFS Target)',
+        bitrate_kbps: 192,
+        loudness_standard: 'EBU R128 (-16 LUFS Integrated, -1.5 dBTP True Peak)',
+        max_duration_supported: 'Supports ?max_duration=30 query filtering',
       },
       infrastructure: {
         edge_network: 'Vercel Edge Global + Supabase Storage CDN',
