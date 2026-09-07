@@ -163,8 +163,8 @@ export default function HomePage() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-rose-500 selection:text-white">
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-rose-950/40 via-zinc-900 to-zinc-950 border-b border-zinc-800/60 px-4 py-1.5 text-center text-xs text-zinc-400">
-        <span className="font-semibold text-rose-400 mr-1.5">⚡ MemeSounds Brasil:</span>
-        Catálogo dos sons mais virais em português. Sem botões comuns, sem fotos pesadas.
+        <span className="font-semibold text-rose-400 mr-1.5">⚡ MemeSounds:</span>
+        A soundboard definitiva de memes, virais e efeitos sonoros. Sem botões comuns, sem fotos pesadas.
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -179,11 +179,11 @@ export default function HomePage() {
                 <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
                   MEMESOUNDS
                   <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                    PT-BR
+                    MEMES
                   </span>
                 </h1>
                 <p className="text-xs text-zinc-400">
-                  A soundboard definitiva de memes e bordões brasileiros.
+                  A soundboard definitiva de memes, virais e efeitos sonoros.
                 </p>
               </div>
             </div>
@@ -420,7 +420,7 @@ export default function HomePage() {
         {/* Footer */}
         <footer className="mt-16 pt-6 border-t border-zinc-900 text-center text-xs text-zinc-600 space-y-1 pb-10">
           <p>
-            MemeSounds • Feito com foco 100% no som, performance e bordões brasileiros.
+            MemeSounds • Feito com foco 100% no som, performance e memes virais.
           </p>
           <p className="text-[11px] text-zinc-700">
             Dica: No modo Caos (DJ), você pode clicar em vários sons rápidos para sobrepor os áudios.

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'MemeSounds - Soundboard de Memes & Bordões Brasileiros',
-  description: 'A soundboard definitiva de memes e bordões em português. Sons rápidos, sem botões comuns e sem fotos.',
+  title: 'MemeSounds - A Soundboard Definitiva de Memes & Efeitos',
+  description: 'A soundboard definitiva de memes, virais e efeitos sonoros. Sons rápidos, sem botões comuns e sem fotos.',
 };
 
 export default function RootLayout({

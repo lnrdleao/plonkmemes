@@ -103,7 +103,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold text-zinc-100">Subir Novo Som</h3>
-              <p className="text-xs text-zinc-400">Adicione um áudio em português para a sua soundboard</p>
+              <p className="text-xs text-zinc-400">Adicione um meme ou efeito de áudio para a sua soundboard</p>
             </div>
           </div>
           <button
