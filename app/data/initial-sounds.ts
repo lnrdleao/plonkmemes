@@ -2,6 +2,33 @@ import { SoundItem } from "../types";
 
 export const INITIAL_SOUNDS: SoundItem[] = [
   {
+    "id": "mk-brutality-35438",
+    "title": "MK - BRUTALITY",
+    "name": "MK - BRUTALITY",
+    "slug": "mk-brutality-35438",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mk-brutality-35438.mp3",
+    "category": "games",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 1.65,
+    "tags": [
+      "mk",
+      "mortal",
+      "kombat",
+      "brutality",
+      "games",
+      "arcade"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -4.81,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
     "id": "setembro-vai-entrar-o-grosso-lula-68611",
     "title": "SETEMBRO VAI ENTRAR O GROSSO ( LULA )",
     "slug": "setembro-vai-entrar-o-grosso-lula-68611",
@@ -750,8 +777,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -11.61,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -16.73,
+      "true_peak_dbtp": -6.62,
       "loudness_range_lra": 6.6
     }
   },
@@ -844,9 +871,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.04,
-      "true_peak_dbtp": -6.12,
-      "loudness_range_lra": 13.2
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -4.24,
+      "loudness_range_lra": 9.9
     }
   },
   {
@@ -1253,8 +1280,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.42,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.92,
+      "true_peak_dbtp": -4.99,
       "loudness_range_lra": 7.5
     }
   },
@@ -1570,8 +1597,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.65,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -16.96,
+      "true_peak_dbtp": -5.85,
       "loudness_range_lra": 5.2
     }
   },
@@ -2530,8 +2557,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -11.87,
-      "true_peak_dbtp": -5.73,
+      "integrated_lufs": -15.93,
+      "true_peak_dbtp": -9.83,
       "loudness_range_lra": 0.0
     }
   },
@@ -2732,7 +2759,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.74,
+      "integrated_lufs": -18.77,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -2915,9 +2942,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.08,
+      "integrated_lufs": -16.24,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 3.1
+      "loudness_range_lra": 1.4
     }
   },
   {
@@ -4772,8 +4799,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.15,
-      "true_peak_dbtp": -1.6,
+      "integrated_lufs": -16.26,
+      "true_peak_dbtp": -4.76,
       "loudness_range_lra": 2.7
     }
   },
@@ -5884,7 +5911,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.81,
+      "integrated_lufs": -16.87,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -6612,9 +6639,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.9,
-      "true_peak_dbtp": -12.86,
-      "loudness_range_lra": 13.7
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -9.86,
+      "loudness_range_lra": 9.5
     }
   },
   {
@@ -7248,8 +7275,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -11.99,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -14.54,
+      "true_peak_dbtp": -4.07,
       "loudness_range_lra": 0.0
     }
   },
@@ -7639,7 +7666,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.5,
+      "integrated_lufs": -19.53,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -9319,9 +9346,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.8,
+      "integrated_lufs": -17.35,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 4.8
+      "loudness_range_lra": 4.7
     }
   },
   {
@@ -9987,7 +10014,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.82,
+      "integrated_lufs": -18.46,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -10214,9 +10241,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.46,
-      "true_peak_dbtp": -7.29,
-      "loudness_range_lra": 13.6
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -9.96,
+      "loudness_range_lra": 15.0
     }
   },
   {
@@ -10237,7 +10264,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -22.71,
+      "integrated_lufs": -19.22,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -10420,8 +10447,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.84,
-      "true_peak_dbtp": -3.99,
+      "integrated_lufs": -14.4,
+      "true_peak_dbtp": -4.59,
       "loudness_range_lra": 5.9
     }
   },
@@ -11393,7 +11420,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -24.55,
+      "integrated_lufs": -24.45,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -11526,7 +11553,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.94,
+      "integrated_lufs": -19.9,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -12982,8 +13009,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.77,
-      "true_peak_dbtp": -1.51,
+      "integrated_lufs": -16.68,
+      "true_peak_dbtp": -4.49,
       "loudness_range_lra": 4.2
     }
   },
@@ -13030,8 +13057,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.11,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -5.47,
       "loudness_range_lra": 0.0
     }
   },
@@ -13695,8 +13722,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.7,
-      "true_peak_dbtp": -2.56,
+      "integrated_lufs": -15.96,
+      "true_peak_dbtp": -5.85,
       "loudness_range_lra": 0.0
     }
   },
@@ -14616,8 +14643,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.02,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.6,
+      "true_peak_dbtp": -5.16,
       "loudness_range_lra": 0.0
     }
   },
@@ -14639,7 +14666,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -22.23,
+      "integrated_lufs": -21.87,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -15168,7 +15195,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -20.39,
+      "integrated_lufs": -20.47,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -15261,8 +15288,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -10.31,
-      "true_peak_dbtp": -4.05,
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -9.74,
       "loudness_range_lra": 0.0
     }
   },
@@ -15578,7 +15605,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.35,
+      "integrated_lufs": -18.55,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -16884,8 +16911,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.76,
-      "true_peak_dbtp": -2.04,
+      "integrated_lufs": -15.93,
+      "true_peak_dbtp": -4.22,
       "loudness_range_lra": 0.9
     }
   },
@@ -17404,9 +17431,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.18,
+      "integrated_lufs": -17.01,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 11.6
+      "loudness_range_lra": 8.2
     }
   },
   {
@@ -17471,9 +17498,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.3,
+      "integrated_lufs": -16.1,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 3.7
+      "loudness_range_lra": 2.6
     }
   },
   {
@@ -17561,8 +17588,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.36,
-      "true_peak_dbtp": -1.54,
+      "integrated_lufs": -16.56,
+      "true_peak_dbtp": -4.78,
       "loudness_range_lra": 4.6
     }
   },
@@ -17993,7 +18020,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.31,
+      "integrated_lufs": -18.32,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -19079,7 +19106,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.55,
+      "integrated_lufs": -19.62,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -19352,9 +19379,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.51,
+      "integrated_lufs": -17.36,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 4.6
+      "loudness_range_lra": 3.8
     }
   },
   {
@@ -19421,8 +19448,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.95,
-      "true_peak_dbtp": -6.55,
+      "integrated_lufs": -15.64,
+      "true_peak_dbtp": -8.26,
       "loudness_range_lra": 0.0
     }
   },
@@ -19510,9 +19537,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.33,
-      "true_peak_dbtp": -3.08,
-      "loudness_range_lra": 18.9
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -6.57,
+      "loudness_range_lra": 19.5
     }
   },
   {
@@ -20063,8 +20090,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.58,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.05,
+      "true_peak_dbtp": -3.88,
       "loudness_range_lra": 0.0
     }
   },
@@ -20430,8 +20457,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.76,
-      "true_peak_dbtp": -2.42,
+      "integrated_lufs": -15.83,
+      "true_peak_dbtp": -4.49,
       "loudness_range_lra": 0.0
     }
   },
@@ -21365,7 +21392,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -20.22,
+      "integrated_lufs": -20.3,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -24035,9 +24062,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -8.21,
-      "true_peak_dbtp": -4.91,
-      "loudness_range_lra": 8.5
+      "integrated_lufs": -17.26,
+      "true_peak_dbtp": -13.85,
+      "loudness_range_lra": 8.6
     }
   },
   {
@@ -24083,8 +24110,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -11.86,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -16.22,
+      "true_peak_dbtp": -5.8,
       "loudness_range_lra": 4.7
     }
   },
@@ -24778,8 +24805,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.07,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.27,
+      "true_peak_dbtp": -3.73,
       "loudness_range_lra": 1.4
     }
   },
@@ -25032,9 +25059,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.65,
-      "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 5.1
+      "integrated_lufs": -15.12,
+      "true_peak_dbtp": -3.0,
+      "loudness_range_lra": 5.2
     }
   },
   {
@@ -25793,7 +25820,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.87,
+      "integrated_lufs": -19.94,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -26241,7 +26268,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.96,
+      "integrated_lufs": -17.17,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 5.2
     }
@@ -26631,9 +26658,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -11.79,
-      "true_peak_dbtp": -5.65,
-      "loudness_range_lra": 14.2
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -9.74,
+      "loudness_range_lra": 16.0
     }
   },
   {
@@ -27667,7 +27694,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -20.26,
+      "integrated_lufs": -20.25,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -28067,8 +28094,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.81,
-      "true_peak_dbtp": -9.86,
+      "integrated_lufs": -15.96,
+      "true_peak_dbtp": -12.07,
       "loudness_range_lra": 0.0
     }
   },
@@ -32541,7 +32568,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.8,
+      "integrated_lufs": -18.83,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -32868,9 +32895,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.82,
-      "true_peak_dbtp": -1.91,
-      "loudness_range_lra": 18.7
+      "integrated_lufs": -15.98,
+      "true_peak_dbtp": -4.98,
+      "loudness_range_lra": 18.8
     }
   },
   {
@@ -33028,9 +33055,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.48,
+      "integrated_lufs": -17.25,
       "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 1.5
+      "loudness_range_lra": 1.8
     }
   },
   {
@@ -35862,8 +35889,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.9,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -16.12,
+      "true_peak_dbtp": -3.75,
       "loudness_range_lra": 0.0
     }
   },
@@ -37583,8 +37610,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -9.4,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.54,
+      "true_peak_dbtp": -7.57,
       "loudness_range_lra": 0.0
     }
   },
@@ -39147,7 +39174,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.39,
+      "integrated_lufs": -18.36,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -39171,9 +39198,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.32,
-      "true_peak_dbtp": -8.56,
-      "loudness_range_lra": 8.1
+      "integrated_lufs": -16.04,
+      "true_peak_dbtp": -4.38,
+      "loudness_range_lra": 5.1
     }
   },
   {
@@ -40044,8 +40071,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.86,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.97,
+      "true_peak_dbtp": -3.55,
       "loudness_range_lra": 0.0
     }
   },
@@ -41738,8 +41765,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.72,
-      "true_peak_dbtp": -8.99,
+      "integrated_lufs": -15.71,
+      "true_peak_dbtp": -11.99,
       "loudness_range_lra": 0.0
     }
   },
@@ -42698,8 +42725,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.59,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.96,
+      "true_peak_dbtp": -4.88,
       "loudness_range_lra": 0.0
     }
   },
@@ -43853,8 +43880,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.56,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.51,
+      "true_peak_dbtp": -3.43,
       "loudness_range_lra": 0.0
     }
   },
@@ -45088,8 +45115,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.82,
-      "true_peak_dbtp": -3.41,
+      "integrated_lufs": -16.71,
+      "true_peak_dbtp": -7.24,
       "loudness_range_lra": 0.0
     }
   },
@@ -45545,8 +45572,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.38,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.78,
+      "true_peak_dbtp": -3.96,
       "loudness_range_lra": 0.0
     }
   },
@@ -46670,7 +46697,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -12.82,
+      "integrated_lufs": -12.71,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -47011,7 +47038,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -19.71,
+      "integrated_lufs": -19.64,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -47789,8 +47816,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.18,
-      "true_peak_dbtp": -2.51,
+      "integrated_lufs": -16.34,
+      "true_peak_dbtp": -5.68,
       "loudness_range_lra": 0.0
     }
   },
@@ -48452,7 +48479,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -27.48,
+      "integrated_lufs": -27.46,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -48653,9 +48680,9 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.02,
-      "true_peak_dbtp": -4.32,
-      "loudness_range_lra": 9.8
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -3.26,
+      "loudness_range_lra": 7.2
     }
   },
   {
@@ -49762,8 +49789,8 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -13.4,
-      "true_peak_dbtp": -1.5,
+      "integrated_lufs": -15.31,
+      "true_peak_dbtp": -3.43,
       "loudness_range_lra": 0.0
     }
   },
@@ -49945,7 +49972,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -18.29,
+      "integrated_lufs": -18.27,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -50541,7 +50568,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -27.48,
+      "integrated_lufs": -27.46,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -51990,7 +52017,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -24.47,
+      "integrated_lufs": -24.44,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -52035,7 +52062,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -20.92,
+      "integrated_lufs": -21.09,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }
@@ -52312,7 +52339,7 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -20.75,
+      "integrated_lufs": -20.65,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 0.0
     }

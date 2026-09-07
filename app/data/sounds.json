@@ -1,5 +1,32 @@
 [
   {
+    "id": "mk-brutality-35438",
+    "title": "MK - BRUTALITY",
+    "name": "MK - BRUTALITY",
+    "slug": "mk-brutality-35438",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mk-brutality-35438.mp3",
+    "category": "games",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 1.65,
+    "tags": [
+      "mk",
+      "mortal",
+      "kombat",
+      "brutality",
+      "games",
+      "arcade"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -4.81,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
     "id": "setembro-vai-entrar-o-grosso-lula-68611",
     "title": "SETEMBRO VAI ENTRAR O GROSSO ( LULA )",
     "slug": "setembro-vai-entrar-o-grosso-lula-68611",
