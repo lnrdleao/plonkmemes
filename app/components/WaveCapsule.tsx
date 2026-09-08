@@ -89,7 +89,7 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
           )}
           {sound.isCustom && (
             <span className="shrink-0 px-1 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold tracking-tight">
-              ENVIADO
+              {sound.submitted_by?.name ? `por @${sound.submitted_by.name.split(' ')[0]}` : 'ENVIADO'}
             </span>
           )}
         </div>

@@ -101,8 +101,8 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             </span>
           )}
           {sound.isCustom && (
-            <span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[8px] font-bold">
-              ENVIADO
+            <span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[8px] font-bold truncate max-w-[80px]">
+              {sound.submitted_by?.name ? `por @${sound.submitted_by.name.split(' ')[0]}` : 'ENVIADO'}
             </span>
           )}
 

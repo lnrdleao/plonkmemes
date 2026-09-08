@@ -8,6 +8,8 @@ interface UploadModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUploadSuccess: (sound: SoundItem) => void;
+  user: any;
+  onLoginGoogle: () => void;
 }
 
 const COLOR_OPTIONS = [
@@ -107,6 +109,8 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   isOpen,
   onClose,
   onUploadSuccess,
+  user,
+  onLoginGoogle,
 }) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<SoundCategory>('memes');
@@ -120,6 +124,71 @@ export const UploadModal: React.FC<UploadModalProps> = ({
   const audioPreviewRef = useRef<HTMLAudioElement | null>(null);
 
   if (!isOpen) return null;
+
+  // Gate: se o usuário não estiver logado, exibe tela de login social Google
+  if (!user) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="relative w-full max-w-md rounded-2xl bg-zinc-900 border border-zinc-800 p-6 shadow-2xl text-center">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1.5 rounded-xl text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-rose-500/20 to-amber-500/20 border border-rose-500/30 flex items-center justify-center text-rose-400">
+            <Upload className="w-7 h-7" />
+          </div>
+
+          <h3 className="text-xl font-bold text-zinc-100 mb-2">Entrar para Enviar Sons</h3>
+          <p className="text-xs text-zinc-400 mb-6 max-w-xs mx-auto leading-relaxed">
+            Conecte sua conta Google para enviar novos memes, manter o crédito de criador e proteger a soundboard contra spam.
+          </p>
+
+          <div className="space-y-2.5 mb-6 text-left bg-zinc-950/60 border border-zinc-800/80 rounded-xl p-3.5 text-xs text-zinc-300">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Seus áudios vinculados ao seu perfil oficial de criador</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+              <span>Normalização profissional de volume (-16 LUFS)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+              <span>Controle total para excluir ou editar seus sons enviados</span>
+            </div>
+          </div>
+
+          <button
+            onClick={onLoginGoogle}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-white hover:bg-zinc-100 text-zinc-950 font-bold text-sm transition-all shadow-lg hover:shadow-white/10 active:scale-[0.98] cursor-pointer"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <path
+                fill="#EA4335"
+                d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"
+              />
+              <path
+                fill="#4285F4"
+                d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"
+              />
+            </svg>
+            <span>Continuar com o Google</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -171,17 +240,29 @@ export const UploadModal: React.FC<UploadModalProps> = ({
     e.preventDefault();
     if (!title.trim() || !audioUrl) return;
 
+    const authorName =
+      user?.user_metadata?.full_name ||
+      user?.user_metadata?.name ||
+      user?.email?.split('@')[0] ||
+      'Criador da Comunidade';
+
     const newSound: SoundItem = {
       id: `custom-${Date.now()}`,
       title: title.trim(),
+      name: title.trim(),
       slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
       audioUrl: audioUrl,
       category,
       color,
       plays: 1,
       duration: audioPreviewRef.current?.duration || 2.0,
-      tags: [category, 'upload'],
+      tags: [category, 'upload', 'comunidade'],
       isCustom: true,
+      submitted_by: {
+        name: authorName,
+        email: user?.email,
+        avatar: user?.user_metadata?.avatar_url,
+      },
     };
 
     onUploadSuccess(newSound);
@@ -209,6 +290,34 @@ export const UploadModal: React.FC<UploadModalProps> = ({
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {/* Authenticated Author Banner */}
+        {user && (
+          <div className="mt-4 flex items-center justify-between p-2.5 rounded-xl bg-zinc-950/70 border border-zinc-800">
+            <div className="flex items-center gap-2.5 min-w-0">
+              {user.user_metadata?.avatar_url ? (
+                <img
+                  src={user.user_metadata.avatar_url}
+                  alt="Avatar"
+                  className="w-7 h-7 rounded-full border border-emerald-500/40 shrink-0"
+                />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center text-xs shrink-0">
+                  {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-zinc-200 truncate">
+                  Enviando como <span className="text-emerald-400">{user.user_metadata?.full_name || user.email?.split('@')[0]}</span>
+                </p>
+                <p className="text-[10px] text-zinc-500 truncate">{user.email}</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+              Autor Verificado
+            </span>
+          </div>
+        )}
 
         {audioUrl && (
           <audio

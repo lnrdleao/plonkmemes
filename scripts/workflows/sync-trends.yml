@@ -1,0 +1,54 @@
+name: Sync Trending Sounds
+
+on:
+  schedule:
+    # Runs twice daily at 09:00 UTC (06:00 BRT) and 21:00 UTC (18:00 BRT)
+    - cron: '0 9,21 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync-trends:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install FFmpeg & System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python Dependencies
+        run: |
+          pip install beautifulsoup4
+
+      - name: Crawl, Normalize and Ingest New Trending Sounds
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://bfwdlanqfokvmxhzfdie.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmd2RsYW5xZm9rdm14aHpmZGllIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODc5Mzg1NywiZXhwIjoyMTA0MzY5ODU3fQ.n6b0zpr1zb67a-nn9SHtk88aPtx0JKcvZlh9CJjdz34' }}
+        run: |
+          python scripts/crawl_trends.py --max-items 10
+
+      - name: Commit and Push New Catalog (if updated)
+        run: |
+          git config --global user.name "PlonkMemes Bot"
+          git config --global user.email "bot@plonkmemes.lol"
+          if [[ -n $(git status --porcelain app/data/) ]]; then
+            echo "✨ New trending sounds detected. Committing and pushing..."
+            git add app/data/sounds.json app/data/initial-sounds.ts public/sounds/
+            git commit -m "chore(catalog): auto-sync new trending sounds [skip ci]"
+            git push origin main
+          else
+            echo "✅ No new sounds to commit. Catalog is up to date."
+          fi

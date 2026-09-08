@@ -18,6 +18,7 @@ import {
   Music,
   MessageSquare,
   Disc,
+  LogOut,
 } from 'lucide-react';
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
@@ -25,6 +26,7 @@ import { CassetteTape } from './components/CassetteTape';
 import { WaveCapsule } from './components/WaveCapsule';
 import { PocketPlayer } from './components/PocketPlayer';
 import { UploadModal } from './components/UploadModal';
+import { supabase } from './lib/supabaseClient';
 
 export default function HomePage() {
   // State: Sounds catalog with lazy initialization from localStorage
@@ -35,6 +37,7 @@ export default function HomePage() {
   const [chaosMode, setChaosMode] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePlayingIds, setActivePlayingIds] = useState<string[]>([]);
+  const [user, setUser] = useState<any>(null);
 
   // Modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -87,7 +90,49 @@ export default function HomePage() {
     } catch {
       // ignore parse errors
     }
+
+    // Assinatura de autenticação do Supabase
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
+
+  const handleLoginGoogle = async () => {
+    try {
+      const redirectUrl =
+        typeof window !== 'undefined'
+          ? window.location.origin
+          : 'https://plonkmemes.lol';
+
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: redirectUrl,
+        },
+      });
+    } catch (err) {
+      console.error('Erro ao conectar com Google:', err);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+    } catch (err) {
+      console.error('Erro ao deslogar:', err);
+    }
+  };
 
   const toggleFavorite = (soundId: string) => {
     setFavorites((prev) => {
@@ -262,6 +307,57 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-2.5">
+            {user ? (
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
+                {user.user_metadata?.avatar_url ? (
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt="Avatar"
+                    className="w-5 h-5 rounded-full border border-emerald-500/40"
+                  />
+                ) : (
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center text-[10px]">
+                    {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
+                  </div>
+                )}
+                <span className="font-medium text-zinc-300 max-w-[110px] truncate">
+                  {user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  title="Sair da conta"
+                  className="ml-1 text-zinc-500 hover:text-rose-400 transition-colors cursor-pointer"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleLoginGoogle}
+                className="flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 hover:border-zinc-700 transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+              >
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
+                  <path
+                    fill="#EA4335"
+                    d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.5s.7 4.8 1.9 7.2l3.7-2.9z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"
+                  />
+                </svg>
+                <span>Entrar</span>
+              </button>
+            )}
+
             <button
               onClick={() => setIsUploadOpen(true)}
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/20 transition-all cursor-pointer"
@@ -585,6 +681,8 @@ export default function HomePage() {
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         onUploadSuccess={handleUploadSuccess}
+        user={user}
+        onLoginGoogle={handleLoginGoogle}
       />
     </div>
   );

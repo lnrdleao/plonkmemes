@@ -24,6 +24,11 @@ export interface SoundItem {
   tags: string[];
   isCustom?: boolean;
   isTrending?: boolean;
+  submitted_by?: {
+    name: string;
+    email?: string;
+    avatar?: string;
+  };
   loudness?: {
     standard: string;
     target_lufs: number;
