@@ -24,6 +24,7 @@ export interface SoundItem {
   tags: string[];
   isCustom?: boolean;
   isTrending?: boolean;
+  rank?: number; // 1-based ranking index in Trending / Em Alta
   submitted_by?: {
     name: string;
     email?: string;
@@ -37,5 +38,3 @@ export interface SoundItem {
     loudness_range_lra?: number;
   };
 }
-
-

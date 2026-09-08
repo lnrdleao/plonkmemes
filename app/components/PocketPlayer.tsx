@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Share2, Download, Heart, Check, Battery, Volume2, Trash2 } from 'lucide-react';
 import { SoundItem } from '../types';
+import { formatPlays } from '../lib/formatters';
 
 interface PocketPlayerProps {
   sound: SoundItem;
@@ -95,7 +96,22 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             )}
           </div>
 
-          {sound.isTrending && (
+          {sound.rank !== undefined && (
+            <span
+              className={`px-1.5 py-0.2 rounded text-[8px] font-black tracking-tight flex items-center gap-0.5 ${
+                sound.rank === 1
+                  ? 'bg-amber-400/25 text-amber-300 border border-amber-400/50'
+                  : sound.rank === 2
+                  ? 'bg-slate-300/25 text-slate-200 border border-slate-300/50'
+                  : sound.rank === 3
+                  ? 'bg-amber-700/25 text-amber-400 border border-amber-600/50'
+                  : 'bg-rose-500/15 text-rose-300 border border-rose-500/25'
+              }`}
+            >
+              {sound.rank === 1 ? '🥇 #1' : sound.rank === 2 ? '🥈 #2' : sound.rank === 3 ? '🥉 #3' : `🔥 #${sound.rank}`}
+            </span>
+          )}
+          {sound.isTrending && sound.rank === undefined && (
             <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[8px] font-bold">
               🔥 EM ALTA
             </span>
@@ -194,7 +210,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             style={{ backgroundColor: isPlaying ? '#10B981' : '#52525b' }}
           />
           <span className="font-mono text-[10px]">
-            {isPlaying ? 'EXECUTANDO' : `${sound.plays.toLocaleString('pt-BR')} plays`}
+            {isPlaying ? 'EXECUTANDO' : formatPlays(sound.plays)}
           </span>
         </div>
 

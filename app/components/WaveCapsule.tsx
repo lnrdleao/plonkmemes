@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Share2, Download, Heart, Check, Activity, Play, Square, Trash2 } from 'lucide-react';
 import { SoundItem } from '../types';
+import { formatPlays } from '../lib/formatters';
 
 interface WaveCapsuleProps {
   sound: SoundItem;
@@ -82,7 +83,22 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
           <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 truncate">
             {sound.category}
           </span>
-          {sound.isTrending && (
+          {sound.rank !== undefined && (
+            <span
+              className={`shrink-0 px-1.5 py-0.2 rounded text-[9px] font-black tracking-tight flex items-center gap-0.5 ${
+                sound.rank === 1
+                  ? 'bg-amber-400/25 text-amber-300 border border-amber-400/50 shadow-sm shadow-amber-500/20'
+                  : sound.rank === 2
+                  ? 'bg-slate-300/25 text-slate-200 border border-slate-300/50'
+                  : sound.rank === 3
+                  ? 'bg-amber-700/25 text-amber-400 border border-amber-600/50'
+                  : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25'
+              }`}
+            >
+              {sound.rank === 1 ? '🥇 #1' : sound.rank === 2 ? '🥈 #2' : sound.rank === 3 ? '🥉 #3' : `🔥 #${sound.rank}`}
+            </span>
+          )}
+          {sound.isTrending && sound.rank === undefined && (
             <span className="shrink-0 px-1 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold tracking-tight">
               🔥 EM ALTA
             </span>
@@ -146,7 +162,7 @@ export const WaveCapsule: React.FC<WaveCapsuleProps> = ({
         <div className="flex items-center gap-1">
           <Activity className={`w-3 h-3 ${isPlaying ? 'text-emerald-400 animate-spin' : ''}`} />
           <span className="font-mono text-[10px]">
-            {isPlaying ? 'EXECUTANDO' : `${sound.plays.toLocaleString('pt-BR')} plays`}
+            {isPlaying ? 'EXECUTANDO' : formatPlays(sound.plays)}
           </span>
         </div>
 

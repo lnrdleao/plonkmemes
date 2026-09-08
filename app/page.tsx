@@ -19,6 +19,7 @@ import {
   MessageSquare,
   Disc,
   LogOut,
+  TrendingUp,
 } from 'lucide-react';
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
@@ -27,6 +28,7 @@ import { WaveCapsule } from './components/WaveCapsule';
 import { PocketPlayer } from './components/PocketPlayer';
 import { UploadModal } from './components/UploadModal';
 import { supabase } from './lib/supabaseClient';
+import { formatPlays } from './lib/formatters';
 
 export default function HomePage() {
   // State: Sounds catalog with lazy initialization from localStorage
@@ -38,6 +40,8 @@ export default function HomePage() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [activePlayingIds, setActivePlayingIds] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
+  const [totalPlatformPlays, setTotalPlatformPlays] = useState<number>(0);
+  const lastPlaySentRef = useRef<Record<string, number>>({});
 
   // Modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -90,6 +94,24 @@ export default function HomePage() {
     } catch {
       // ignore parse errors
     }
+
+    // Carrega estatísticas globais de plays persistidas no Supabase
+    fetch('/api/v1/sounds/stats')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.stats) {
+          if (typeof data.totalPlays === 'number') {
+            setTotalPlatformPlays(data.totalPlays);
+          }
+          setSounds((prev) =>
+            prev.map((s) => ({
+              ...s,
+              plays: data.stats[s.id] !== undefined ? data.stats[s.id] : s.plays,
+            }))
+          );
+        }
+      })
+      .catch((err) => console.warn('Não foi possível carregar estatísticas:', err));
 
     // Assinatura de autenticação do Supabase
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -171,9 +193,24 @@ export default function HomePage() {
     activeAudiosRef.current.set(sound.id, audio);
     setActivePlayingIds((prev) => [...prev, sound.id]);
 
+    // Atualização otimista imediata na UI (0ms de latência)
     setSounds((prev) =>
       prev.map((s) => (s.id === sound.id ? { ...s, plays: s.plays + 1 } : s))
     );
+    setTotalPlatformPlays((prev) => prev + 1);
+
+    // Persistência assíncrona no Supabase com proteção anti-flood (máx 1 envio a cada 3s por som)
+    const now = Date.now();
+    const lastSent = lastPlaySentRef.current[sound.id] || 0;
+    if (now - lastSent > 3000) {
+      lastPlaySentRef.current[sound.id] = now;
+      try {
+        fetch(`/api/v1/sounds/${sound.id}/play`, {
+          method: 'POST',
+          keepalive: true,
+        }).catch(() => {});
+      } catch {}
+    }
 
     audio.play().catch((err) => {
       console.error('Falha ao reproduzir áudio:', err);
@@ -238,7 +275,7 @@ export default function HomePage() {
       bordoes: 0,
     };
     sounds.forEach((s) => {
-      if (s.isTrending) c['em-alta']++;
+      if (s.isTrending || s.plays > 0) c['em-alta']++;
       if (c[s.category] !== undefined) {
         c[s.category]++;
       }
@@ -247,11 +284,11 @@ export default function HomePage() {
   }, [sounds]);
 
   const filteredSounds = useMemo(() => {
-    return sounds.filter((item) => {
+    let result = sounds.filter((item) => {
       if (selectedCategory === 'favoritos') {
         if (!favorites.includes(item.id)) return false;
       } else if (selectedCategory === 'em-alta') {
-        if (!item.isTrending) return false;
+        if (!item.isTrending && (!item.plays || item.plays <= 0)) return false;
       } else if (selectedCategory !== 'todos' && item.category !== selectedCategory) {
         return false;
       }
@@ -265,6 +302,22 @@ export default function HomePage() {
 
       return true;
     });
+
+    // Se estiver na aba 'em-alta', ordena dinamicamente por reproduções (maior para menor)
+    if (selectedCategory === 'em-alta') {
+      result = [...result].sort((a, b) => {
+        if (b.plays !== a.plays) return b.plays - a.plays;
+        return (b.isTrending ? 1 : 0) - (a.isTrending ? 1 : 0);
+      });
+
+      // Atribui o ranking 1, 2, 3...
+      result = result.map((item, idx) => ({
+        ...item,
+        rank: idx + 1,
+      }));
+    }
+
+    return result;
   }, [sounds, selectedCategory, favorites, searchQuery]);
 
   // Reset pagination when searching or changing category
@@ -589,6 +642,35 @@ export default function HomePage() {
             </button>
           </div>
         </section>
+
+        {/* Trending Live Banner */}
+        {selectedCategory === 'em-alta' && (
+          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900/60 border border-amber-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg shadow-amber-500/5">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                <Flame className="w-5 h-5 fill-amber-400" />
+              </div>
+              <div>
+                <h2 className="text-sm font-black tracking-tight text-amber-200 flex items-center gap-2">
+                  EM ALTA • TOP MEMES & TENDÊNCIAS
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
+                    AO VIVO
+                  </span>
+                </h2>
+                <p className="text-xs text-zinc-400">
+                  Ranking dinâmico calculado com base no volume global de reproduções da comunidade.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0 bg-zinc-950/70 px-3.5 py-2 rounded-xl border border-zinc-800">
+              <TrendingUp className="w-4 h-4 text-amber-400" />
+              <span>Plays na plataforma:</span>
+              <strong className="text-amber-300 font-mono font-bold">
+                {formatPlays(totalPlatformPlays)}
+              </strong>
+            </div>
+          </div>
+        )}
 
         {/* Grid */}
         {filteredSounds.length === 0 ? (
