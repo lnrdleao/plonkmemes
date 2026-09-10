@@ -2,6 +2,367 @@ import { SoundItem } from "../types";
 
 export const INITIAL_SOUNDS: SoundItem[] = [
   {
+    "id": "augix-76831",
+    "title": "AUGIX",
+    "name": "AUGIX",
+    "slug": "augix-76831",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/augix-76831.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 21.66,
+    "tags": [
+      "augix"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -14.98,
+      "true_peak_dbtp": -1.97,
+      "loudness_range_lra": 1.3
+    }
+  },
+  {
+    "id": "brinfart-26381",
+    "title": "brinfart",
+    "name": "brinfart",
+    "slug": "brinfart-26381",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/brinfart-26381.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 1.75,
+    "tags": [
+      "brinfart"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -5.75,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "shonen-bat-tadaima-99249",
+    "title": "shonen bat- Tadaima",
+    "name": "shonen bat- Tadaima",
+    "slug": "shonen-bat-tadaima-99249",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/shonen-bat-tadaima-99249.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 2.56,
+    "tags": [
+      "shonen",
+      "bat",
+      "tadaima"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -17.68,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "italypizza-sound-button-29315",
+    "title": "italypizza sound button",
+    "name": "italypizza sound button",
+    "slug": "italypizza-sound-button-29315",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/italypizza-sound-button-29315.mp3",
+    "category": "memes",
+    "color": "#8B5CF6",
+    "plays": 0,
+    "duration": 14.47,
+    "tags": [
+      "italypizza",
+      "sound",
+      "button"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.47,
+      "true_peak_dbtp": -2.85,
+      "loudness_range_lra": 0.6
+    }
+  },
+  {
+    "id": "we-like-to-party-cool-46920",
+    "title": "we like to party cool",
+    "name": "we like to party cool",
+    "slug": "we-like-to-party-cool-46920",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/we-like-to-party-cool-46920.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 13.19,
+    "tags": [
+      "like",
+      "party",
+      "cool"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.41,
+      "true_peak_dbtp": -8.31,
+      "loudness_range_lra": 1.1
+    }
+  },
+  {
+    "id": "nsl-melody-marina-south-pier-bound-71461",
+    "title": "NSL Melody (Marina South Pier Bound)",
+    "name": "NSL Melody (Marina South Pier Bound)",
+    "slug": "nsl-melody-marina-south-pier-bound-71461",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/nsl-melody-marina-south-pier-bound-71461.mp3",
+    "category": "memes",
+    "color": "#64748B",
+    "plays": 0,
+    "duration": 12.9,
+    "tags": [
+      "nsl",
+      "melody",
+      "(marina",
+      "south",
+      "pier",
+      "bound)"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.31,
+      "true_peak_dbtp": -3.02,
+      "loudness_range_lra": 0.7
+    }
+  },
+  {
+    "id": "ostiganisse-47044",
+    "title": "ostiganisse",
+    "name": "ostiganisse",
+    "slug": "ostiganisse-47044",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ostiganisse-47044.mp3",
+    "category": "memes",
+    "color": "#D946EF",
+    "plays": 0,
+    "duration": 1.04,
+    "tags": [
+      "ostiganisse"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -1.54,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "makoto-kozuka-seisenshinanda-71171",
+    "title": "Makoto kozuka- seisenshinanda",
+    "name": "Makoto kozuka- seisenshinanda",
+    "slug": "makoto-kozuka-seisenshinanda-71171",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/makoto-kozuka-seisenshinanda-71171.mp3",
+    "category": "memes",
+    "color": "#F97316",
+    "plays": 0,
+    "duration": 5.07,
+    "tags": [
+      "makoto",
+      "kozuka",
+      "seisenshinanda"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.41,
+      "true_peak_dbtp": -6.02,
+      "loudness_range_lra": 1.5
+    }
+  },
+  {
+    "id": "nsl-melody-jurong-east-bound-65339",
+    "title": "NSL Melody (Jurong East Bound)",
+    "name": "NSL Melody (Jurong East Bound)",
+    "slug": "nsl-melody-jurong-east-bound-65339",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/nsl-melody-jurong-east-bound-65339.mp3",
+    "category": "memes",
+    "color": "#84CC16",
+    "plays": 0,
+    "duration": 13.82,
+    "tags": [
+      "nsl",
+      "melody",
+      "(jurong",
+      "east",
+      "bound)"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.55,
+      "true_peak_dbtp": -3.19,
+      "loudness_range_lra": 2.8
+    }
+  },
+  {
+    "id": "agatonhej-34256",
+    "title": "agatonhej",
+    "name": "agatonhej",
+    "slug": "agatonhej-34256",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/agatonhej-34256.mp3",
+    "category": "memes",
+    "color": "#06B6D4",
+    "plays": 0,
+    "duration": 0.91,
+    "tags": [
+      "agatonhej"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.62,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "ewl-melody-tanah-merah-bound-15330",
+    "title": "EWL Melody (Tanah Merah Bound)",
+    "name": "EWL Melody (Tanah Merah Bound)",
+    "slug": "ewl-melody-tanah-merah-bound-15330",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ewl-melody-tanah-merah-bound-15330.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 18.91,
+    "tags": [
+      "ewl",
+      "melody",
+      "(tanah",
+      "merah",
+      "bound)"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.29,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 2.3
+    }
+  },
+  {
+    "id": "happy-low-quality-40702",
+    "title": "Happy low quality",
+    "name": "Happy low quality",
+    "slug": "happy-low-quality-40702",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/happy-low-quality-40702.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 11.26,
+    "tags": [
+      "happy",
+      "low",
+      "quality"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.91,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 2.0
+    }
+  },
+  {
+    "id": "lula-agradece-30911",
+    "title": "Lula agradece",
+    "name": "Lula agradece",
+    "slug": "lula-agradece-30911",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/lula-agradece-30911.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 7.94,
+    "tags": [
+      "lula",
+      "agradece"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.33,
+      "true_peak_dbtp": -2.84,
+      "loudness_range_lra": 0.7
+    }
+  },
+  {
+    "id": "angry-birds-low-quality-71761",
+    "title": "Angry birds low quality",
+    "name": "Angry birds low quality",
+    "slug": "angry-birds-low-quality-71761",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/angry-birds-low-quality-71761.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 6.48,
+    "tags": [
+      "angry",
+      "birds",
+      "low",
+      "quality"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -14.74,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 2.2
+    }
+  },
+  {
+    "id": "ewl-melody-changi-airport-bound-52555",
+    "title": "EWL Melody (Changi Airport Bound)",
+    "name": "EWL Melody (Changi Airport Bound)",
+    "slug": "ewl-melody-changi-airport-bound-52555",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ewl-melody-changi-airport-bound-52555.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 16.64,
+    "tags": [
+      "ewl",
+      "melody",
+      "(changi",
+      "airport",
+      "bound)"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.88,
+      "true_peak_dbtp": -2.99,
+      "loudness_range_lra": 4.1
+    }
+  },
+  {
     "id": "mk-brutality-35438",
     "title": "MK - BRUTALITY",
     "name": "MK - BRUTALITY",

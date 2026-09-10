@@ -31,14 +31,14 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
-          pip install beautifulsoup4
+          pip install beautifulsoup4 curl_cffi requests
 
       - name: Crawl, Normalize and Ingest New Trending Sounds
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://bfwdlanqfokvmxhzfdie.supabase.co' }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmd2RsYW5xZm9rdm14aHpmZGllIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4ODc5Mzg1NywiZXhwIjoyMTA0MzY5ODU3fQ.n6b0zpr1zb67a-nn9SHtk88aPtx0JKcvZlh9CJjdz34' }}
         run: |
-          python scripts/crawl_trends.py --max-items 10
+          python scripts/crawl_trends.py --max-items 15
 
       - name: Commit and Push New Catalog (if updated)
         run: |
@@ -46,8 +46,8 @@ jobs:
           git config --global user.email "bot@plonkmemes.lol"
           if [[ -n $(git status --porcelain app/data/) ]]; then
             echo "✨ New trending sounds detected. Committing and pushing..."
-            git add app/data/sounds.json app/data/initial-sounds.ts public/sounds/
-            git commit -m "chore(catalog): auto-sync new trending sounds [skip ci]"
+            git add app/data/sounds.json app/data/initial-sounds.ts
+            git commit -m "chore(catalog): auto-sync new trending sounds from MyInstants [skip ci]"
             git push origin main
           else
             echo "✅ No new sounds to commit. Catalog is up to date."

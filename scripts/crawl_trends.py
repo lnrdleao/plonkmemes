@@ -17,6 +17,11 @@ import urllib.request
 import urllib.error
 from bs4 import BeautifulSoup
 
+try:
+    from curl_cffi import requests as cffi_requests
+except ImportError:
+    cffi_requests = None
+
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_JSON = os.path.join(BASE_DIR, "app", "data", "sounds.json")
@@ -30,12 +35,15 @@ SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "eyJhbGciOiJIUzI1NiIsI
 BUCKET = "sounds"
 
 SOURCES = [
+    ("https://www.myinstants.com/pt/recent/", "memes"),
+    ("https://www.myinstants.com/pt/recent/?page=2", "memes"),
+    ("https://www.myinstants.com/pt/trends/", "memes"),
     ("https://www.myinstants.com/pt/index/br/", "memes"),
     ("https://www.myinstants.com/pt/index/br/?page=2", "memes"),
     ("https://www.myinstants.com/pt/index/br/?page=3", "memes"),
-    ("https://www.myinstants.com/pt/recent/", "memes"),
     ("https://www.myinstants.com/pt/categories/memes/", "memes"),
     ("https://www.myinstants.com/pt/categories/games/", "games"),
+    ("https://www.myinstants.com/pt/categories/tv-movie-themes/", "tv-filmes"),
 ]
 
 COLOR_PALETTE = [
@@ -51,6 +59,13 @@ HTTP_HEADERS = {
 }
 
 def fetch_html(url):
+    if cffi_requests:
+        try:
+            r = cffi_requests.get(url, impersonate="chrome120", timeout=15)
+            if r.status_code == 200:
+                return r.text
+        except Exception as e:
+            print(f"⚠️ Erro curl_cffi ao acessar {url}: {e}")
     req = urllib.request.Request(url, headers=HTTP_HEADERS)
     try:
         with urllib.request.urlopen(req, timeout=15) as resp:
@@ -58,6 +73,22 @@ def fetch_html(url):
     except Exception as e:
         print(f"⚠️ Erro ao acessar {url}: {e}")
         return ""
+
+def download_audio_bytes(url):
+    if cffi_requests:
+        try:
+            r = cffi_requests.get(url, impersonate="chrome120", timeout=15)
+            if r.status_code == 200 and len(r.content) >= 800:
+                return r.content
+        except Exception as e:
+            print(f"  ⚠️ Falha curl_cffi no download: {e}")
+    req = urllib.request.Request(url, headers=HTTP_HEADERS)
+    try:
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            return resp.read()
+    except Exception as e:
+        print(f"  ⚠️ Falha urllib no download: {e}")
+        return None
 
 def parse_instants(html, default_cat):
     soup = BeautifulSoup(html, "html.parser")
@@ -70,7 +101,7 @@ def parse_instants(html, default_cat):
             continue
             
         onclick = btn.get("onclick", "")
-        m = re.search(r"play\(['\"](/media/sounds/[^'\"]+)['\"],\s*['\"][^'\"]*['\"],\s*['\"]([^'\"]+)['\"]\)", onclick)
+        m = re.search(r"play\((?:\"|\x27)(/media/sounds/[^\"\x27]+)(?:\"|\x27),\s*(?:\"|\x27)[^\"\x27]*(?:\"|\x27),\s*(?:\"|\x27)([^\"\x27]+)(?:\"|\x27)\)", onclick)
         if not m:
             continue
             
@@ -172,7 +203,7 @@ def categorize_sound(title, slug):
 def main():
     parser = argparse.ArgumentParser(description="PlonkMemes automated trend crawler")
     parser.add_argument("--dry-run", action="store_true", help="Run without downloading or modifying catalog")
-    parser.add_argument("--max-items", type=int, default=10, help="Maximum new items to ingest per run")
+    parser.add_argument("--max-items", type=int, default=15, help="Maximum new items to ingest per run")
     args = parser.parse_args()
 
     os.makedirs(TEMP_DIR, exist_ok=True)
@@ -223,21 +254,15 @@ def main():
         raw_url = item["raw_audio_url"]
         temp_raw = os.path.join(TEMP_DIR, f"raw_{sid}.mp3")
         temp_norm = os.path.join(TEMP_DIR, f"norm_{sid}.mp3")
-        final_public = os.path.join(PUBLIC_SOUNDS_DIR, f"{sid}.mp3")
 
         print(f"\n[{idx}/{len(to_process)}] Baixando: {title} ({sid})...")
-        try:
-            req = urllib.request.Request(raw_url, headers=HTTP_HEADERS)
-            with urllib.request.urlopen(req, timeout=12) as resp:
-                content = resp.read()
-                if len(content) < 800:
-                    print("  ⚠️ Arquivo muito pequeno ou vazio, pulando.")
-                    continue
-                with open(temp_raw, "wb") as f:
-                    f.write(content)
-        except Exception as e:
-            print(f"  ⚠️ Falha no download: {e}")
+        content = download_audio_bytes(raw_url)
+        if not content or len(content) < 800:
+            print("  ⚠️ Arquivo corrompido ou vazio, pulando.")
             continue
+            
+        with open(temp_raw, "wb") as f:
+            f.write(content)
 
         try:
             duration, loudness_metrics = normalize_and_measure(temp_raw, temp_norm)
@@ -247,12 +272,6 @@ def main():
         except Exception as e:
             print(f"  ⚠️ Falha ao normalizar áudio: {e}")
             continue
-
-        try:
-            with open(temp_norm, "rb") as sf, open(final_public, "wb") as df:
-                df.write(sf.read())
-        except Exception as e:
-            print(f"  ⚠️ Falha ao copiar para public/sounds: {e}")
 
         cdn_filename = f"{sid}.mp3"
         print(f"  ☁️ Fazendo upload para Supabase Storage ({cdn_filename})...")
