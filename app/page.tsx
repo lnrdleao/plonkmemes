@@ -24,6 +24,7 @@ import {
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
 import { CassetteTape } from './components/CassetteTape';
+import { CassettePlayer } from './components/CassettePlayer';
 import { WaveCapsule } from './components/WaveCapsule';
 import { PocketPlayer } from './components/PocketPlayer';
 import { UploadModal } from './components/UploadModal';
@@ -41,6 +42,7 @@ export default function HomePage() {
   const [activePlayingIds, setActivePlayingIds] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
   const [totalPlatformPlays, setTotalPlatformPlays] = useState<number>(0);
+  const [deckSound, setDeckSound] = useState<SoundItem | null>(null);
   const lastPlaySentRef = useRef<Record<string, number>>({});
 
   // Modal state
@@ -168,13 +170,23 @@ export default function HomePage() {
     });
   };
 
+  // Carrega automaticamente o primeiro som viral ou topo no Deck K7
+  useEffect(() => {
+    if (!deckSound && sounds.length > 0) {
+      const initial = sounds.find((s) => s.isTrending) || sounds[0];
+      setDeckSound(initial);
+    }
+  }, [sounds, deckSound]);
+
   const playSound = (sound: SoundItem) => {
     // 1. Se o som já estiver tocando, interrompe imediatamente
-    const existing = activeAudiosRef.current.get(sound.id);
-    if (existing) {
-      existing.pause();
-      existing.currentTime = 0;
-      activeAudiosRef.current.delete(sound.id);
+    if (activePlayingIds.includes(sound.id)) {
+      const existing = activeAudiosRef.current.get(sound.id);
+      if (existing) {
+        existing.pause();
+        existing.currentTime = 0;
+        activeAudiosRef.current.delete(sound.id);
+      }
       setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
       return;
     }
@@ -186,12 +198,22 @@ export default function HomePage() {
         audio.currentTime = 0;
       });
       activeAudiosRef.current.clear();
-      setActivePlayingIds([]);
+      setActivePlayingIds([sound.id]);
+    } else {
+      setActivePlayingIds((prev) => [...prev, sound.id]);
+      if (deckSound && activePlayingIds.includes(deckSound.id) && deckSound.id !== sound.id) {
+        const bgAudio = new Audio(deckSound.audioUrl);
+        activeAudiosRef.current.set(deckSound.id, bgAudio);
+        bgAudio.play().catch(() => {});
+        bgAudio.onended = () => {
+          activeAudiosRef.current.delete(deckSound.id);
+          setActivePlayingIds((prev) => prev.filter((id) => id !== deckSound.id));
+        };
+      }
     }
 
-    const audio = new Audio(sound.audioUrl);
-    activeAudiosRef.current.set(sound.id, audio);
-    setActivePlayingIds((prev) => [...prev, sound.id]);
+    // Define este som como o som ativo no Deck K7
+    setDeckSound(sound);
 
     // Atualização otimista imediata na UI (0ms de latência)
     setSounds((prev) =>
@@ -211,17 +233,17 @@ export default function HomePage() {
         }).catch(() => {});
       } catch {}
     }
+  };
 
-    audio.play().catch((err) => {
-      console.error('Falha ao reproduzir áudio:', err);
-      activeAudiosRef.current.delete(sound.id);
-      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
-    });
-
-    audio.onended = () => {
-      activeAudiosRef.current.delete(sound.id);
-      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
-    };
+  const handleShuffleTape = () => {
+    const pool = filteredSounds.length > 0 ? filteredSounds : sounds;
+    if (pool.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const randomSound = pool[randomIndex];
+    setDeckSound(randomSound);
+    if (!activePlayingIds.includes(randomSound.id)) {
+      playSound(randomSound);
+    }
   };
 
   const stopAllSounds = () => {
@@ -642,6 +664,17 @@ export default function HomePage() {
             </button>
           </div>
         </section>
+
+        {/* Master Retro Cassette Deck (dqnamo style) */}
+        {deckSound && (
+          <CassettePlayer
+            sound={deckSound}
+            isPlaying={activePlayingIds.includes(deckSound.id)}
+            onTogglePlay={playSound}
+            onShuffle={handleShuffleTape}
+            onStopAll={stopAllSounds}
+          />
+        )}
 
         {/* Trending Live Banner */}
         {selectedCategory === 'em-alta' && (
