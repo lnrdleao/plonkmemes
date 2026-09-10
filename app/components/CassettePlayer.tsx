@@ -17,6 +17,7 @@ import {
   ChevronUp,
   Flame,
   Radio,
+  Square,
 } from 'lucide-react';
 import { SoundItem } from '../types';
 import { formatPlays } from '../lib/formatters';
@@ -91,9 +92,35 @@ function Reel({ className = '' }: { className?: string }) {
   );
 }
 
+function MiniReel({ isSpinning = false }: { isSpinning?: boolean }) {
+  return (
+    <div className="relative w-5 h-5 shrink-0 flex items-center justify-center pointer-events-none">
+      <svg
+        aria-hidden="true"
+        className={`w-full h-full origin-center ${isSpinning ? 'animate-spin' : ''}`}
+        style={{ animationDuration: '0.8s' }}
+        viewBox="0 0 100 100"
+      >
+        <circle className="fill-[#181817] stroke-[#0d0c0b] [stroke-width:2]" cx="50" cy="50" r="48" />
+        {REEL_SPOKES.map((rot) => (
+          <path
+            key={rot}
+            className="fill-[#2a2926] stroke-[#0a0a09] [stroke-width:1.5]"
+            d="M46 4h8v9a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"
+            transform={`rotate(${rot} 50 50)`}
+          />
+        ))}
+        <circle className="fill-none stroke-[#121110] [stroke-width:3]" cx="50" cy="50" r="48" />
+        <circle className="fill-[#0c0b0a] stroke-[#3a3936] [stroke-width:1.5]" cx="50" cy="50" r="14" />
+      </svg>
+    </div>
+  );
+}
+
 interface CassettePlayerProps {
   sound: SoundItem | null;
   isPlaying: boolean;
+  activeAudio?: HTMLAudioElement | null;
   onTogglePlay: (sound: SoundItem) => void;
   onShuffle?: () => void;
   isShuffleLoading?: boolean;
@@ -104,27 +131,43 @@ interface CassettePlayerProps {
 export const CassettePlayer: React.FC<CassettePlayerProps> = ({
   sound,
   isPlaying,
+  activeAudio,
   onTogglePlay,
   onShuffle,
   isShuffleLoading = false,
   isMinimizedDefault = false,
 }) => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const cassetteRef = useRef<HTMLDivElement | null>(null);
   const scrubberTrackRef = useRef<HTMLDivElement | null>(null);
 
   const durationRef = useRef(0);
   const rewindAnimationRef = useRef<number | null>(null);
-  const resumeAfterRewindRef = useRef(false);
-  const resumeAfterScrubRef = useRef(false);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [previousVolume, setPreviousVolume] = useState(1);
-  const [isMinimized, setIsMinimized] = useState(isMinimizedDefault);
-  const [playbackError, setPlaybackError] = useState<string | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(isMinimizedDefault);
   const [isScrubbing, setIsScrubbing] = useState(false);
+
+  // Read saved collapse preference from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('memesounds_k7_collapsed');
+      if (saved !== null) {
+        setIsCollapsed(saved === 'true');
+      }
+    } catch {}
+  }, []);
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('memesounds_k7_collapsed', String(next));
+      } catch {}
+      return next;
+    });
+  };
 
   // Update physical visual cues of tape reels
   const updatePlaybackVisuals = useCallback((time: number) => {
@@ -140,72 +183,73 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
     cassette.style.setProperty('--right-tape-scale', `${0.6 + progress * 0.4}`);
   }, [sound?.duration]);
 
-  // Handle media duration update
-  const updateMediaDuration = useCallback(
-    (audio: HTMLAudioElement) => {
-      const nextDuration =
-        Number.isFinite(audio.duration) && audio.duration > 0
-          ? audio.duration
-          : sound?.duration || 0;
-      durationRef.current = nextDuration;
-      setDuration(nextDuration);
-      updatePlaybackVisuals(audio.currentTime);
-    },
-    [sound?.duration, updatePlaybackVisuals]
-  );
-
-  // Synchronize audio element playback with parent isPlaying state
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !sound) return;
-
-    if (isPlaying) {
-      audio.play().catch((err) => {
-        console.warn('CassettePlayer autoplay prevented:', err);
-      });
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying, sound]);
-
-  // When sound item changes, reset audio element
+  // When sound item changes, reset visual time
   useEffect(() => {
     if (rewindAnimationRef.current !== null) {
       window.cancelAnimationFrame(rewindAnimationRef.current);
       rewindAnimationRef.current = null;
     }
 
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      audio.load();
+    const soundDur = sound?.duration || 0;
+    durationRef.current = soundDur;
+    setCurrentTime(0);
+    setDuration(soundDur);
+    updatePlaybackVisuals(0);
+  }, [sound?.id, sound?.duration, updatePlaybackVisuals]);
+
+  // Synchronize with activeAudio if present
+  useEffect(() => {
+    if (!activeAudio) {
+      if (!isPlaying) {
+        updatePlaybackVisuals(0);
+      }
+      return;
     }
 
-    durationRef.current = sound?.duration || 0;
-    setCurrentTime(0);
-    setDuration(sound?.duration || 0);
-    setPlaybackError(null);
-    updatePlaybackVisuals(0);
-  }, [sound?.id, updatePlaybackVisuals]);
+    const onTimeUpdate = () => {
+      if (!isScrubbing) {
+        setCurrentTime(activeAudio.currentTime);
+        updatePlaybackVisuals(activeAudio.currentTime);
+      }
+    };
 
-  // RequestAnimationFrame loop for high-precision real-time reel rotation
+    const onLoadedMetadata = () => {
+      if (activeAudio.duration && Number.isFinite(activeAudio.duration)) {
+        durationRef.current = activeAudio.duration;
+        setDuration(activeAudio.duration);
+      }
+    };
+
+    if (activeAudio.duration && Number.isFinite(activeAudio.duration)) {
+      durationRef.current = activeAudio.duration;
+      setDuration(activeAudio.duration);
+    }
+
+    activeAudio.addEventListener('timeupdate', onTimeUpdate);
+    activeAudio.addEventListener('loadedmetadata', onLoadedMetadata);
+
+    return () => {
+      activeAudio.removeEventListener('timeupdate', onTimeUpdate);
+      activeAudio.removeEventListener('loadedmetadata', onLoadedMetadata);
+    };
+  }, [activeAudio, isPlaying, isScrubbing, updatePlaybackVisuals]);
+
+  // High precision animation frame when playing
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || !activeAudio) return;
 
     let frameId = 0;
     function loop() {
-      const audio = audioRef.current;
-      if (audio && !audio.paused) {
-        setCurrentTime(audio.currentTime);
-        updatePlaybackVisuals(audio.currentTime);
+      if (activeAudio && !activeAudio.paused) {
+        setCurrentTime(activeAudio.currentTime);
+        updatePlaybackVisuals(activeAudio.currentTime);
         frameId = window.requestAnimationFrame(loop);
       }
     }
 
     frameId = window.requestAnimationFrame(loop);
     return () => window.cancelAnimationFrame(frameId);
-  }, [isPlaying, updatePlaybackVisuals]);
+  }, [isPlaying, activeAudio, updatePlaybackVisuals]);
 
   // Cleanup rewind animation on unmount
   useEffect(() => {
@@ -216,86 +260,30 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
     };
   }, []);
 
-  const cancelRewind = () => {
-    if (rewindAnimationRef.current === null) return;
-    window.cancelAnimationFrame(rewindAnimationRef.current);
-    rewindAnimationRef.current = null;
-    resumeAfterRewindRef.current = false;
-  };
-
   const restart = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (rewindAnimationRef.current !== null) {
-      window.cancelAnimationFrame(rewindAnimationRef.current);
-    }
-
-    resumeAfterRewindRef.current = isPlaying || !audio.paused;
-    if (!audio.paused) {
-      audio.pause();
-    }
-
-    const rewindFrom = currentTime;
-    const shouldReduceMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const finishRewind = () => {
-      rewindAnimationRef.current = null;
-      audio.currentTime = 0;
+    if (activeAudio) {
+      activeAudio.currentTime = 0;
       setCurrentTime(0);
       updatePlaybackVisuals(0);
-
-      const shouldResume = resumeAfterRewindRef.current;
-      resumeAfterRewindRef.current = false;
-
-      if (shouldResume && sound) {
-        onTogglePlay(sound);
+      if (activeAudio.paused) {
+        activeAudio.play().catch(() => {});
       }
-    };
-
-    if (rewindFrom <= 0 || shouldReduceMotion) {
-      finishRewind();
       return;
     }
 
-    const mediaDuration = duration > 0 ? duration : 1;
-    const rewindDistance = Math.min(Math.max(rewindFrom / mediaDuration, 0), 1);
-    const rewindDuration =
-      MIN_REWIND_DURATION +
-      (MAX_REWIND_DURATION - MIN_REWIND_DURATION) * rewindDistance;
-    const startedAt = performance.now();
-
-    const animateRewind = (now: number) => {
-      const linearProgress = Math.min((now - startedAt) / rewindDuration, 1);
-      const easedProgress = easeInOutCubic(linearProgress);
-      const nextTime = rewindFrom * (1 - easedProgress);
-
-      updatePlaybackVisuals(nextTime);
-      setCurrentTime(nextTime);
-
-      if (linearProgress < 1) {
-        rewindAnimationRef.current = window.requestAnimationFrame(animateRewind);
-        return;
-      }
-
-      finishRewind();
-    };
-
-    rewindAnimationRef.current = window.requestAnimationFrame(animateRewind);
+    if (sound) {
+      onTogglePlay(sound);
+    }
   };
 
   const handleSeek = (clientProgress: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    cancelRewind();
-    const mediaDuration = durationRef.current || (sound?.duration ?? 0);
+    const mediaDuration = durationRef.current || (sound?.duration ?? 0) || 1;
     const clampedProgress = Math.min(Math.max(clientProgress, 0), 1);
     const nextTime = clampedProgress * mediaDuration;
 
-    audio.currentTime = nextTime;
+    if (activeAudio) {
+      activeAudio.currentTime = nextTime;
+    }
     setCurrentTime(nextTime);
     updatePlaybackVisuals(nextTime);
   };
@@ -305,10 +293,9 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
     if (!track) return;
 
     setIsScrubbing(true);
-    const audio = audioRef.current;
-    resumeAfterScrubRef.current = !!audio && !audio.paused;
-    if (audio && !audio.paused) {
-      audio.pause();
+    const wasPlaying = activeAudio && !activeAudio.paused;
+    if (activeAudio && !activeAudio.paused) {
+      activeAudio.pause();
     }
 
     const rect = track.getBoundingClientRect();
@@ -325,10 +312,8 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
 
-      const shouldResume = resumeAfterScrubRef.current;
-      resumeAfterScrubRef.current = false;
-      if (shouldResume && sound) {
-        audio?.play().catch(() => {});
+      if (wasPlaying && activeAudio) {
+        activeAudio.play().catch(() => {});
       }
     };
 
@@ -337,17 +322,11 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
   };
 
   const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (volume === 0) {
-      const next = previousVolume || 1;
-      audio.volume = next;
-      setVolume(next);
+    if (activeAudio) {
+      activeAudio.muted = !activeAudio.muted;
+      setIsMuted(activeAudio.muted);
     } else {
-      setPreviousVolume(volume);
-      audio.volume = 0;
-      setVolume(0);
+      setIsMuted(!isMuted);
     }
   };
 
@@ -369,33 +348,10 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
   return (
     <section
       aria-label={`Deck Retrô K7 - ${sound.title}`}
-      className="relative mb-6 w-full rounded-2xl bg-gradient-to-b from-zinc-900/95 via-zinc-900/80 to-zinc-950 border border-zinc-800/90 shadow-2xl p-3 sm:p-5 overflow-hidden transition-all"
+      className="relative mb-6 w-full rounded-2xl bg-gradient-to-b from-zinc-900/95 via-zinc-900/80 to-zinc-950 border border-zinc-800/90 shadow-2xl p-3 sm:p-4 overflow-hidden transition-all"
     >
-      {/* Audio element managed by the physical deck */}
-      <audio
-        ref={audioRef}
-        src={sound.audioUrl}
-        preload="auto"
-        onLoadedMetadata={(e) => updateMediaDuration(e.currentTarget)}
-        onDurationChange={(e) => updateMediaDuration(e.currentTarget)}
-        onTimeUpdate={(e) => {
-          if (!isScrubbing) {
-            setCurrentTime(e.currentTarget.currentTime);
-            updatePlaybackVisuals(e.currentTarget.currentTime);
-          }
-        }}
-        onEnded={() => {
-          if (sound && isPlaying) {
-            onTogglePlay(sound);
-          }
-        }}
-        onError={() => {
-          setPlaybackError('Falha ao carregar a trilha da fita.');
-        }}
-      />
-
       {/* Hi-Fi Brushed Aluminum Header Strip */}
-      <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-zinc-800/80">
+      <div className="flex items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-zinc-800/80">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-950 border border-zinc-800 font-mono text-[10px] text-zinc-400 uppercase tracking-wider">
             <Radio className={`w-3 h-3 ${isPlaying ? 'text-emerald-400 animate-pulse' : 'text-zinc-500'}`} />
@@ -414,43 +370,117 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
           </div>
         </div>
 
-        {/* Deck Quick Actions */}
-        <div className="flex items-center gap-1.5">
+        {/* Deck Quick Actions + Prominent Collapse / Expand Button */}
+        <div className="flex items-center gap-2">
           {onShuffle && (
             <button
+              type="button"
               onClick={onShuffle}
               disabled={isShuffleLoading}
               title="Sortear outra fita aleatória"
-              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold border border-zinc-700 transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold border border-zinc-700 transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-50 shadow-sm"
             >
-              <Shuffle className={`w-3 h-3 text-amber-400 ${isShuffleLoading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Sortear Fita</span>
+              <Shuffle className={`w-3.5 h-3.5 text-amber-400 ${isShuffleLoading ? 'animate-spin' : ''}`} />
+              <span className="hidden xs:inline">Sortear Fita</span>
             </button>
           )}
 
+          {/* Clear prominent Collapse / Expand Button */}
           <button
-            onClick={() => setIsMinimized(!isMinimized)}
-            title={isMinimized ? 'Expandir Deck de Fita' : 'Recolher Deck de Fita'}
-            className="flex items-center gap-1 p-1 sm:px-2 sm:py-1 rounded-lg bg-zinc-950 hover:bg-zinc-850 text-zinc-400 hover:text-zinc-200 text-xs border border-zinc-800 transition-all cursor-pointer"
+            type="button"
+            onClick={toggleCollapse}
+            title={isCollapsed ? 'Expandir Fita Cassete' : 'Recolher Fita Cassete'}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer shadow-sm active:scale-95 ${
+              isCollapsed
+                ? 'bg-rose-600/20 text-rose-300 border-rose-500/40 hover:bg-rose-600/30'
+                : 'bg-zinc-950 hover:bg-zinc-850 text-zinc-300 hover:text-white border-zinc-700'
+            }`}
           >
-            {isMinimized ? (
+            {isCollapsed ? (
               <>
-                <ChevronDown className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline font-mono text-[10px]">EXPANDIR</span>
+                <ChevronDown className="w-4 h-4 text-rose-400" />
+                <span>Expandir Fita</span>
               </>
             ) : (
               <>
-                <ChevronUp className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline font-mono text-[10px]">RECOLHER</span>
+                <ChevronUp className="w-4 h-4 text-zinc-400" />
+                <span>Recolher Fita</span>
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Main Body: Full K7 Cassette Player (dqnamo craft) */}
-      {!isMinimized ? (
-        <div className="flex flex-col items-center justify-center py-2 sm:py-4">
+      {/* Main Body: Either Full K7 Cassette Player or Compact Bar */}
+      {isCollapsed ? (
+        /* Sleek, Compact Retro Player Bar */
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-inner">
+          <div className="flex items-center gap-3 min-w-0">
+            {/* Primary Play Button */}
+            <button
+              type="button"
+              onClick={() => onTogglePlay(sound)}
+              aria-label={isPlaying ? 'Pausar áudio' : 'Tocar áudio'}
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg transition-all active:scale-95 shrink-0 cursor-pointer"
+              style={{ backgroundColor: isPlaying ? '#e11d48' : categoryColor }}
+            >
+              {isPlaying ? (
+                <Square className="w-4 h-4 fill-white" />
+              ) : (
+                <Play className="w-4 h-4 fill-white ml-0.5" />
+              )}
+            </button>
+
+            {/* Mini SVG Spools */}
+            <div className="hidden xs:flex items-center gap-1 px-2 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 shrink-0">
+              <MiniReel isSpinning={isPlaying} />
+              <div className="w-3 h-0.5 bg-zinc-700" />
+              <MiniReel isSpinning={isPlaying} />
+            </div>
+
+            {/* Sound Metadata */}
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 uppercase truncate">
+                <span className="text-zinc-300 font-bold">LADO A</span>
+                <span>•</span>
+                <span className="text-rose-400">{sound.category}</span>
+                <span>•</span>
+                <span>{catalogueNum}</span>
+              </div>
+              <h3 className="font-bold text-sm text-white truncate max-w-[200px] sm:max-w-xs md:max-w-md">
+                {sound.title}
+              </h3>
+            </div>
+          </div>
+
+          {/* Time and Actions */}
+          <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-zinc-850">
+            <span className="font-mono text-xs text-zinc-400 tabular-nums">
+              {formatTime(currentTime)} / {formatTime(effectiveDuration)}
+            </span>
+
+            <button
+              type="button"
+              onClick={restart}
+              title="Rebobinar"
+              className="p-1.5 rounded-lg bg-zinc-850 hover:bg-zinc-750 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleCollapse}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-rose-300 text-xs font-semibold border border-rose-500/20 cursor-pointer"
+            >
+              <ChevronDown className="w-3.5 h-3.5" />
+              <span>Ver Fita K7</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        /* Full Big Cassette Player (dqnamo style) */
+        <div className="flex flex-col items-center justify-center py-2 sm:py-3">
           <div className="w-full max-w-[540px]">
             <div
               ref={cassetteRef}
@@ -639,12 +669,12 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
                 {/* Mute / Unmute Button */}
                 <button
                   type="button"
-                  aria-label={volume === 0 ? 'Desmutar' : 'Mutar'}
-                  title={volume === 0 ? 'Desmutar som' : 'Mutar som'}
+                  aria-label={isMuted ? 'Desmutar' : 'Mutar'}
+                  title={isMuted ? 'Desmutar som' : 'Mutar som'}
                   onClick={toggleMute}
                   className={`${BUTTON_CLASSES} w-[clamp(24px,6.5cqw,34px)] border-[#82827c] bg-[#5c5b56] shadow-[0_2px_5px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.25)] hover:bg-[#706f68]`}
                 >
-                  {volume === 0 ? (
+                  {isMuted ? (
                     <VolumeX className="w-3.5 h-3.5 text-rose-400" />
                   ) : (
                     <Volume2 className="w-3.5 h-3.5" />
@@ -652,45 +682,6 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
                 </button>
               </div>
             </div>
-
-            {playbackError && (
-              <p className="mt-2 text-center text-xs text-rose-400 font-medium" role="alert">
-                {playbackError}
-              </p>
-            )}
-          </div>
-        </div>
-      ) : (
-        /* Compact Minimized Dock Bar */
-        <div className="flex items-center justify-between gap-3 py-1">
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={() => onTogglePlay(sound)}
-              className="w-9 h-9 rounded-full flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white shadow-md shrink-0 cursor-pointer transition-transform active:scale-95"
-            >
-              {isPlaying ? <Pause className="w-4 h-4 fill-white" /> : <Play className="w-4 h-4 fill-white ml-0.5" />}
-            </button>
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-400 uppercase">
-                <span>{sound.category}</span>
-                <span>•</span>
-                <span>{catalogueNum}</span>
-              </div>
-              <h3 className="font-bold text-sm text-white truncate max-w-xs sm:max-w-md">
-                {sound.title}
-              </h3>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 font-mono text-xs text-zinc-400 shrink-0">
-            <span>{formatTime(currentTime)} / {formatTime(effectiveDuration)}</span>
-            <button
-              onClick={restart}
-              title="Rebobinar"
-              className="p-1 text-zinc-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
       )}

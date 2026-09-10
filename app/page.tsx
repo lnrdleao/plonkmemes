@@ -43,6 +43,7 @@ export default function HomePage() {
   const [user, setUser] = useState<any>(null);
   const [totalPlatformPlays, setTotalPlatformPlays] = useState<number>(0);
   const [deckSound, setDeckSound] = useState<SoundItem | null>(null);
+  const [activeMasterAudio, setActiveMasterAudio] = useState<HTMLAudioElement | null>(null);
   const lastPlaySentRef = useRef<Record<string, number>>({});
 
   // Modal state
@@ -180,14 +181,15 @@ export default function HomePage() {
 
   const playSound = (sound: SoundItem) => {
     // 1. Se o som já estiver tocando, interrompe imediatamente
-    if (activePlayingIds.includes(sound.id)) {
-      const existing = activeAudiosRef.current.get(sound.id);
-      if (existing) {
-        existing.pause();
-        existing.currentTime = 0;
-        activeAudiosRef.current.delete(sound.id);
-      }
+    const existing = activeAudiosRef.current.get(sound.id);
+    if (existing) {
+      existing.pause();
+      existing.currentTime = 0;
+      activeAudiosRef.current.delete(sound.id);
       setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
+      if (deckSound?.id === sound.id) {
+        setActiveMasterAudio(null);
+      }
       return;
     }
 
@@ -198,22 +200,16 @@ export default function HomePage() {
         audio.currentTime = 0;
       });
       activeAudiosRef.current.clear();
-      setActivePlayingIds([sound.id]);
-    } else {
-      setActivePlayingIds((prev) => [...prev, sound.id]);
-      if (deckSound && activePlayingIds.includes(deckSound.id) && deckSound.id !== sound.id) {
-        const bgAudio = new Audio(deckSound.audioUrl);
-        activeAudiosRef.current.set(deckSound.id, bgAudio);
-        bgAudio.play().catch(() => {});
-        bgAudio.onended = () => {
-          activeAudiosRef.current.delete(deckSound.id);
-          setActivePlayingIds((prev) => prev.filter((id) => id !== deckSound.id));
-        };
-      }
+      setActivePlayingIds([]);
+      setActiveMasterAudio(null);
     }
 
-    // Define este som como o som ativo no Deck K7
+    // 3. Cria e reproduz o áudio IMEDIATAMENTE (no contexto de clique do usuário)
+    const audio = new Audio(sound.audioUrl);
+    activeAudiosRef.current.set(sound.id, audio);
+    setActivePlayingIds((prev) => (chaosMode ? [...prev, sound.id] : [sound.id]));
     setDeckSound(sound);
+    setActiveMasterAudio(audio);
 
     // Atualização otimista imediata na UI (0ms de latência)
     setSounds((prev) =>
@@ -233,6 +229,19 @@ export default function HomePage() {
         }).catch(() => {});
       } catch {}
     }
+
+    audio.play().catch((err) => {
+      console.error('Falha ao reproduzir áudio:', err);
+      activeAudiosRef.current.delete(sound.id);
+      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
+      setActiveMasterAudio((prev) => (prev === audio ? null : prev));
+    });
+
+    audio.onended = () => {
+      activeAudiosRef.current.delete(sound.id);
+      setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
+      setActiveMasterAudio((prev) => (prev === audio ? null : prev));
+    };
   };
 
   const handleShuffleTape = () => {
@@ -240,10 +249,7 @@ export default function HomePage() {
     if (pool.length === 0) return;
     const randomIndex = Math.floor(Math.random() * pool.length);
     const randomSound = pool[randomIndex];
-    setDeckSound(randomSound);
-    if (!activePlayingIds.includes(randomSound.id)) {
-      playSound(randomSound);
-    }
+    playSound(randomSound);
   };
 
   const stopAllSounds = () => {
@@ -253,6 +259,7 @@ export default function HomePage() {
     });
     activeAudiosRef.current.clear();
     setActivePlayingIds([]);
+    setActiveMasterAudio(null);
   };
 
   const handleUploadSuccess = (newSound: SoundItem) => {
@@ -670,6 +677,7 @@ export default function HomePage() {
           <CassettePlayer
             sound={deckSound}
             isPlaying={activePlayingIds.includes(deckSound.id)}
+            activeAudio={activeMasterAudio}
             onTogglePlay={playSound}
             onShuffle={handleShuffleTape}
             onStopAll={stopAllSounds}
