@@ -139,6 +139,12 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
 }) => {
   const cassetteRef = useRef<HTMLDivElement | null>(null);
   const scrubberTrackRef = useRef<HTMLDivElement | null>(null);
+  const progressFillRef = useRef<HTMLDivElement | null>(null);
+  const progressThumbRef = useRef<HTMLDivElement | null>(null);
+  const timeCurrentRef = useRef<HTMLSpanElement | null>(null);
+  const timeTotalRef = useRef<HTMLSpanElement | null>(null);
+  const compactFillRef = useRef<HTMLDivElement | null>(null);
+  const compactTimeRef = useRef<HTMLSpanElement | null>(null);
 
   const durationRef = useRef(0);
   const rewindAnimationRef = useRef<number | null>(null);
@@ -169,18 +175,48 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
     });
   };
 
-  // Update physical visual cues of tape reels
-  const updatePlaybackVisuals = useCallback((time: number) => {
+  // Update physical visual cues of tape reels and progress bars directly (0ms latency, zero CSS delay)
+  const updatePlaybackVisuals = useCallback((time: number, isExplicitEnd = false) => {
+    const mediaDuration = durationRef.current || (sound?.duration ?? 0) || 1;
+    const progress = isExplicitEnd
+      ? 1
+      : mediaDuration > 0
+      ? Math.min(Math.max(time / mediaDuration, 0), 1)
+      : 0;
+    const percent = progress * 100;
+
+    // 1. Tape reels & spools in Big Cassette
     const cassette = cassetteRef.current;
-    if (!cassette) return;
+    if (cassette) {
+      cassette.style.setProperty('--reel-rotation', isExplicitEnd ? '0deg' : `${(time * 360) % 360}deg`);
+      cassette.style.setProperty('--left-tape-scale', `${1 - progress * 0.4}`);
+      cassette.style.setProperty('--right-tape-scale', `${0.6 + progress * 0.4}`);
+    }
 
-    const mediaDuration = durationRef.current || (sound?.duration ?? 0);
-    const progress =
-      mediaDuration > 0 ? Math.min(Math.max(time / mediaDuration, 0), 1) : 0;
+    // 2. Direct Scrubber Progress Fill & Thumb (Instant 0ms latency, ZERO CSS transition lag)
+    if (progressFillRef.current) {
+      progressFillRef.current.style.width = `${percent}%`;
+    }
+    if (progressThumbRef.current) {
+      progressThumbRef.current.style.left = `${percent}%`;
+    }
 
-    cassette.style.setProperty('--reel-rotation', `${(time * 360) % 360}deg`);
-    cassette.style.setProperty('--left-tape-scale', `${1 - progress * 0.4}`);
-    cassette.style.setProperty('--right-tape-scale', `${0.6 + progress * 0.4}`);
+    // 3. Time readout displays
+    const displayTime = isExplicitEnd ? mediaDuration : Math.min(time, mediaDuration);
+    if (timeCurrentRef.current) {
+      timeCurrentRef.current.textContent = formatTime(displayTime);
+    }
+    if (timeTotalRef.current) {
+      timeTotalRef.current.textContent = formatTime(mediaDuration);
+    }
+
+    // 4. Compact Bar indicators if collapsed
+    if (compactFillRef.current) {
+      compactFillRef.current.style.width = `${percent}%`;
+    }
+    if (compactTimeRef.current) {
+      compactTimeRef.current.textContent = `${formatTime(displayTime)} / ${formatTime(mediaDuration)}`;
+    }
   }, [sound?.duration]);
 
   // When sound item changes, reset visual time
@@ -194,62 +230,106 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
     durationRef.current = soundDur;
     setCurrentTime(0);
     setDuration(soundDur);
-    updatePlaybackVisuals(0);
+    updatePlaybackVisuals(0, false);
   }, [sound?.id, sound?.duration, updatePlaybackVisuals]);
 
   // Synchronize with activeAudio if present
   useEffect(() => {
     if (!activeAudio) {
       if (!isPlaying) {
-        updatePlaybackVisuals(0);
+        updatePlaybackVisuals(0, false);
       }
       return;
     }
 
-    const onTimeUpdate = () => {
-      if (!isScrubbing) {
-        setCurrentTime(activeAudio.currentTime);
-        updatePlaybackVisuals(activeAudio.currentTime);
-      }
-    };
-
-    const onLoadedMetadata = () => {
-      if (activeAudio.duration && Number.isFinite(activeAudio.duration)) {
+    const updateDur = () => {
+      if (activeAudio.duration && Number.isFinite(activeAudio.duration) && activeAudio.duration > 0) {
         durationRef.current = activeAudio.duration;
         setDuration(activeAudio.duration);
+        if (timeTotalRef.current) {
+          timeTotalRef.current.textContent = formatTime(activeAudio.duration);
+        }
       }
     };
 
-    if (activeAudio.duration && Number.isFinite(activeAudio.duration)) {
-      durationRef.current = activeAudio.duration;
-      setDuration(activeAudio.duration);
-    }
+    updateDur();
+
+    const onTimeUpdate = () => {
+      if (!isScrubbing) {
+        const cur = activeAudio.currentTime;
+        const dur = durationRef.current || activeAudio.duration || (sound?.duration ?? 0);
+        if (activeAudio.ended || (dur > 0 && cur >= dur - 0.02)) {
+          updatePlaybackVisuals(dur, true);
+        } else {
+          updatePlaybackVisuals(cur, false);
+        }
+      }
+    };
+
+    const onEnded = () => {
+      const dur = durationRef.current || activeAudio.duration || (sound?.duration ?? 0);
+      updatePlaybackVisuals(dur, true);
+      setCurrentTime(dur);
+    };
+
+    const onPlay = () => {
+      updateDur();
+    };
 
     activeAudio.addEventListener('timeupdate', onTimeUpdate);
-    activeAudio.addEventListener('loadedmetadata', onLoadedMetadata);
+    activeAudio.addEventListener('loadedmetadata', updateDur);
+    activeAudio.addEventListener('durationchange', updateDur);
+    activeAudio.addEventListener('canplay', updateDur);
+    activeAudio.addEventListener('play', onPlay);
+    activeAudio.addEventListener('ended', onEnded);
 
     return () => {
       activeAudio.removeEventListener('timeupdate', onTimeUpdate);
-      activeAudio.removeEventListener('loadedmetadata', onLoadedMetadata);
+      activeAudio.removeEventListener('loadedmetadata', updateDur);
+      activeAudio.removeEventListener('durationchange', updateDur);
+      activeAudio.removeEventListener('canplay', updateDur);
+      activeAudio.removeEventListener('play', onPlay);
+      activeAudio.removeEventListener('ended', onEnded);
     };
-  }, [activeAudio, isPlaying, isScrubbing, updatePlaybackVisuals]);
+  }, [activeAudio, isPlaying, isScrubbing, sound?.duration, updatePlaybackVisuals]);
 
-  // High precision animation frame when playing
+  // High precision 60fps animation frame when playing
   useEffect(() => {
     if (!isPlaying || !activeAudio) return;
 
     let frameId = 0;
+    let lastStateUpdate = 0;
+
     function loop() {
-      if (activeAudio && !activeAudio.paused) {
-        setCurrentTime(activeAudio.currentTime);
-        updatePlaybackVisuals(activeAudio.currentTime);
+      if (activeAudio && !activeAudio.paused && !activeAudio.ended) {
+        const cur = activeAudio.currentTime;
+        const dur =
+          activeAudio.duration && Number.isFinite(activeAudio.duration) && activeAudio.duration > 0
+            ? activeAudio.duration
+            : durationRef.current || sound?.duration || 1;
+        durationRef.current = dur;
+
+        // Check if audio reached or is within 25ms of the end
+        if (cur >= dur - 0.025) {
+          updatePlaybackVisuals(dur, true);
+        } else {
+          updatePlaybackVisuals(cur, false);
+        }
+
+        // Throttle React state update to ~4 times a second to avoid React 60fps re-render overhead
+        const now = performance.now();
+        if (now - lastStateUpdate > 250) {
+          lastStateUpdate = now;
+          setCurrentTime(cur);
+        }
+
         frameId = window.requestAnimationFrame(loop);
       }
     }
 
     frameId = window.requestAnimationFrame(loop);
     return () => window.cancelAnimationFrame(frameId);
-  }, [isPlaying, activeAudio, updatePlaybackVisuals]);
+  }, [isPlaying, activeAudio, sound?.duration, updatePlaybackVisuals]);
 
   // Cleanup rewind animation on unmount
   useEffect(() => {
@@ -261,18 +341,16 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
   }, []);
 
   const restart = () => {
-    if (activeAudio) {
-      activeAudio.currentTime = 0;
-      setCurrentTime(0);
-      updatePlaybackVisuals(0);
-      if (activeAudio.paused) {
-        activeAudio.play().catch(() => {});
-      }
-      return;
-    }
-
     if (sound) {
-      onTogglePlay(sound);
+      if (isPlaying && activeAudio) {
+        activeAudio.currentTime = 0;
+        updatePlaybackVisuals(0, false);
+        setCurrentTime(0);
+      } else {
+        updatePlaybackVisuals(0, false);
+        setCurrentTime(0);
+        onTogglePlay(sound);
+      }
     }
   };
 
@@ -285,7 +363,7 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
       activeAudio.currentTime = nextTime;
     }
     setCurrentTime(nextTime);
-    updatePlaybackVisuals(nextTime);
+    updatePlaybackVisuals(nextTime, clampedProgress >= 1);
   };
 
   const handlePointerScrub = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -414,7 +492,7 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
       {/* Main Body: Either Full K7 Cassette Player or Compact Bar */}
       {isCollapsed ? (
         /* Sleek, Compact Retro Player Bar */
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-inner">
+        <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-zinc-950/90 border border-zinc-800/90 shadow-inner overflow-hidden">
           <div className="flex items-center gap-3 min-w-0">
             {/* Primary Play Button */}
             <button
@@ -455,7 +533,7 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
 
           {/* Time and Actions */}
           <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-zinc-850">
-            <span className="font-mono text-xs text-zinc-400 tabular-nums">
+            <span ref={compactTimeRef} className="font-mono text-xs text-zinc-400 tabular-nums">
               {formatTime(currentTime)} / {formatTime(effectiveDuration)}
             </span>
 
@@ -476,6 +554,19 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
               <ChevronDown className="w-3.5 h-3.5" />
               <span>Ver Fita K7</span>
             </button>
+          </div>
+
+          {/* Compact Bar Bottom Progress Line */}
+          <div className="absolute left-0 bottom-0 right-0 h-[2px] bg-zinc-850 overflow-hidden">
+            <div
+              ref={compactFillRef}
+              className="h-full"
+              style={{
+                width: `${scrubPercentage}%`,
+                backgroundColor: categoryColor,
+                transition: 'none',
+              }}
+            />
           </div>
         </div>
       ) : (
@@ -601,31 +692,37 @@ export const CassettePlayer: React.FC<CassettePlayerProps> = ({
                     className="group/scrub relative flex h-5 w-full cursor-pointer touch-none items-center"
                   >
                     {/* Track Background */}
-                    <div className="relative h-[3.5px] w-full rounded-full bg-zinc-800 shadow-inner group-hover/scrub:h-[5px] transition-all">
-                      {/* Active Fill */}
+                    <div className="relative h-[3.5px] w-full rounded-full bg-zinc-800 shadow-inner group-hover/scrub:h-[5px] transition-[height]">
+                      {/* Active Fill - 0ms LATENCY: NO CSS TRANSITION ON WIDTH */}
                       <div
-                        className="h-full rounded-full transition-all"
+                        ref={progressFillRef}
+                        className="h-full rounded-full"
                         style={{
                           width: `${scrubPercentage}%`,
                           backgroundColor: categoryColor,
+                          transition: 'none',
                         }}
                       />
-                      {/* Scrub Thumb */}
+                      {/* Scrub Thumb - NO CSS TRANSITION ON LEFT */}
                       <div
-                        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 size-[12px] rounded-full border-2 border-zinc-950 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.5)] group-hover/scrub:scale-125 transition-transform"
-                        style={{ left: `${scrubPercentage}%` }}
+                        ref={progressThumbRef}
+                        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 size-[12px] rounded-full border-2 border-zinc-950 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.5)] group-hover/scrub:scale-125"
+                        style={{
+                          left: `${scrubPercentage}%`,
+                          transition: 'transform 100ms ease',
+                        }}
                       />
                     </div>
                   </div>
 
                   {/* Time Markers */}
                   <div className="relative z-20 flex items-baseline justify-between font-mono text-[10px] text-zinc-400 tabular-nums leading-none">
-                    <span>{formatTime(currentTime)}</span>
+                    <span ref={timeCurrentRef}>{formatTime(currentTime)}</span>
                     <span className="flex items-center gap-1.5">
                       <span className="text-zinc-500 font-sans text-[9px] uppercase">
                         {isPlaying ? 'TOCANDO' : 'PAUSADO'}
                       </span>
-                      <span>{formatTime(effectiveDuration)}</span>
+                      <span ref={timeTotalRef}>{formatTime(effectiveDuration)}</span>
                     </span>
                   </div>
                 </div>

@@ -240,7 +240,6 @@ export default function HomePage() {
     audio.onended = () => {
       activeAudiosRef.current.delete(sound.id);
       setActivePlayingIds((prev) => prev.filter((id) => id !== sound.id));
-      setActiveMasterAudio((prev) => (prev === audio ? null : prev));
     };
   };
 
