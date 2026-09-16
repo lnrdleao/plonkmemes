@@ -35,7 +35,7 @@ export default function HomePage() {
   // State: Sounds catalog with lazy initialization from localStorage
   const [sounds, setSounds] = useState<SoundItem[]>(INITIAL_SOUNDS);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter | 'favoritos'>('todos');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter | 'favoritos'>('em-alta');
   const [viewMode, setViewMode] = useState<ViewMode>('cassette');
   const [chaosMode, setChaosMode] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -332,14 +332,8 @@ export default function HomePage() {
       return true;
     });
 
-    // Se estiver na aba 'em-alta', ordena dinamicamente por reproduções (maior para menor)
+    // Se estiver na aba 'em-alta', atribui o ranking oficial (1, 2, 3...)
     if (selectedCategory === 'em-alta') {
-      result = [...result].sort((a, b) => {
-        if (b.plays !== a.plays) return b.plays - a.plays;
-        return (b.isTrending ? 1 : 0) - (a.isTrending ? 1 : 0);
-      });
-
-      // Atribui o ranking 1, 2, 3...
       result = result.map((item, idx) => ({
         ...item,
         rank: idx + 1,
@@ -693,13 +687,13 @@ export default function HomePage() {
               </div>
               <div>
                 <h2 className="text-sm font-black tracking-tight text-amber-200 flex items-center gap-2">
-                  EM ALTA • TOP MEMES & TENDÊNCIAS
+                  EM ALTA NO BRASIL • TOP MEMES & TENDÊNCIAS
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
-                    AO VIVO
+                    AO VIVO BRASIL
                   </span>
                 </h2>
                 <p className="text-xs text-zinc-400">
-                  Ranking dinâmico calculado com base no volume global de reproduções da comunidade.
+                  Ranking oficial dos sons mais virais no Brasil sincronizado com MyInstants.
                 </p>
               </div>
             </div>
