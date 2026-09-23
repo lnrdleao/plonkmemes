@@ -25,6 +25,9 @@ ON public.sound_stats FOR ALL
 USING (true) 
 WITH CHECK (true);
 
+-- Permite acesso à tabela pelas roles da API PostgREST
+GRANT ALL ON TABLE public.sound_stats TO anon, authenticated, service_role;
+
 -- 3. Função Atômica RPC para incrementar plays sem conflito de concorrência
 CREATE OR REPLACE FUNCTION public.increment_play(sound_id_input TEXT)
 RETURNS BIGINT
