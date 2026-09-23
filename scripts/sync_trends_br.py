@@ -35,12 +35,15 @@ new_candidates = []
 seen = set()
 
 sources = [
+    "https://www.myinstants.com/pt/index/br/",
+    "https://www.myinstants.com/pt/index/br/?page=2",
+    "https://www.myinstants.com/pt/trending/",
+    "https://www.myinstants.com/pt/trending/?page=2",
     "https://www.myinstants.com/pt/recent/",
     "https://www.myinstants.com/pt/recent/?page=2",
     "https://www.myinstants.com/pt/recent/?page=3",
     "https://www.myinstants.com/pt/recent/?page=4",
     "https://www.myinstants.com/pt/recent/?page=5",
-    "https://www.myinstants.com/pt/recent/?page=6",
 ]
 
 for url in sources:
@@ -142,7 +145,7 @@ def upload_to_supabase(filepath, filename):
 newly_added = []
 COLOR_PALETTE = ["#E11D48", "#8B5CF6", "#0EA5E9", "#F59E0B", "#10B981", "#EC4899", "#6366F1", "#EF4444", "#14B8A6", "#EAB308"]
 
-to_ingest = new_candidates[:15]
+to_ingest = new_candidates[:20]
 print(f"Processando e ingerindo {len(to_ingest)} novos sons...")
 
 for idx, item in enumerate(to_ingest, 1):
