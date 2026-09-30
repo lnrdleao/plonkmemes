@@ -578,6 +578,28 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
+    "id": "a-risada-do-kiko-65965",
+    "title": "A risada do kiko",
+    "slug": "a-risada-do-kiko-65965",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/a-risada-do-kiko-65965.mp3",
+    "category": "tv-filmes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 11.52,
+    "tags": [
+      "risada",
+      "kiko"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.39,
+      "true_peak_dbtp": -6.92,
+      "loudness_range_lra": 2.7
+    }
+  },
+  {
     "id": "som-do-zap-zap-estourado-15594",
     "title": "Som do Zap Zap estourado",
     "slug": "som-do-zap-zap-estourado-15594",
@@ -599,28 +621,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.01,
       "true_peak_dbtp": -11.85,
       "loudness_range_lra": 0.0
-    }
-  },
-  {
-    "id": "a-risada-do-kiko-65965",
-    "title": "A risada do kiko",
-    "slug": "a-risada-do-kiko-65965",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/a-risada-do-kiko-65965.mp3",
-    "category": "tv-filmes",
-    "color": "#EC4899",
-    "plays": 0,
-    "duration": 11.52,
-    "tags": [
-      "risada",
-      "kiko"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.39,
-      "true_peak_dbtp": -6.92,
-      "loudness_range_lra": 2.7
     }
   },
   {
@@ -763,28 +763,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "dexter-meme-26140",
-    "title": "Dexter meme",
-    "slug": "dexter-meme-26140",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/dexter-meme-26140.mp3",
-    "category": "tv-filmes",
-    "color": "#8B5CF6",
-    "plays": 0,
-    "duration": 10.74,
-    "tags": [
-      "dexter",
-      "meme"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.08,
-      "true_peak_dbtp": -3.44,
-      "loudness_range_lra": 2.3
-    }
-  },
-  {
     "id": "pense-no-lula-83499",
     "title": "pense no lula",
     "slug": "pense-no-lula-83499",
@@ -807,25 +785,25 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "briga-de-gato-25101",
-    "title": "Briga de gato",
-    "slug": "briga-de-gato-25101",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/briga-de-gato-25101.mp3",
-    "category": "memes",
-    "color": "#E11D48",
+    "id": "dexter-meme-26140",
+    "title": "Dexter meme",
+    "slug": "dexter-meme-26140",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/dexter-meme-26140.mp3",
+    "category": "tv-filmes",
+    "color": "#8B5CF6",
     "plays": 0,
-    "duration": 17.21,
+    "duration": 10.74,
     "tags": [
-      "briga",
-      "gato"
+      "dexter",
+      "meme"
     ],
     "isTrending": true,
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -14.34,
-      "true_peak_dbtp": -2.69,
-      "loudness_range_lra": 3.6
+      "integrated_lufs": -16.08,
+      "true_peak_dbtp": -3.44,
+      "loudness_range_lra": 2.3
     }
   },
   {
@@ -849,6 +827,28 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.0,
       "true_peak_dbtp": -4.24,
       "loudness_range_lra": 9.9
+    }
+  },
+  {
+    "id": "briga-de-gato-25101",
+    "title": "Briga de gato",
+    "slug": "briga-de-gato-25101",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/briga-de-gato-25101.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 17.21,
+    "tags": [
+      "briga",
+      "gato"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -14.34,
+      "true_peak_dbtp": -2.69,
+      "loudness_range_lra": 3.6
     }
   },
   {
@@ -1241,29 +1241,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "nao-choraxx-estourados-21264",
-    "title": "nao choraxx estourados",
-    "slug": "nao-choraxx-estourados-21264",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/nao-choraxx-estourados-21264.mp3",
-    "category": "efeitos",
-    "color": "#10B981",
-    "plays": 0,
-    "duration": 2.4,
-    "tags": [
-      "nao",
-      "choraxx",
-      "estourados"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -15.99,
-      "true_peak_dbtp": -13.54,
-      "loudness_range_lra": 0.0
-    }
-  },
-  {
     "id": "lula-e-neymar-47-40647",
     "title": "Lula e Neymar #47",
     "slug": "lula-e-neymar-47-40647",
@@ -1286,23 +1263,25 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "ronaldo",
-    "title": "Ronaldo",
-    "slug": "ronaldo",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ronaldo.mp3",
-    "category": "memes",
-    "color": "#D946EF",
+    "id": "nao-choraxx-estourados-21264",
+    "title": "nao choraxx estourados",
+    "slug": "nao-choraxx-estourados-21264",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/nao-choraxx-estourados-21264.mp3",
+    "category": "efeitos",
+    "color": "#10B981",
     "plays": 0,
-    "duration": 0.57,
+    "duration": 2.4,
     "tags": [
-      "ronaldo"
+      "nao",
+      "choraxx",
+      "estourados"
     ],
     "isTrending": true,
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -16.03,
-      "true_peak_dbtp": -4.89,
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -13.54,
       "loudness_range_lra": 0.0
     }
   },
@@ -1327,6 +1306,27 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.11,
       "true_peak_dbtp": -10.06,
       "loudness_range_lra": 0.6
+    }
+  },
+  {
+    "id": "ronaldo",
+    "title": "Ronaldo",
+    "slug": "ronaldo",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ronaldo.mp3",
+    "category": "memes",
+    "color": "#D946EF",
+    "plays": 0,
+    "duration": 0.57,
+    "tags": [
+      "ronaldo"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.03,
+      "true_peak_dbtp": -4.89,
+      "loudness_range_lra": 0.0
     }
   },
   {
@@ -1445,6 +1445,29 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
+    "id": "de-copao-na-mao-estourado-80024",
+    "title": "DE COPÃO NA MÃO (ESTOURADO)",
+    "slug": "de-copao-na-mao-estourado-80024",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/de-copao-na-mao-estourado-80024.mp3",
+    "category": "efeitos",
+    "color": "#64748B",
+    "plays": 0,
+    "duration": 15.26,
+    "tags": [
+      "copão",
+      "mão",
+      "estourado"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.24,
+      "true_peak_dbtp": -11.71,
+      "loudness_range_lra": 0.6
+    }
+  },
+  {
     "id": "uma-rapariga-e-bom-12157",
     "title": "uma rapariga é bom...",
     "slug": "uma-rapariga-e-bom-12157",
@@ -1486,29 +1509,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.96,
       "true_peak_dbtp": -5.85,
       "loudness_range_lra": 5.2
-    }
-  },
-  {
-    "id": "de-copao-na-mao-estourado-80024",
-    "title": "DE COPÃO NA MÃO (ESTOURADO)",
-    "slug": "de-copao-na-mao-estourado-80024",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/de-copao-na-mao-estourado-80024.mp3",
-    "category": "efeitos",
-    "color": "#64748B",
-    "plays": 0,
-    "duration": 15.26,
-    "tags": [
-      "copão",
-      "mão",
-      "estourado"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.24,
-      "true_peak_dbtp": -11.71,
-      "loudness_range_lra": 0.6
     }
   },
   {
@@ -1559,31 +1559,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "brutal-acabou-pro-beta-globo-88904",
-    "title": "Brutal Acabou pro Beta - Globo",
-    "slug": "brutal-acabou-pro-beta-globo-88904",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/brutal-acabou-pro-beta-globo-88904.mp3",
-    "category": "tv-filmes",
-    "color": "#F59E0B",
-    "plays": 0,
-    "duration": 10.95,
-    "tags": [
-      "brutal",
-      "acabou",
-      "pro",
-      "beta",
-      "globo"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.17,
-      "true_peak_dbtp": -1.5,
-      "loudness_range_lra": 3.9
-    }
-  },
-  {
     "id": "eu-finjo-que-nao-percebo-mas-tudo-esta-sendo-obs-87550",
     "title": "eu finjo que não percebo mas tudo esta sendo obs",
     "slug": "eu-finjo-que-nao-percebo-mas-tudo-esta-sendo-obs-87550",
@@ -1606,6 +1581,31 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.21,
       "true_peak_dbtp": -6.72,
       "loudness_range_lra": 1.3
+    }
+  },
+  {
+    "id": "brutal-acabou-pro-beta-globo-88904",
+    "title": "Brutal Acabou pro Beta - Globo",
+    "slug": "brutal-acabou-pro-beta-globo-88904",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/brutal-acabou-pro-beta-globo-88904.mp3",
+    "category": "tv-filmes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 10.95,
+    "tags": [
+      "brutal",
+      "acabou",
+      "pro",
+      "beta",
+      "globo"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.17,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 3.9
     }
   },
   {
@@ -1675,27 +1675,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "fahhh-42300",
-    "title": "Fahhh",
-    "slug": "fahhh-42300",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/fahhh-42300.mp3",
-    "category": "memes",
-    "color": "#F59E0B",
-    "plays": 0,
-    "duration": 2.32,
-    "tags": [
-      "fahhh"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -15.99,
-      "true_peak_dbtp": -4.35,
-      "loudness_range_lra": 0.0
-    }
-  },
-  {
     "id": "ta-travaaando-free-fire-88343",
     "title": "Ta travaaando (Free Fire)",
     "slug": "ta-travaaando-free-fire-88343",
@@ -1716,6 +1695,27 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -16.7,
       "true_peak_dbtp": -5.44,
       "loudness_range_lra": 4.6
+    }
+  },
+  {
+    "id": "fahhh-42300",
+    "title": "Fahhh",
+    "slug": "fahhh-42300",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/fahhh-42300.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 2.32,
+    "tags": [
+      "fahhh"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.99,
+      "true_peak_dbtp": -4.35,
+      "loudness_range_lra": 0.0
     }
   },
   {
@@ -1812,6 +1812,29 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
+    "id": "ah-lula-meu-presidente-23705",
+    "title": "Ah Lula,meu presidente....",
+    "slug": "ah-lula-meu-presidente-23705",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ah-lula-meu-presidente-23705.mp3",
+    "category": "memes",
+    "color": "#06B6D4",
+    "plays": 0,
+    "duration": 33.91,
+    "tags": [
+      "lula",
+      "meu",
+      "presidente"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.19,
+      "true_peak_dbtp": -4.82,
+      "loudness_range_lra": 6.3
+    }
+  },
+  {
     "id": "meu-sonho-era-ser-mcc-42190",
     "title": "meu sonho era ser mcc",
     "slug": "meu-sonho-era-ser-mcc-42190",
@@ -1834,29 +1857,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "integrated_lufs": -15.3,
       "true_peak_dbtp": -1.5,
       "loudness_range_lra": 2.2
-    }
-  },
-  {
-    "id": "ah-lula-meu-presidente-23705",
-    "title": "Ah Lula,meu presidente....",
-    "slug": "ah-lula-meu-presidente-23705",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ah-lula-meu-presidente-23705.mp3",
-    "category": "memes",
-    "color": "#06B6D4",
-    "plays": 0,
-    "duration": 33.91,
-    "tags": [
-      "lula",
-      "meu",
-      "presidente"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.19,
-      "true_peak_dbtp": -4.82,
-      "loudness_range_lra": 6.3
     }
   },
   {
@@ -2290,28 +2290,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "ai-cachorro-estourado-24957",
-    "title": "AI CACHORRO ESTOURADO",
-    "slug": "ai-cachorro-estourado-24957",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ai-cachorro-estourado-24957.mp3",
-    "category": "efeitos",
-    "color": "#8B5CF6",
-    "plays": 0,
-    "duration": 13.19,
-    "tags": [
-      "cachorro",
-      "estourado"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.18,
-      "true_peak_dbtp": -13.03,
-      "loudness_range_lra": 0.5
-    }
-  },
-  {
     "id": "lula-por-favor-me-ajuda-9562",
     "title": "Lula por favor me ajuda",
     "slug": "lula-por-favor-me-ajuda-9562",
@@ -2336,25 +2314,25 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "risadinha-de-ladrao-8117",
-    "title": "Risadinha de ladrão",
-    "slug": "risadinha-de-ladrao-8117",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/risadinha-de-ladrao-8117.mp3",
-    "category": "memes",
-    "color": "#E11D48",
+    "id": "ai-cachorro-estourado-24957",
+    "title": "AI CACHORRO ESTOURADO",
+    "slug": "ai-cachorro-estourado-24957",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ai-cachorro-estourado-24957.mp3",
+    "category": "efeitos",
+    "color": "#8B5CF6",
     "plays": 0,
-    "duration": 1.78,
+    "duration": 13.19,
     "tags": [
-      "risadinha",
-      "ladrão"
+      "cachorro",
+      "estourado"
     ],
     "isTrending": true,
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
-      "integrated_lufs": -16.0,
-      "true_peak_dbtp": -9.07,
-      "loudness_range_lra": 0.0
+      "integrated_lufs": -16.18,
+      "true_peak_dbtp": -13.03,
+      "loudness_range_lra": 0.5
     }
   },
   {
@@ -2383,6 +2361,28 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
+    "id": "risadinha-de-ladrao-8117",
+    "title": "Risadinha de ladrão",
+    "slug": "risadinha-de-ladrao-8117",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/risadinha-de-ladrao-8117.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 1.78,
+    "tags": [
+      "risadinha",
+      "ladrão"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -9.07,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
     "id": "fart",
     "title": "Fart",
     "slug": "fart",
@@ -2400,6 +2400,51 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "target_lufs": -16.0,
       "integrated_lufs": -70.0,
       "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "ze-da-manga-97909",
+    "title": "Zé da Manga",
+    "slug": "ze-da-manga-97909",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ze-da-manga-97909.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 4.08,
+    "tags": [
+      "manga"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.97,
+      "true_peak_dbtp": -6.55,
+      "loudness_range_lra": 0.9
+    }
+  },
+  {
+    "id": "eu-nao-acredito-nao-charlene-32677",
+    "title": "eu não acredito não charlene",
+    "slug": "eu-nao-acredito-nao-charlene-32677",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/eu-nao-acredito-nao-charlene-32677.mp3",
+    "category": "memes",
+    "color": "#D946EF",
+    "plays": 0,
+    "duration": 1.96,
+    "tags": [
+      "não",
+      "acredito",
+      "não",
+      "charlene"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -6.88,
       "loudness_range_lra": 0.0
     }
   },
@@ -2427,24 +2472,565 @@ export const INITIAL_SOUNDS: SoundItem[] = [
     }
   },
   {
-    "id": "ze-da-manga-97909",
-    "title": "Zé da Manga",
-    "slug": "ze-da-manga-97909",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/ze-da-manga-97909.mp3",
+    "id": "action-86877",
+    "title": "Action....",
+    "name": "Action....",
+    "slug": "action-86877",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/action-86877.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 1.57,
+    "tags": [
+      "action"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -3.59,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "mafiosos-scream-26839",
+    "title": "Mafioso's scream",
+    "name": "Mafioso's scream",
+    "slug": "mafiosos-scream-26839",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mafiosos-scream-26839.mp3",
     "category": "memes",
     "color": "#14B8A6",
     "plays": 0,
-    "duration": 4.08,
+    "duration": 18.83,
     "tags": [
-      "manga"
+      "mafioso's",
+      "scream"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.05,
+      "true_peak_dbtp": -13.69,
+      "loudness_range_lra": 2.4
+    }
+  },
+  {
+    "id": "enrique-big-speed-up-18838",
+    "title": "Enrique big Speed up",
+    "name": "Enrique big Speed up",
+    "slug": "enrique-big-speed-up-18838",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/enrique-big-speed-up-18838.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 2.43,
+    "tags": [
+      "enrique",
+      "big",
+      "speed"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -8.8,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "hmt02-moscow-radio-ussr-38874",
+    "title": "hmt02 - moscow_radio_ussr",
+    "name": "hmt02 - moscow_radio_ussr",
+    "slug": "hmt02-moscow-radio-ussr-38874",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/hmt02-moscow-radio-ussr-38874.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 8.93,
+    "tags": [
+      "hmt02",
+      "moscow",
+      "radio",
+      "ussr"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -5.16,
+      "loudness_range_lra": 1.6
+    }
+  },
+  {
+    "id": "enrique-speed-up-78797",
+    "title": "Enrique Speed up",
+    "name": "Enrique Speed up",
+    "slug": "enrique-speed-up-78797",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/enrique-speed-up-78797.mp3",
+    "category": "memes",
+    "color": "#8B5CF6",
+    "plays": 0,
+    "duration": 2.43,
+    "tags": [
+      "enrique",
+      "speed"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -8.8,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "franjackman-98239",
+    "title": "FranJackman",
+    "name": "FranJackman",
+    "slug": "franjackman-98239",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/franjackman-98239.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 6.53,
+    "tags": [
+      "franjackman"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.57,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 1.0
+    }
+  },
+  {
+    "id": "canelitas-85085",
+    "title": "Canelitas",
+    "name": "Canelitas",
+    "slug": "canelitas-85085",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/canelitas-85085.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 9.01,
+    "tags": [
+      "canelitas"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.34,
+      "true_peak_dbtp": -2.3,
+      "loudness_range_lra": 1.9
+    }
+  },
+  {
+    "id": "homer-let-the-barts-out-30302",
+    "title": "Homer let the Bart's out",
+    "name": "Homer let the Bart's out",
+    "slug": "homer-let-the-barts-out-30302",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/homer-let-the-barts-out-30302.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 20.9,
+    "tags": [
+      "homer",
+      "let",
+      "the",
+      "bart's",
+      "out"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.86,
+      "true_peak_dbtp": -5.74,
+      "loudness_range_lra": 1.8
+    }
+  },
+  {
+    "id": "rey-10057",
+    "title": "rey",
+    "name": "rey",
+    "slug": "rey-10057",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/rey-10057.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 4.73,
+    "tags": [
+      "rey"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.82,
+      "true_peak_dbtp": -9.59,
+      "loudness_range_lra": 0.3
+    }
+  },
+  {
+    "id": "bahlil-19551",
+    "title": "bahlil",
+    "name": "bahlil",
+    "slug": "bahlil-19551",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/bahlil-19551.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 4.73,
+    "tags": [
+      "bahlil"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.82,
+      "true_peak_dbtp": -9.59,
+      "loudness_range_lra": 0.3
+    }
+  },
+  {
+    "id": "121io12io3-13225",
+    "title": "121ё12ё3",
+    "name": "121ё12ё3",
+    "slug": "121io12io3-13225",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/121io12io3-13225.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 0.86,
+    "tags": [
+      "121ё12ё3"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -3.31,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "walang-kanin-buseng-remix-65098",
+    "title": "Walang kanin buseng remix",
+    "name": "Walang kanin buseng remix",
+    "slug": "walang-kanin-buseng-remix-65098",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/walang-kanin-buseng-remix-65098.mp3",
+    "category": "musica",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 17.42,
+    "tags": [
+      "walang",
+      "kanin",
+      "buseng",
+      "remix"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.64,
+      "true_peak_dbtp": -4.22,
+      "loudness_range_lra": 2.0
+    }
+  },
+  {
+    "id": "full-box-full-box-94458",
+    "title": "FULL BOX FULL BOX",
+    "name": "FULL BOX FULL BOX",
+    "slug": "full-box-full-box-94458",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/full-box-full-box-94458.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 15.1,
+    "tags": [
+      "full",
+      "box",
+      "full",
+      "box"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.68,
+      "true_peak_dbtp": -3.88,
+      "loudness_range_lra": 9.2
+    }
+  },
+  {
+    "id": "reza-auditore-49982",
+    "title": "Reza Auditore",
+    "name": "Reza Auditore",
+    "slug": "reza-auditore-49982",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/reza-auditore-49982.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 15.31,
+    "tags": [
+      "reza",
+      "auditore"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.41,
+      "true_peak_dbtp": -5.63,
+      "loudness_range_lra": 2.5
+    }
+  },
+  {
+    "id": "asshka-sumatra-76242",
+    "title": "Asshka Sumatra",
+    "name": "Asshka Sumatra",
+    "slug": "asshka-sumatra-76242",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/asshka-sumatra-76242.mp3",
+    "category": "memes",
+    "color": "#8B5CF6",
+    "plays": 0,
+    "duration": 3.79,
+    "tags": [
+      "asshka",
+      "sumatra"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.92,
+      "true_peak_dbtp": -2.9,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "floood-57512",
+    "title": "floood",
+    "name": "floood",
+    "slug": "floood-57512",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/floood-57512.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 27.4,
+    "tags": [
+      "floood"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.5,
+      "true_peak_dbtp": -3.15,
+      "loudness_range_lra": 2.1
+    }
+  },
+  {
+    "id": "huyo-todo-todo-73194",
+    "title": "Huyo todo todo",
+    "name": "Huyo todo todo",
+    "slug": "huyo-todo-todo-73194",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/huyo-todo-todo-73194.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 5.93,
+    "tags": [
+      "huyo",
+      "todo",
+      "todo"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.14,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.7
+    }
+  },
+  {
+    "id": "w3-soy-un-hombre-magico-74506",
+    "title": "W3 Soy un hombre magico",
+    "name": "W3 Soy un hombre magico",
+    "slug": "w3-soy-un-hombre-magico-74506",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/w3-soy-un-hombre-magico-74506.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 3.21,
+    "tags": [
+      "soy",
+      "hombre",
+      "magico"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.34,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "vale-gut-dejate-de-wearme-47124",
+    "title": "Vale Gut - dejate de wearme",
+    "name": "Vale Gut - dejate de wearme",
+    "slug": "vale-gut-dejate-de-wearme-47124",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/vale-gut-dejate-de-wearme-47124.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 19.28,
+    "tags": [
+      "vale",
+      "gut",
+      "dejate",
+      "wearme"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -2.23,
+      "loudness_range_lra": 7.7
+    }
+  },
+  {
+    "id": "straight-to-the-playlist-26969",
+    "title": "Straight to the playlist",
+    "name": "Straight to the playlist",
+    "slug": "straight-to-the-playlist-26969",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/straight-to-the-playlist-26969.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 6.53,
+    "tags": [
+      "straight",
+      "the",
+      "playlist"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -17.35,
+      "true_peak_dbtp": -3.9,
+      "loudness_range_lra": 8.1
+    }
+  },
+  {
+    "id": "j-films-mr-jadar-screaming-1909",
+    "title": "J Films Mr. Jadar Screaming",
+    "name": "J Films Mr. Jadar Screaming",
+    "slug": "j-films-mr-jadar-screaming-1909",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/j-films-mr-jadar-screaming-1909.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 5.46,
+    "tags": [
+      "films",
+      "jadar",
+      "screaming"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.77,
+      "true_peak_dbtp": -8.74,
+      "loudness_range_lra": 1.6
+    }
+  },
+  {
+    "id": "off-the-roof-53114",
+    "title": "Off the roof",
+    "name": "Off the roof",
+    "slug": "off-the-roof-53114",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/off-the-roof-53114.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 1.7,
+    "tags": [
+      "off",
+      "the",
+      "roof"
     ],
     "isTrending": true,
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
       "integrated_lufs": -15.97,
-      "true_peak_dbtp": -6.55,
-      "loudness_range_lra": 0.9
+      "true_peak_dbtp": -10.29,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "the-roof-8476",
+    "title": "The roof",
+    "name": "The roof",
+    "slug": "the-roof-8476",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/the-roof-8476.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 3.29,
+    "tags": [
+      "the",
+      "roof"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.31,
+      "true_peak_dbtp": -3.44,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "swiper-no-swiping-71987",
+    "title": "swiper no swiping",
+    "name": "swiper no swiping",
+    "slug": "swiper-no-swiping-71987",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/swiper-no-swiping-71987.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 2.3,
+    "tags": [
+      "swiper",
+      "swiping"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.97,
+      "true_peak_dbtp": -2.98,
+      "loudness_range_lra": 0.0
     }
   },
   {
@@ -5345,30 +5931,6 @@ export const INITIAL_SOUNDS: SoundItem[] = [
       "target_lufs": -16.0,
       "integrated_lufs": -15.93,
       "true_peak_dbtp": -9.83,
-      "loudness_range_lra": 0.0
-    }
-  },
-  {
-    "id": "eu-nao-acredito-nao-charlene-32677",
-    "title": "eu não acredito não charlene",
-    "slug": "eu-nao-acredito-nao-charlene-32677",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/eu-nao-acredito-nao-charlene-32677.mp3",
-    "category": "memes",
-    "color": "#D946EF",
-    "plays": 0,
-    "duration": 1.96,
-    "tags": [
-      "não",
-      "acredito",
-      "não",
-      "charlene"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.0,
-      "true_peak_dbtp": -6.88,
       "loudness_range_lra": 0.0
     }
   },
