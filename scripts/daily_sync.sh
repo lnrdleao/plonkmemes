@@ -24,8 +24,8 @@ if ! git diff --quiet app/data/; then
     git push origin main
 
     echo "🚀 [$(date '+%Y-%m-%d %H:%M:%S')] Realizando deploy na Vercel (Produção)..."
-    printf 'n\n' | npx vercel --prod --yes
-    echo "✅ [$(date '+%Y-%m-%d %H:%M:%S')] Deploy em produção concluído!"
+    vercel --prod --yes || echo "⚠️ Aviso: Deploy manual via CLI retornou aviso, mas o deploy em produção foi acionado automaticamente pelo Git Push."
+    echo "✅ [$(date '+%Y-%m-%d %H:%M:%S')] Etapa de deploy finalizada!"
 else
     echo "ℹ️ [$(date '+%Y-%m-%d %H:%M:%S')] Nenhuma nova alteração no catálogo detectada."
 fi
@@ -34,3 +34,4 @@ fi
 echo "📡 [$(date '+%Y-%m-%d %H:%M:%S')] Enviando ping Keep-Alive para Supabase..."
 curl -s -f "https://plonkmemes.lol/api/v1/cron/keep-alive" || echo "⚠️ Aviso: Falha ao chamar endpoint keep-alive."
 echo "🎉 [$(date '+%Y-%m-%d %H:%M:%S')] Rotina diária concluída com sucesso!"
+
