@@ -13,6 +13,7 @@ import sys
 import json
 import re
 import time
+import math
 import subprocess
 import urllib.request
 from bs4 import BeautifulSoup
@@ -100,9 +101,12 @@ def normalize_and_measure(src_path, dest_path):
     if idx != -1:
         try:
             data = json.loads(stderr[idx:stderr.rfind("}")+1])
-            integrated_lufs = round(float(data.get("output_i", -16.0)), 2)
-            true_peak_dbtp = round(float(data.get("output_tp", -1.5)), 2)
-            loudness_range_lra = round(float(data.get("output_lra", 1.0)), 2)
+            val_i = float(data.get("output_i", -16.0))
+            val_tp = float(data.get("output_tp", -1.5))
+            val_lra = float(data.get("output_lra", 1.0))
+            integrated_lufs = round(val_i if math.isfinite(val_i) else -16.0, 2)
+            true_peak_dbtp = round(val_tp if math.isfinite(val_tp) else -1.5, 2)
+            loudness_range_lra = round(val_lra if math.isfinite(val_lra) else 1.0, 2)
         except Exception:
             pass
 
@@ -278,9 +282,8 @@ with open(DATA_JSON, "w") as f:
     json.dump(final_catalog, f, indent=2, ensure_ascii=False)
 
 with open(DATA_TS, "w") as f:
-    f.write('import { SoundItem } from "../types";\n\n')
-    f.write('export const INITIAL_SOUNDS: SoundItem[] = ')
-    f.write(json.dumps(final_catalog, indent=2, ensure_ascii=False))
-    f.write(';\n')
+    f.write('import { SoundItem } from "../types";\n')
+    f.write('import soundsData from "./sounds.json";\n\n')
+    f.write('export const INITIAL_SOUNDS = soundsData as unknown as SoundItem[];\n')
 
 print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] 💾 Arquivos sounds.json e initial-sounds.ts salvos com sucesso!")
