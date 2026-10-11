@@ -714,28 +714,6 @@
     }
   },
   {
-    "id": "abriu-o-audio-70146",
-    "title": "Abriu o áudio",
-    "slug": "abriu-o-audio-70146",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/abriu-o-audio-70146.mp3",
-    "category": "memes",
-    "color": "#0EA5E9",
-    "plays": 0,
-    "duration": 6.92,
-    "tags": [
-      "abriu",
-      "áudio"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.43,
-      "true_peak_dbtp": -3.92,
-      "loudness_range_lra": 2.6
-    }
-  },
-  {
     "id": "5-5-5-5-ai-e-muito-facil-professor-43013",
     "title": "5+5+5+5 Ai e muito Facil professor",
     "slug": "5-5-5-5-ai-e-muito-facil-professor-43013",
@@ -756,6 +734,28 @@
       "integrated_lufs": -15.98,
       "true_peak_dbtp": -1.58,
       "loudness_range_lra": 0.5
+    }
+  },
+  {
+    "id": "abriu-o-audio-70146",
+    "title": "Abriu o áudio",
+    "slug": "abriu-o-audio-70146",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/abriu-o-audio-70146.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 6.92,
+    "tags": [
+      "abriu",
+      "áudio"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.43,
+      "true_peak_dbtp": -3.92,
+      "loudness_range_lra": 2.6
     }
   },
   {
@@ -942,6 +942,28 @@
     }
   },
   {
+    "id": "lula-e-neymar-47-40647",
+    "title": "Lula e Neymar #47",
+    "slug": "lula-e-neymar-47-40647",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/lula-e-neymar-47-40647.mp3",
+    "category": "memes",
+    "color": "#D946EF",
+    "plays": 0,
+    "duration": 26.15,
+    "tags": [
+      "lula",
+      "neymar"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.01,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 2.5
+    }
+  },
+  {
     "id": "mae-tem-cafe-do-mal-93135",
     "title": "Mãe tem Café? Do mal",
     "slug": "mae-tem-cafe-do-mal-93135",
@@ -962,28 +984,6 @@
       "target_lufs": -16.0,
       "integrated_lufs": -15.17,
       "true_peak_dbtp": -1.71,
-      "loudness_range_lra": 2.5
-    }
-  },
-  {
-    "id": "lula-e-neymar-47-40647",
-    "title": "Lula e Neymar #47",
-    "slug": "lula-e-neymar-47-40647",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/lula-e-neymar-47-40647.mp3",
-    "category": "memes",
-    "color": "#D946EF",
-    "plays": 0,
-    "duration": 26.15,
-    "tags": [
-      "lula",
-      "neymar"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -15.01,
-      "true_peak_dbtp": -1.5,
       "loudness_range_lra": 2.5
     }
   },
@@ -1239,28 +1239,6 @@
     }
   },
   {
-    "id": "olha-a-maconhaa-49358",
-    "title": "Olha a maconhaa",
-    "slug": "olha-a-maconhaa-49358",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/olha-a-maconhaa-49358.mp3",
-    "category": "memes",
-    "color": "#10B981",
-    "plays": 0,
-    "duration": 6.06,
-    "tags": [
-      "olha",
-      "maconhaa"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -16.37,
-      "true_peak_dbtp": -10.12,
-      "loudness_range_lra": 1.3
-    }
-  },
-  {
     "id": "ah-lula-meu-presidente-23705",
     "title": "Ah Lula,meu presidente....",
     "slug": "ah-lula-meu-presidente-23705",
@@ -1281,6 +1259,28 @@
       "integrated_lufs": -16.19,
       "true_peak_dbtp": -4.82,
       "loudness_range_lra": 6.3
+    }
+  },
+  {
+    "id": "olha-a-maconhaa-49358",
+    "title": "Olha a maconhaa",
+    "slug": "olha-a-maconhaa-49358",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/olha-a-maconhaa-49358.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 6.06,
+    "tags": [
+      "olha",
+      "maconhaa"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.37,
+      "true_peak_dbtp": -10.12,
+      "loudness_range_lra": 1.3
     }
   },
   {
@@ -1992,28 +1992,6 @@
     }
   },
   {
-    "id": "faz-o-l-vinheta-77929",
-    "title": "Faz o L Vinheta",
-    "slug": "faz-o-l-vinheta-77929",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/faz-o-l-vinheta-77929.mp3",
-    "category": "musica",
-    "color": "#6366F1",
-    "plays": 0,
-    "duration": 4.05,
-    "tags": [
-      "faz",
-      "vinheta"
-    ],
-    "isTrending": true,
-    "loudness": {
-      "standard": "EBU R128",
-      "target_lufs": -16.0,
-      "integrated_lufs": -15.04,
-      "true_peak_dbtp": -3.93,
-      "loudness_range_lra": 1.4
-    }
-  },
-  {
     "id": "tiki-tiki-boosted-78336",
     "title": "Tiki tiki boosted",
     "slug": "tiki-tiki-boosted-78336",
@@ -2034,6 +2012,28 @@
       "integrated_lufs": -16.07,
       "true_peak_dbtp": -6.83,
       "loudness_range_lra": 1.1
+    }
+  },
+  {
+    "id": "faz-o-l-vinheta-77929",
+    "title": "Faz o L Vinheta",
+    "slug": "faz-o-l-vinheta-77929",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/faz-o-l-vinheta-77929.mp3",
+    "category": "musica",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 4.05,
+    "tags": [
+      "faz",
+      "vinheta"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.04,
+      "true_peak_dbtp": -3.93,
+      "loudness_range_lra": 1.4
     }
   },
   {
@@ -2313,6 +2313,29 @@
     }
   },
   {
+    "id": "arrogante-neymar-13258",
+    "title": "Arrogante Neymar",
+    "name": "Arrogante Neymar",
+    "slug": "arrogante-neymar-13258",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/arrogante-neymar-13258.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 4.86,
+    "tags": [
+      "arrogante",
+      "neymar"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.13,
+      "true_peak_dbtp": -2.06,
+      "loudness_range_lra": 0.3
+    }
+  },
+  {
     "id": "ai-cachorro-estourado-24957",
     "title": "AI CACHORRO ESTOURADO",
     "slug": "ai-cachorro-estourado-24957",
@@ -2447,26 +2470,599 @@
     }
   },
   {
-    "id": "arrogante-neymar-13258",
-    "title": "Arrogante Neymar",
-    "name": "Arrogante Neymar",
-    "slug": "arrogante-neymar-13258",
-    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/arrogante-neymar-13258.mp3",
+    "id": "patricks-wallet-9337",
+    "title": "Patrick's Wallet",
+    "name": "Patrick's Wallet",
+    "slug": "patricks-wallet-9337",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/patricks-wallet-9337.mp3",
     "category": "memes",
     "color": "#EC4899",
     "plays": 0,
-    "duration": 4.86,
+    "duration": 18.55,
     "tags": [
-      "arrogante",
-      "neymar"
+      "patrick's",
+      "wallet"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.74,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 1.5
+    }
+  },
+  {
+    "id": "naod-gg-ez-and-luis-88656",
+    "title": "naod gg ez and luis",
+    "name": "naod gg ez and luis",
+    "slug": "naod-gg-ez-and-luis-88656",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/naod-gg-ez-and-luis-88656.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 3.94,
+    "tags": [
+      "naod",
+      "and",
+      "luis"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.67,
+      "true_peak_dbtp": -7.27,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "octopup-46560",
+    "title": "octopup",
+    "name": "octopup",
+    "slug": "octopup-46560",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/octopup-46560.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 14.71,
+    "tags": [
+      "octopup"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.21,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 2.5
+    }
+  },
+  {
+    "id": "mcdonnell-douglas-dc-10-pull-up-79543",
+    "title": "McDonnell Douglas DC-10 Pull Up.",
+    "name": "McDonnell Douglas DC-10 Pull Up.",
+    "slug": "mcdonnell-douglas-dc-10-pull-up-79543",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mcdonnell-douglas-dc-10-pull-up-79543.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 9.95,
+    "tags": [
+      "mcdonnell",
+      "douglas",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.02,
+      "true_peak_dbtp": -8.87,
+      "loudness_range_lra": 0.3
+    }
+  },
+  {
+    "id": "mcdonnell-douglas-dc-9-pull-up-39276",
+    "title": "McDonnell Douglas DC-9 Pull up",
+    "name": "McDonnell Douglas DC-9 Pull up",
+    "slug": "mcdonnell-douglas-dc-9-pull-up-39276",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mcdonnell-douglas-dc-9-pull-up-39276.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 4.7,
+    "tags": [
+      "mcdonnell",
+      "douglas",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -14.84,
+      "true_peak_dbtp": -2.61,
+      "loudness_range_lra": 0.1
+    }
+  },
+  {
+    "id": "mcdonnell-douglas-dc-8-pull-up-59242",
+    "title": "McDonnell Douglas DC-8 Pull Up!",
+    "name": "McDonnell Douglas DC-8 Pull Up!",
+    "slug": "mcdonnell-douglas-dc-8-pull-up-59242",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/mcdonnell-douglas-dc-8-pull-up-59242.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 6.69,
+    "tags": [
+      "mcdonnell",
+      "douglas",
+      "pull",
+      "up!"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.8,
+      "true_peak_dbtp": -3.45,
+      "loudness_range_lra": 1.3
+    }
+  },
+  {
+    "id": "objectify-octo-4001",
+    "title": "objectify octo",
+    "name": "objectify octo",
+    "slug": "objectify-octo-4001",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/objectify-octo-4001.mp3",
+    "category": "memes",
+    "color": "#8B5CF6",
+    "plays": 0,
+    "duration": 5.3,
+    "tags": [
+      "objectify",
+      "octo"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.65,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 1.8
+    }
+  },
+  {
+    "id": "under-joke-arrest-82988",
+    "title": "under joke arrest",
+    "name": "under joke arrest",
+    "slug": "under-joke-arrest-82988",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/under-joke-arrest-82988.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 8.18,
+    "tags": [
+      "under",
+      "joke",
+      "arrest"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.07,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.8
+    }
+  },
+  {
+    "id": "octo-wants-to-be-kicked-around-by-a-woman-96742",
+    "title": "octo wants to be kicked around by a woman",
+    "name": "octo wants to be kicked around by a woman",
+    "slug": "octo-wants-to-be-kicked-around-by-a-woman-96742",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/octo-wants-to-be-kicked-around-by-a-woman-96742.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 5.59,
+    "tags": [
+      "octo",
+      "wants",
+      "kicked",
+      "around",
+      "woman"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.61,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.5
+    }
+  },
+  {
+    "id": "fart-mtl-4009",
+    "title": "fart mtl",
+    "name": "fart mtl",
+    "slug": "fart-mtl-4009",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/fart-mtl-4009.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 2.04,
+    "tags": [
+      "fart",
+      "mtl"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.98,
+      "true_peak_dbtp": -1.93,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "m-explode3-18473",
+    "title": "M Explode3",
+    "name": "M Explode3",
+    "slug": "m-explode3-18473",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/m-explode3-18473.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 2.14,
+    "tags": [
+      "explode3"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -8.2,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "tupolev-tu-154-pull-up-86452",
+    "title": "Tupolev tu-154 Pull Up!",
+    "name": "Tupolev tu-154 Pull Up!",
+    "slug": "tupolev-tu-154-pull-up-86452",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/tupolev-tu-154-pull-up-86452.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 4.0,
+    "tags": [
+      "tupolev",
+      "154",
+      "pull",
+      "up!"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -14.28,
+      "true_peak_dbtp": -2.61,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "boeing-737-classic-pull-up-88802",
+    "title": "Boeing 737 classic Pull up",
+    "name": "Boeing 737 classic Pull up",
+    "slug": "boeing-737-classic-pull-up-88802",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/boeing-737-classic-pull-up-88802.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 4.96,
+    "tags": [
+      "boeing",
+      "737",
+      "classic",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -10.03,
+      "loudness_range_lra": 0.4
+    }
+  },
+  {
+    "id": "bonggg-9269",
+    "title": "bonggg",
+    "name": "bonggg",
+    "slug": "bonggg-9269",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/bonggg-9269.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 0.97,
+    "tags": [
+      "bonggg"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.0,
+      "true_peak_dbtp": -3.99,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "slipperyyy-27457",
+    "title": "slipperyyy",
+    "name": "slipperyyy",
+    "slug": "slipperyyy-27457",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/slipperyyy-27457.mp3",
+    "category": "memes",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 2.09,
+    "tags": [
+      "slipperyyy"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.02,
+      "true_peak_dbtp": -8.41,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "boeing-737-200-pull-up-78091",
+    "title": "Boeing 737-200 pull up",
+    "name": "Boeing 737-200 pull up",
+    "slug": "boeing-737-200-pull-up-78091",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/boeing-737-200-pull-up-78091.mp3",
+    "category": "memes",
+    "color": "#E11D48",
+    "plays": 0,
+    "duration": 6.95,
+    "tags": [
+      "boeing",
+      "737",
+      "200",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -8.28,
+      "loudness_range_lra": 0.3
+    }
+  },
+  {
+    "id": "boeing-787-pull-up-91359",
+    "title": "Boeing 787 Pull Up.",
+    "name": "Boeing 787 Pull Up.",
+    "slug": "boeing-787-pull-up-91359",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/boeing-787-pull-up-91359.mp3",
+    "category": "memes",
+    "color": "#8B5CF6",
+    "plays": 0,
+    "duration": 9.74,
+    "tags": [
+      "boeing",
+      "787",
+      "pull"
     ],
     "isTrending": true,
     "loudness": {
       "standard": "EBU R128",
       "target_lufs": -16.0,
       "integrated_lufs": -16.13,
-      "true_peak_dbtp": -2.06,
+      "true_peak_dbtp": -3.5,
+      "loudness_range_lra": 0.6
+    }
+  },
+  {
+    "id": "old-airbus-a380-pull-up-11115",
+    "title": "Old Airbus A380 Pull Up",
+    "name": "Old Airbus A380 Pull Up",
+    "slug": "old-airbus-a380-pull-up-11115",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/old-airbus-a380-pull-up-11115.mp3",
+    "category": "memes",
+    "color": "#0EA5E9",
+    "plays": 0,
+    "duration": 2.4,
+    "tags": [
+      "old",
+      "airbus",
+      "a380",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -5.17,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "airbus-a380-pull-up-7845",
+    "title": "Airbus A380 Pull up.",
+    "name": "Airbus A380 Pull up.",
+    "slug": "airbus-a380-pull-up-7845",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/airbus-a380-pull-up-7845.mp3",
+    "category": "memes",
+    "color": "#F59E0B",
+    "plays": 0,
+    "duration": 2.46,
+    "tags": [
+      "airbus",
+      "a380",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.01,
+      "true_peak_dbtp": -3.48,
+      "loudness_range_lra": 0.0
+    }
+  },
+  {
+    "id": "taser-face-71357",
+    "title": "Taser face",
+    "name": "Taser face",
+    "slug": "taser-face-71357",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/taser-face-71357.mp3",
+    "category": "memes",
+    "color": "#10B981",
+    "plays": 0,
+    "duration": 4.57,
+    "tags": [
+      "taser",
+      "face"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.62,
+      "true_peak_dbtp": -6.41,
       "loudness_range_lra": 0.3
+    }
+  },
+  {
+    "id": "airbus-a350-pull-up-71442",
+    "title": "Airbus A350 Pull up.",
+    "name": "Airbus A350 Pull up.",
+    "slug": "airbus-a350-pull-up-71442",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/airbus-a350-pull-up-71442.mp3",
+    "category": "memes",
+    "color": "#EC4899",
+    "plays": 0,
+    "duration": 6.03,
+    "tags": [
+      "airbus",
+      "a350",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.44,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 1.2
+    }
+  },
+  {
+    "id": "airbus-a330-and-a340-pull-up-2999",
+    "title": "Airbus A330 and A340 pull up.",
+    "name": "Airbus A330 and A340 pull up.",
+    "slug": "airbus-a330-and-a340-pull-up-2999",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/airbus-a330-and-a340-pull-up-2999.mp3",
+    "category": "memes",
+    "color": "#6366F1",
+    "plays": 0,
+    "duration": 6.16,
+    "tags": [
+      "airbus",
+      "a330",
+      "and",
+      "a340",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.6,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.4
+    }
+  },
+  {
+    "id": "hdgdgdgjadgadjag-70434",
+    "title": "hDgDgDGJadgadjag",
+    "name": "hDgDgDGJadgadjag",
+    "slug": "hdgdgdgjadgadjag-70434",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/hdgdgdgjadgadjag-70434.mp3",
+    "category": "memes",
+    "color": "#EF4444",
+    "plays": 0,
+    "duration": 8.99,
+    "tags": [
+      "hdgdgdgjadgadjag"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.94,
+      "true_peak_dbtp": -11.33,
+      "loudness_range_lra": 0.4
+    }
+  },
+  {
+    "id": "airbus-a320-pull-up-33332",
+    "title": "Airbus A320 Pull up.",
+    "name": "Airbus A320 Pull up.",
+    "slug": "airbus-a320-pull-up-33332",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/airbus-a320-pull-up-33332.mp3",
+    "category": "memes",
+    "color": "#14B8A6",
+    "plays": 0,
+    "duration": 6.01,
+    "tags": [
+      "airbus",
+      "a320",
+      "pull"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -15.35,
+      "true_peak_dbtp": -1.5,
+      "loudness_range_lra": 0.8
+    }
+  },
+  {
+    "id": "german-song-loud-asf-53394",
+    "title": "German song loud asf",
+    "name": "German song loud asf",
+    "slug": "german-song-loud-asf-53394",
+    "audioUrl": "https://bfwdlanqfokvmxhzfdie.supabase.co/storage/v1/object/public/sounds/german-song-loud-asf-53394.mp3",
+    "category": "musica",
+    "color": "#EAB308",
+    "plays": 0,
+    "duration": 12.64,
+    "tags": [
+      "german",
+      "song",
+      "loud",
+      "asf"
+    ],
+    "isTrending": true,
+    "loudness": {
+      "standard": "EBU R128",
+      "target_lufs": -16.0,
+      "integrated_lufs": -16.14,
+      "true_peak_dbtp": -9.87,
+      "loudness_range_lra": 1.0
     }
   },
   {
