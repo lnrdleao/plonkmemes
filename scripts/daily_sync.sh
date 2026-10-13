@@ -3,7 +3,7 @@ set -euo pipefail
 
 # 1. Configuração de ambiente e paths
 export PATH="/home/leonardo/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
-PROJECT_DIR="/home/leonardo/.openclaw/workspace/memesounds"
+PROJECT_DIR="/home/leonardo/workspace/memesounds"
 cd "$PROJECT_DIR"
 
 echo "=================================================="
