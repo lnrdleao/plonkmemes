@@ -14,6 +14,7 @@ const supabase: SupabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
 // Cache global
 let memoryStats: Record<string, number> = {};
 let lastLoadedTime = 0;
+const STATS_CACHE_TTL_MS = 30_000;
 let postgresTableAvailable: boolean | null = null;
 
 // Fila de gravação para o storage para evitar colisões
@@ -97,6 +98,12 @@ export async function getSoundStats(): Promise<{
   stats: Record<string, number>;
   totalPlays: number;
 }> {
+  const now = Date.now();
+  if (now - lastLoadedTime < STATS_CACHE_TTL_MS && Object.keys(memoryStats).length > 0) {
+    const total = Object.values(memoryStats).reduce((a, b) => a + b, 0);
+    return { stats: memoryStats, totalPlays: total };
+  }
+
   // 1. Tenta carregar do Postgres
   if (postgresTableAvailable !== false) {
     try {
@@ -114,10 +121,11 @@ export async function getSoundStats(): Promise<{
           total += p;
         });
         memoryStats = result;
+        lastLoadedTime = Date.now();
         return { stats: memoryStats, totalPlays: total };
       }
 
-      if (error && (error.code === 'PGRST205' || error.code === 'PGRST202')) {
+      if (error) {
         postgresTableAvailable = false;
       }
     } catch {
@@ -134,6 +142,7 @@ export async function getSoundStats(): Promise<{
     if (downloadData) {
       const parsed: Record<string, number> = JSON.parse(await downloadData.text());
       memoryStats = { ...parsed };
+      lastLoadedTime = Date.now();
       const total = Object.values(memoryStats).reduce((a, b) => a + b, 0);
       return { stats: memoryStats, totalPlays: total };
     }

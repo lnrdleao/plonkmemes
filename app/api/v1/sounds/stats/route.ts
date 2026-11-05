@@ -7,7 +7,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 30;
 
 export async function GET() {
   try {
@@ -17,7 +17,9 @@ export async function GET() {
       status: 200,
       headers: {
         ...CORS_HEADERS,
-        'Cache-Control': 'public, max-age=0, s-maxage=5, stale-while-revalidate=10',
+        'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
+        'CDN-Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
+        'Vercel-CDN-Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
       },
     });
   } catch (err: any) {

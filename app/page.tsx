@@ -94,6 +94,43 @@ export default function HomePage() {
       if (savedView === 'waveform' || savedView === 'cassette' || savedView === 'pocket') {
         setViewMode(savedView);
       }
+
+      // Suporte a deep-links de SEO (sitemap) e compartilhamento (?sound=, ?cat=, ?q=, #id)
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get('cat');
+      const qParam = params.get('q');
+      const soundParam = params.get('sound') || window.location.hash.replace(/^#/, '');
+
+      const validCategories = [
+        'todos',
+        'em-alta',
+        'memes',
+        'games',
+        'tv-filmes',
+        'efeitos',
+        'streamers',
+        'musica',
+        'bordoes',
+        'favoritos',
+      ];
+      if (catParam && validCategories.includes(catParam)) {
+        setSelectedCategory(catParam as CategoryFilter | 'favoritos');
+      }
+      if (qParam) {
+        setSearchQuery(qParam);
+        if (!catParam) setSelectedCategory('todos');
+      }
+      if (soundParam) {
+        const decoded = decodeURIComponent(soundParam);
+        const matched = INITIAL_SOUNDS.find(
+          (s) => s.id === decoded || s.slug === decoded
+        );
+        if (matched) {
+          setDeckSound(matched);
+          setSelectedCategory('todos');
+          setSearchQuery(matched.title);
+        }
+      }
     } catch {
       // ignore parse errors
     }
