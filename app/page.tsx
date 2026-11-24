@@ -30,7 +30,9 @@ import { INITIAL_SOUNDS } from './data/initial-sounds';
 import { CassetteTape } from './components/CassetteTape';
 import { CassettePlayer } from './components/CassettePlayer';
 import { WaveCapsule } from './components/WaveCapsule';
+import { WaveMasterPlayer } from './components/WaveMasterPlayer';
 import { PocketPlayer } from './components/PocketPlayer';
+import { PodMasterPlayer } from './components/PodMasterPlayer';
 import { UploadModal } from './components/UploadModal';
 import { supabase } from './lib/supabaseClient';
 import { formatPlays } from './lib/formatters';
@@ -934,8 +936,8 @@ export default function HomePage() {
 
       {/* Main Content Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-6">
-        {/* Master Retro Cassette Deck (Compact by default for cleaner above-the-fold) */}
-        {deckSound && (
+        {/* Master Hero Player matched to active skin (Cassete / Wave / Pod) */}
+        {deckSound && viewMode === 'cassette' && (
           <CassettePlayer
             sound={deckSound}
             isPlaying={activePlayingIds.includes(deckSound.id)}
@@ -943,7 +945,29 @@ export default function HomePage() {
             onTogglePlay={playSound}
             onShuffle={handleShuffleTape}
             onStopAll={stopAllSounds}
-            isMinimizedDefault={true}
+            isMinimizedDefault={false}
+          />
+        )}
+        {deckSound && viewMode === 'waveform' && (
+          <WaveMasterPlayer
+            sound={deckSound}
+            isPlaying={activePlayingIds.includes(deckSound.id)}
+            activeAudio={activeMasterAudio}
+            onTogglePlay={playSound}
+            onShuffle={handleShuffleTape}
+            onStopAll={stopAllSounds}
+            isMinimizedDefault={false}
+          />
+        )}
+        {deckSound && viewMode === 'pocket' && (
+          <PodMasterPlayer
+            sound={deckSound}
+            isPlaying={activePlayingIds.includes(deckSound.id)}
+            activeAudio={activeMasterAudio}
+            onTogglePlay={playSound}
+            onShuffle={handleShuffleTape}
+            onStopAll={stopAllSounds}
+            isMinimizedDefault={false}
           />
         )}
 
