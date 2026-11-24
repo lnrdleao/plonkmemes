@@ -171,7 +171,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
 
           {/* Real-time LCD Progress Scrubber */}
           <div className="mt-2 w-full h-1.5 bg-zinc-800/90 rounded-full overflow-hidden shadow-inner">
-            {isPlaying ? (
+            {isPlaying && (
               <div
                 className="h-full w-full origin-left plonk-card-progress rounded-full"
                 style={{
@@ -179,11 +179,6 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
                   boxShadow: `0 0 8px ${accent}`,
                   animationDuration: `${durationSec}s`,
                 }}
-              />
-            ) : (
-              <div
-                className="h-full w-1/5 rounded-full opacity-45"
-                style={{ backgroundColor: accent }}
               />
             )}
           </div>
