@@ -58,3 +58,18 @@
 .plonk-toast-in {
   animation: plonkToastIn 0.18s ease-out forwards;
 }
+
+@keyframes plonkWaveSweep {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+.plonk-wave-sweep {
+  animation-name: plonkWaveSweep;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}

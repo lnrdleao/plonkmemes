@@ -19,6 +19,9 @@ interface CassetteTapeProps {
 
 const REEL_SPOKES = [0, 60, 120, 180, 240, 300] as const;
 
+const CASSETTE_GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+
 function MiniScrew({ className = '' }: { className?: string }) {
   const slotClasses =
     'absolute top-1/2 right-[18%] left-[18%] h-[14%] -translate-y-1/2 rounded-full bg-[#181816] shadow-[inset_0_1px_1px_rgba(0,0,0,0.85),0_1px_rgba(255,255,255,0.15)]';
@@ -34,26 +37,38 @@ function MiniScrew({ className = '' }: { className?: string }) {
   );
 }
 
-function MiniReel({ isSpinning = false }: { isSpinning?: boolean }) {
+function MiniReel({
+  isSpinning = false,
+  tapeScale = 1,
+}: {
+  isSpinning?: boolean;
+  tapeScale?: number;
+}) {
   return (
-    <div className="relative w-6 h-6 shrink-0 flex items-center justify-center pointer-events-none">
+    <div className="relative w-7 h-7 shrink-0 flex items-center justify-center pointer-events-none">
+      {/* Wound magnetic oxide tape pack ring */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full border border-[#3a281c]/70 bg-[radial-gradient(circle,#261b14_48%,#3b2a1f_68%,#1b130e_100%)] shadow-[inset_0_0_4px_rgba(0,0,0,0.9)]"
+        style={{ transform: `scale(${tapeScale})` }}
+      />
       <svg
         aria-hidden="true"
-        className={`w-full h-full origin-center ${isSpinning ? 'animate-spin' : ''}`}
+        className={`relative z-10 w-5 h-5 origin-center ${isSpinning ? 'animate-spin' : ''}`}
         style={{ animationDuration: '0.8s' }}
         viewBox="0 0 100 100"
       >
-        <circle className="fill-[#181817] stroke-[#0d0c0b] [stroke-width:2]" cx="50" cy="50" r="48" />
+        <circle className="fill-[#1c1b19] stroke-[#0d0c0b] [stroke-width:2]" cx="50" cy="50" r="48" />
         {REEL_SPOKES.map((rot) => (
           <path
             key={rot}
-            className="fill-[#2a2926] stroke-[#0a0a09] [stroke-width:1.5]"
-            d="M46 4h8v9a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"
+            className="fill-[#d4d4d8]/25 stroke-[#0a0a09] [stroke-width:1.5]"
+            d="M46 4h8v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"
             transform={`rotate(${rot} 50 50)`}
           />
         ))}
         <circle className="fill-none stroke-[#121110] [stroke-width:3]" cx="50" cy="50" r="48" />
-        <circle className="fill-[#0c0b0a] stroke-[#3a3936] [stroke-width:1.5]" cx="50" cy="50" r="14" />
+        <circle className="fill-[#0c0b0a] stroke-[#52525b] [stroke-width:2]" cx="50" cy="50" r="15" />
       </svg>
     </div>
   );
@@ -101,7 +116,7 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
   const categoryColor = sound.color || '#f43f5e';
   const catalogueNum = sound.rank
     ? `#${String(sound.rank).padStart(3, '0')}`
-    : `#${sound.id.slice(-5).toUpperCase()}`;
+    : `#${sound.id.slice(-4).toUpperCase()}`;
 
   return (
     <div
@@ -114,42 +129,46 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
           onPlay(sound);
         }
       }}
-      className={`group relative select-none rounded-xl p-2.5 sm:p-3 transition-all duration-200 cursor-pointer overflow-hidden ${
+      className={`group relative select-none rounded-xl p-2.5 sm:p-3 transition-all duration-200 cursor-pointer overflow-hidden active:scale-[0.98] ${
         isPlaying
-          ? 'scale-[1.02] shadow-2xl shadow-rose-500/25 ring-2 ring-rose-500 bg-[linear-gradient(165deg,#323230_0%,#1f1f1e_52%,#121211_100%)]'
-          : 'bg-[linear-gradient(165deg,#262624_0%,#181817_52%,#0e0e0d_100%)] border border-zinc-800/90 hover:border-zinc-700 hover:shadow-xl hover:scale-[1.01]'
+          ? 'scale-[1.02] shadow-2xl shadow-rose-500/25 ring-2 ring-rose-500 bg-[linear-gradient(165deg,#343330_0%,#201f1d_52%,#121210_100%)]'
+          : 'bg-[linear-gradient(165deg,#282724_0%,#191816_52%,#0f0e0d_100%)] border border-zinc-800/90 hover:border-zinc-700 hover:shadow-xl hover:scale-[1.01]'
       }`}
+      style={{
+        boxShadow: isPlaying
+          ? undefined
+          : 'inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.6)',
+      }}
     >
-      {/* Hotkey Badge (1-9) */}
-      {hotkey !== undefined && (
-        <span
-          aria-hidden="true"
-          title={`Atalho: tecla ${hotkey}`}
-          className="hidden sm:inline-flex items-center justify-center absolute top-1.5 right-1.5 z-20 min-w-[18px] h-[18px] px-1 rounded bg-zinc-950/90 border border-zinc-700/80 text-[9px] font-mono font-bold text-zinc-400 group-hover:text-amber-300 group-hover:border-amber-500/50 transition-colors pointer-events-none"
-        >
-          {hotkey}
-        </span>
-      )}
-      {/* 4 Authentic Chassis Screws */}
-      <MiniScrew className="top-2 left-2" />
-      <MiniScrew className="top-2 right-2" />
-      <MiniScrew className="bottom-2 left-2" />
-      <MiniScrew className="bottom-2 right-2" />
-
-      {/* Cassette Upper Label (Side A & Title) */}
+      {/* Satin Molded Plastic Grain Texture */}
       <div
-        className="relative overflow-hidden rounded-lg p-2.5 transition-colors border shadow-[inset_0_0_8px_rgba(0,0,0,0.5)]"
+        aria-hidden="true"
+        className="absolute inset-0 opacity-[0.06] mix-blend-overlay pointer-events-none"
+        style={{ backgroundImage: CASSETTE_GRAIN }}
+      />
+
+      {/* 4 Authentic Chassis Screws */}
+      <MiniScrew className="top-1.5 left-1.5" />
+      <MiniScrew className="top-1.5 right-1.5" />
+      <MiniScrew className="bottom-1.5 left-1.5" />
+      <MiniScrew className="bottom-1.5 right-1.5" />
+
+      {/* Matte Ruled Paper Upper Label (TDK / Maxell Style) */}
+      <div
+        className="relative overflow-hidden rounded-lg p-2.5 transition-colors border shadow-[inset_0_1px_4px_rgba(0,0,0,0.45)]"
         style={{
-          backgroundColor: isPlaying ? '#242320' : '#1c1b18',
-          borderColor: isPlaying ? `${categoryColor}80` : '#27272a',
+          backgroundColor: isPlaying ? '#2a2824' : '#22201d',
+          backgroundImage:
+            'repeating-linear-gradient(0deg, transparent, transparent 13px, rgba(255,255,255,0.035) 13px, rgba(255,255,255,0.035) 14px)',
+          borderColor: isPlaying ? `${categoryColor}90` : '#32302c',
           borderLeftWidth: '4px',
           borderLeftColor: categoryColor,
         }}
       >
         <div className="flex items-center justify-between gap-1 mb-1">
           <div className="flex items-center gap-1.5 min-w-0">
-            <span className="text-[10px] font-black uppercase tracking-wider text-zinc-400 truncate">
-              LADO A • {sound.category.toUpperCase()}
+            <span className="text-[10px] font-black uppercase tracking-wider text-zinc-300/80 truncate">
+              A • {sound.category.toUpperCase()}
             </span>
             {sound.rank !== undefined && (
               <span
@@ -177,38 +196,66 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
               </span>
             )}
           </div>
-          <span className="text-[10px] font-mono text-zinc-400 shrink-0">
-            {catalogueNum}
-          </span>
+
+          <div className="flex items-center gap-1 shrink-0">
+            <span className="text-[10px] font-mono text-zinc-400">{catalogueNum}</span>
+            {hotkey !== undefined && (
+              <span
+                aria-hidden="true"
+                title={`Atalho: tecla ${hotkey}`}
+                className="hidden sm:inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded bg-zinc-950/90 border border-zinc-700/90 text-[9px] font-mono font-bold text-zinc-300 group-hover:text-amber-300 group-hover:border-amber-500/60 transition-colors"
+              >
+                {hotkey}
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Sound Title */}
-        <h3 className="font-bold text-sm text-zinc-100 tracking-tight line-clamp-1 group-hover:text-white">
+        <h3 className="font-bold text-sm text-zinc-50 tracking-tight line-clamp-1 group-hover:text-white">
           {sound.title}
         </h3>
       </div>
 
       {/* Retro 3-Stripe Accent Line across the cassette center */}
       <div className="relative mt-2 px-1">
-        <div className="grid grid-rows-3 gap-y-0.5 h-1.5 rounded-full overflow-hidden opacity-80">
+        <div className="grid grid-rows-3 gap-y-0.5 h-1.5 rounded-full overflow-hidden opacity-85">
           <span style={{ backgroundColor: categoryColor }} />
           <span className="bg-amber-500" />
           <span className="bg-emerald-500" />
         </div>
       </div>
 
-      {/* Cassette Center Window with Dual SVG Spool Gears */}
-      <div className="relative my-2 h-10 rounded-md bg-[#141311] border border-zinc-800/80 px-3 flex items-center justify-between overflow-hidden shadow-[inset_0_2px_6px_rgba(0,0,0,0.8)]">
-        {/* Left Spool / Reel */}
-        <MiniReel isSpinning={isPlaying} />
+      {/* Translucent Tape Window with Wound Magnetic Spools, Scale Marks & Glass Glare */}
+      <div className="relative my-2 h-11 rounded-md bg-[#11100e] border border-zinc-800/90 px-2.5 flex items-center justify-between overflow-hidden shadow-[inset_0_3px_8px_rgba(0,0,0,0.85)]">
+        {/* Diagonal Glass Glare across Tape Window */}
+        <div
+          aria-hidden="true"
+          className="absolute -top-4 left-6 w-16 h-20 rotate-[28deg] bg-gradient-to-b from-white/[0.06] to-transparent pointer-events-none"
+        />
 
-        {/* Central Play/Stop Trigger (Evident Functionality) */}
+        {/* Subtle Tape Gauge Scale Marks */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-1 inset-x-10 flex items-center justify-between opacity-25 pointer-events-none"
+        >
+          <span className="w-[1px] h-1.5 bg-zinc-400" />
+          <span className="w-[1px] h-1 bg-zinc-500" />
+          <span className="w-[1px] h-1.5 bg-zinc-400" />
+          <span className="w-[1px] h-1 bg-zinc-500" />
+          <span className="w-[1px] h-1.5 bg-zinc-400" />
+        </div>
+
+        {/* Left Spool with fuller tape pack */}
+        <MiniReel isSpinning={isPlaying} tapeScale={1.08} />
+
+        {/* Central Play/Stop Trigger */}
         <div className="flex-1 mx-2 flex items-center justify-center z-10">
           <div
             className={`flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase transition-all shadow-md ${
               isPlaying
-                ? 'text-white scale-105 shadow-lg shadow-rose-500/30 ring-2 ring-white/40 animate-pulse'
-                : 'bg-zinc-850 hover:bg-zinc-750 text-zinc-200 border border-zinc-700/90 group-hover:scale-105 group-hover:border-zinc-500'
+                ? 'text-white scale-105 shadow-lg shadow-rose-500/30 ring-2 ring-white/40'
+                : 'bg-zinc-900/95 hover:bg-zinc-800 text-zinc-200 border border-zinc-700/90 group-hover:scale-105 group-hover:border-zinc-500'
             }`}
             style={{
               backgroundColor: isPlaying ? categoryColor : undefined,
@@ -228,15 +275,15 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
           </div>
         </div>
 
-        {/* Right Spool / Reel */}
-        <MiniReel isSpinning={isPlaying} />
+        {/* Right Spool */}
+        <MiniReel isSpinning={isPlaying} tapeScale={0.94} />
       </div>
 
       {/* Cassette Footer & Quick Actions */}
-      <div className="flex items-center justify-between text-zinc-500 pt-1 text-[11px]">
+      <div className="relative flex items-center justify-between text-zinc-500 pt-0.5 text-[11px]">
         <div className="flex items-center gap-1.5">
           <span
-            className="inline-block w-1.5 h-1.5 rounded-full"
+            className={`inline-block w-1.5 h-1.5 rounded-full ${isPlaying ? 'animate-pulse' : ''}`}
             style={{ backgroundColor: isPlaying ? '#10B981' : '#52525b' }}
           />
           <span className="font-mono text-[10px]">

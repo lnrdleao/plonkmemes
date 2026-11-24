@@ -56,6 +56,9 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
     if (onDelete) onDelete(sound.id);
   };
 
+  const accent = sound.color || '#F59E0B';
+  const durationSec = Math.max(sound.duration || 2, 0.5);
+
   return (
     <div
       onClick={() => onPlay(sound)}
@@ -67,158 +70,172 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
           onPlay(sound);
         }
       }}
-      className={`group relative select-none rounded-2xl p-3.5 transition-all duration-200 cursor-pointer overflow-hidden ${
+      className={`group relative select-none rounded-2xl p-3 transition-all duration-200 cursor-pointer overflow-hidden active:scale-[0.98] ${
         isPlaying
-          ? 'scale-[1.02] shadow-xl shadow-rose-500/25 ring-2 ring-white/50'
-          : 'border border-zinc-800/80 hover:border-zinc-700 hover:shadow-lg'
+          ? 'scale-[1.02] shadow-xl ring-2 ring-white/45'
+          : 'border border-zinc-700/70 hover:border-zinc-600 hover:shadow-xl'
       }`}
       style={{
-        background: `linear-gradient(165deg, ${sound.color}22 0%, #18181b 45%, #09090b 100%)`,
-        borderColor: isPlaying ? sound.color : undefined,
+        background: `linear-gradient(155deg, ${accent}33 0%, #232327 36%, #141417 75%, #0c0c0e 100%)`,
+        borderColor: isPlaying ? accent : undefined,
+        boxShadow: isPlaying
+          ? `0 12px 26px -8px ${accent}50, inset 0 1px 0 rgba(255,255,255,0.22)`
+          : 'inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.6)',
       }}
     >
-      {/* Hotkey Badge (1-9) */}
-      {hotkey !== undefined && (
-        <span
-          aria-hidden="true"
-          title={`Atalho: tecla ${hotkey}`}
-          className="hidden sm:inline-flex items-center justify-center absolute top-2 right-2 z-20 min-w-[18px] h-[18px] px-1 rounded bg-zinc-950/90 border border-zinc-700/80 text-[9px] font-mono font-bold text-zinc-400 group-hover:text-amber-300 group-hover:border-amber-500/50 transition-colors pointer-events-none"
-        >
-          {hotkey}
-        </span>
-      )}
-      {/* Metallic Specular Bezel Highlight */}
+      {/* Brushed Aluminum Top Edge Specular Highlight */}
       <div
-        className="absolute top-0 inset-x-0 h-1 opacity-75 rounded-t-2xl"
+        aria-hidden="true"
+        className="absolute top-0 inset-x-3 h-[1.5px] opacity-80 rounded-t-2xl pointer-events-none"
         style={{
-          background: `linear-gradient(90deg, transparent, ${sound.color}, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${accent}, rgba(255,255,255,0.65), ${accent}, transparent)`,
         }}
       />
 
-      {/* Retro Backlit Screen Window */}
+      {/* Retro Backlit LCD Screen Window with Acrylic Glass Glare */}
       <div
-        className={`relative rounded-xl p-2.5 transition-all duration-300 border ${
+        className={`relative rounded-xl p-2 transition-all duration-300 border overflow-hidden ${
           isPlaying
-            ? 'bg-zinc-900 border-zinc-700 shadow-inner'
-            : 'bg-zinc-950/90 border-zinc-850'
+            ? 'bg-[#12161c] border-zinc-600/80'
+            : 'bg-[#0c0e12] border-zinc-800/90'
         }`}
         style={{
-          boxShadow: isPlaying ? `0 0 16px ${sound.color}20 inset` : undefined,
+          boxShadow: isPlaying
+            ? `inset 0 0 18px ${accent}28, inset 0 2px 6px rgba(0,0,0,0.8)`
+            : 'inset 0 2px 6px rgba(0,0,0,0.85)',
         }}
       >
+        {/* Diagonal Acrylic Glass Reflection */}
+        <div
+          aria-hidden="true"
+          className="absolute -top-6 -left-6 w-28 h-24 rotate-[25deg] bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none"
+        />
+
         {/* Screen Top Status Bar */}
-        <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400 pb-1.5 border-b border-zinc-800/80">
-          <div className="flex items-center gap-1">
+        <div className="relative flex items-center justify-between gap-1 text-[9px] font-mono text-zinc-400 pb-1 border-b border-zinc-800/80">
+          <div className="flex items-center gap-1 min-w-0">
             {isPlaying ? (
               <span className="flex items-center gap-1 font-bold text-emerald-400 animate-pulse">
-                <Volume2 className="w-2.5 h-2.5" />
-                <span>TOCANDO</span>
+                <Volume2 className="w-2.5 h-2.5 shrink-0" />
+                <span>PLAY</span>
               </span>
             ) : (
-              <span className="text-zinc-500 font-medium">POCKET POD</span>
+              <span className="text-zinc-500 font-semibold tracking-tight">POD</span>
+            )}
+
+            {sound.rank !== undefined && (
+              <span
+                className={`px-1 py-0.2 rounded text-[8px] font-black tracking-tight flex items-center gap-0.5 shrink-0 ${
+                  sound.rank === 1
+                    ? 'bg-amber-400/25 text-amber-300 border border-amber-400/50'
+                    : sound.rank === 2
+                    ? 'bg-slate-300/25 text-slate-200 border border-slate-300/50'
+                    : sound.rank === 3
+                    ? 'bg-amber-700/25 text-amber-400 border border-amber-600/50'
+                    : 'bg-rose-500/15 text-rose-300 border border-rose-500/25'
+                }`}
+              >
+                {sound.rank === 1 ? '🥇#1' : sound.rank === 2 ? '🥈#2' : sound.rank === 3 ? '🥉#3' : `#${sound.rank}`}
+              </span>
+            )}
+            {sound.isTrending && sound.rank === undefined && (
+              <span className="px-1 rounded bg-amber-500/20 text-amber-300 text-[8px] font-bold shrink-0">
+                🔥
+              </span>
             )}
           </div>
 
-          {sound.rank !== undefined && (
-            <span
-              className={`px-1.5 py-0.2 rounded text-[8px] font-black tracking-tight flex items-center gap-0.5 ${
-                sound.rank === 1
-                  ? 'bg-amber-400/25 text-amber-300 border border-amber-400/50'
-                  : sound.rank === 2
-                  ? 'bg-slate-300/25 text-slate-200 border border-slate-300/50'
-                  : sound.rank === 3
-                  ? 'bg-amber-700/25 text-amber-400 border border-amber-600/50'
-                  : 'bg-rose-500/15 text-rose-300 border border-rose-500/25'
-              }`}
-            >
-              {sound.rank === 1 ? '🥇 #1' : sound.rank === 2 ? '🥈 #2' : sound.rank === 3 ? '🥉 #3' : `🔥 #${sound.rank}`}
-            </span>
-          )}
-          {sound.isTrending && sound.rank === undefined && (
-            <span className="px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[8px] font-bold">
-              🔥 EM ALTA
-            </span>
-          )}
-          {sound.isCustom && (
-            <span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 text-[8px] font-bold truncate max-w-[80px]">
-              {sound.submitted_by?.name ? `por @${sound.submitted_by.name.split(' ')[0]}` : 'ENVIADO'}
-            </span>
-          )}
-
-          <div className="flex items-center gap-1 text-zinc-400">
-            <span>{sound.duration ? `${sound.duration}s` : '0:02'}</span>
-            <Battery className="w-2.5 h-2.5 text-zinc-400" />
+          <div className="flex items-center gap-1 text-zinc-400 shrink-0">
+            <span>{sound.duration ? `${sound.duration.toFixed(1)}s` : '2.0s'}</span>
+            <Battery className="w-2.5 h-2.5 text-emerald-400/80" />
+            {hotkey !== undefined && (
+              <span
+                aria-hidden="true"
+                title={`Atalho: tecla ${hotkey}`}
+                className="hidden sm:inline-flex items-center justify-center min-w-[15px] h-[15px] px-0.5 rounded bg-zinc-900 border border-zinc-700 text-[8px] font-mono font-bold text-zinc-300"
+              >
+                {hotkey}
+              </span>
+            )}
           </div>
         </div>
 
         {/* Screen Main Content Area */}
-        <div className="py-2.5 text-center">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 line-clamp-1 mb-0.5">
-            {sound.category.toUpperCase()}
+        <div className="relative py-2 text-center">
+          <p className="text-[9px] font-mono uppercase tracking-widest text-zinc-500 line-clamp-1 mb-0.5">
+            {sound.category}
           </p>
           <h3 className="font-black text-sm text-zinc-100 line-clamp-1 tracking-tight group-hover:text-white">
             {sound.title}
           </h3>
 
-          {/* Mini Scrubber / Audio Progress Bar */}
-          <div className="mt-2 w-full h-1.5 bg-zinc-800/90 rounded-full overflow-hidden flex items-center px-0.5">
-            <div
-              className={`h-1 rounded-full transition-all ${
-                isPlaying ? 'w-full animate-pulse' : 'w-1/4'
-              }`}
-              style={{
-                backgroundColor: sound.color,
-              }}
-            />
+          {/* Real-time LCD Progress Scrubber */}
+          <div className="mt-2 w-full h-1.5 bg-zinc-800/90 rounded-full overflow-hidden shadow-inner">
+            {isPlaying ? (
+              <div
+                className="h-full w-full origin-left plonk-card-progress rounded-full"
+                style={{
+                  backgroundColor: accent,
+                  boxShadow: `0 0 8px ${accent}`,
+                  animationDuration: `${durationSec}s`,
+                }}
+              />
+            ) : (
+              <div
+                className="h-full w-1/5 rounded-full opacity-45"
+                style={{ backgroundColor: accent }}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {/* The Iconic Tactile Click Wheel */}
-      <div className="relative my-3 flex items-center justify-center">
-        {/* Outer Circular Wheel */}
+      {/* Tactile 3D Click Wheel */}
+      <div className="relative my-2.5 flex items-center justify-center">
         <div
-          className={`relative w-20 h-20 rounded-full border flex items-center justify-center transition-all ${
+          className={`relative w-[74px] h-[74px] rounded-full border flex items-center justify-center transition-all duration-200 ${
             isPlaying
-              ? 'bg-zinc-900 border-zinc-700 shadow-lg'
-              : 'bg-zinc-900/90 border-zinc-800 hover:bg-zinc-850 group-hover:scale-105'
+              ? 'border-zinc-500/80 scale-[1.03]'
+              : 'border-zinc-700/80 group-hover:scale-105'
           }`}
           style={{
-            boxShadow: isPlaying ? `0 0 20px ${sound.color}30` : undefined,
+            background:
+              'radial-gradient(circle at 32% 28%, #2e2e33 0%, #1c1c20 55%, #121215 100%)',
+            boxShadow: isPlaying
+              ? `0 0 22px ${accent}38, inset 0 2px 3px rgba(255,255,255,0.14), inset 0 -3px 6px rgba(0,0,0,0.8)`
+              : '0 4px 12px rgba(0,0,0,0.55), inset 0 1.5px 2px rgba(255,255,255,0.1), inset 0 -2px 5px rgba(0,0,0,0.75)',
           }}
         >
-          {/* Top Cardinal Label: MENU */}
-          <span className="absolute top-1.5 text-[8px] font-black tracking-widest text-zinc-400">
+          <span className="absolute top-1 text-[7px] font-black tracking-widest text-zinc-400">
             MENU
           </span>
-
-          {/* Left Cardinal: PREV */}
-          <span className="absolute left-1.5 text-[8px] font-black tracking-tighter text-zinc-400">
+          <span className="absolute left-1.5 text-[7px] font-black tracking-tighter text-zinc-400">
             |◀◀
           </span>
-
-          {/* Right Cardinal: NEXT */}
-          <span className="absolute right-1.5 text-[8px] font-black tracking-tighter text-zinc-400">
+          <span className="absolute right-1.5 text-[7px] font-black tracking-tighter text-zinc-400">
             ▶▶|
           </span>
-
-          {/* Bottom Cardinal: PLAY/PAUSE */}
-          <span className="absolute bottom-1.5 text-[8px] font-black tracking-tighter text-zinc-400">
+          <span className="absolute bottom-1 text-[7px] font-black tracking-tighter text-zinc-400">
             ▶❚❚
           </span>
 
-          {/* Tactile Center Action Button */}
+          {/* Concave Center Action Button */}
           <div
-            className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all shadow-md ${
+            className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all ${
               isPlaying
-                ? 'text-white scale-110 shadow-lg ring-2 ring-white/50'
-                : 'bg-zinc-950 border-zinc-750 text-zinc-200 group-hover:scale-110'
+                ? 'text-white scale-110 ring-2 ring-white/45 border-white/30'
+                : 'border-zinc-700/90 text-zinc-200 group-hover:scale-110'
             }`}
             style={{
-              backgroundColor: isPlaying ? sound.color : undefined,
+              background: isPlaying
+                ? accent
+                : 'radial-gradient(circle at 65% 70%, #26262b 0%, #111114 75%)',
+              boxShadow: isPlaying
+                ? `0 0 12px ${accent}88`
+                : 'inset 0 2px 4px rgba(0,0,0,0.85), 0 1px 1px rgba(255,255,255,0.12)',
             }}
           >
-            <span className="text-[10px] font-black leading-none ml-0.5">
+            <span className="text-[9px] font-black leading-none ml-0.5">
               {isPlaying ? '■' : '▶'}
             </span>
           </div>
@@ -226,7 +243,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
       </div>
 
       {/* Pocket Player Footer & Actions */}
-      <div className="flex items-center justify-between text-zinc-500 pt-1 text-[11px] border-t border-zinc-850/80">
+      <div className="flex items-center justify-between text-zinc-500 pt-1 text-[11px] border-t border-zinc-800/70">
         <div className="flex items-center gap-1.5">
           <span
             className="inline-block w-1.5 h-1.5 rounded-full"
@@ -237,14 +254,13 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
           </span>
         </div>
 
-        {/* Quick Action Icons */}
-        <div className="flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
           {sound.isCustom && onDelete && (
             <button
               type="button"
               onClick={handleDelete}
               title="Excluir este som"
-              className="p-1 text-zinc-400 hover:text-rose-400 transition-colors"
+              className="p-1 text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
             </button>
@@ -253,7 +269,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             type="button"
             onClick={handleShare}
             title="Copiar link"
-            className="p-1 hover:text-zinc-200 transition-colors"
+            className="p-1 hover:text-zinc-200 transition-colors cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
           </button>
@@ -261,7 +277,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             type="button"
             onClick={handleDownload}
             title="Baixar MP3"
-            className="p-1 hover:text-zinc-200 transition-colors"
+            className="p-1 hover:text-zinc-200 transition-colors cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
           </button>
@@ -269,7 +285,7 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
             type="button"
             onClick={handleFavorite}
             title="Favoritar"
-            className={`p-1 transition-colors ${
+            className={`p-1 transition-colors cursor-pointer ${
               isFavorite ? 'text-rose-500' : 'hover:text-rose-400'
             }`}
           >
@@ -277,19 +293,6 @@ export const PocketPlayer: React.FC<PocketPlayerProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Real-time Bottom Progress Bar */}
-      {isPlaying && (
-        <div className="absolute bottom-0 inset-x-0 h-[3px] bg-zinc-900/80 overflow-hidden pointer-events-none">
-          <div
-            className="h-full origin-left plonk-card-progress"
-            style={{
-              backgroundColor: sound.color,
-              animationDuration: `${Math.max(sound.duration || 2, 0.5)}s`,
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };
