@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Search,
   Volume2,
+  Volume1,
   VolumeX,
   Plus,
   Flame,
@@ -20,6 +21,9 @@ import {
   Disc,
   LogOut,
   TrendingUp,
+  Clock,
+  ArrowUpDown,
+  Keyboard,
 } from 'lucide-react';
 import { SoundItem, CategoryFilter, ViewMode } from './types';
 import { INITIAL_SOUNDS } from './data/initial-sounds';
@@ -31,20 +35,29 @@ import { UploadModal } from './components/UploadModal';
 import { supabase } from './lib/supabaseClient';
 import { formatPlays } from './lib/formatters';
 
+type SortOption = 'default' | 'most-played' | 'short' | 'alpha';
+
 export default function HomePage() {
   // State: Sounds catalog with lazy initialization from localStorage
   const [sounds, setSounds] = useState<SoundItem[]>(INITIAL_SOUNDS);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter | 'favoritos'>('em-alta');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter | 'favoritos' | 'recentes'>('em-alta');
+  const [sortBy, setSortBy] = useState<SortOption>('default');
   const [viewMode, setViewMode] = useState<ViewMode>('cassette');
   const [chaosMode, setChaosMode] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [recentIds, setRecentIds] = useState<string[]>([]);
+  const [masterVolume, setMasterVolume] = useState<number>(1);
   const [activePlayingIds, setActivePlayingIds] = useState<string[]>([]);
   const [user, setUser] = useState<any>(null);
   const [totalPlatformPlays, setTotalPlatformPlays] = useState<number>(0);
   const [deckSound, setDeckSound] = useState<SoundItem | null>(null);
   const [activeMasterAudio, setActiveMasterAudio] = useState<HTMLAudioElement | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const lastPlaySentRef = useRef<Record<string, number>>({});
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Modal state
   const [isUploadOpen, setIsUploadOpen] = useState(false);
@@ -52,6 +65,12 @@ export default function HomePage() {
 
   // Audio references
   const activeAudiosRef = useRef<Map<string, HTMLAudioElement>>(new Map());
+
+  const showToast = useCallback((message: string) => {
+    setToastMessage(message);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToastMessage(null), 2400);
+  }, []);
 
   // Hydrate local data on mount without synchronous set-state issues
   useEffect(() => {
@@ -90,6 +109,17 @@ export default function HomePage() {
       if (savedFavs) {
         setFavorites(JSON.parse(savedFavs));
       }
+      const savedRecent = localStorage.getItem('memesounds_recent');
+      if (savedRecent) {
+        setRecentIds(JSON.parse(savedRecent));
+      }
+      const savedVol = localStorage.getItem('memesounds_volume');
+      if (savedVol !== null) {
+        const parsedVol = parseFloat(savedVol);
+        if (!Number.isNaN(parsedVol) && parsedVol >= 0 && parsedVol <= 1) {
+          setMasterVolume(parsedVol);
+        }
+      }
       const savedView = localStorage.getItem('memesounds_view');
       if (savedView === 'waveform' || savedView === 'cassette' || savedView === 'pocket') {
         setViewMode(savedView);
@@ -112,9 +142,10 @@ export default function HomePage() {
         'musica',
         'bordoes',
         'favoritos',
+        'recentes',
       ];
       if (catParam && validCategories.includes(catParam)) {
-        setSelectedCategory(catParam as CategoryFilter | 'favoritos');
+        setSelectedCategory(catParam as CategoryFilter | 'favoritos' | 'recentes');
       }
       if (qParam) {
         setSearchQuery(qParam);
@@ -196,14 +227,27 @@ export default function HomePage() {
     }
   };
 
+  const handleVolumeChange = (newVol: number) => {
+    const clamped = Math.min(Math.max(newVol, 0), 1);
+    setMasterVolume(clamped);
+    activeAudiosRef.current.forEach((audio) => {
+      audio.volume = clamped;
+    });
+    try {
+      localStorage.setItem('memesounds_volume', String(clamped));
+    } catch {}
+  };
+
   const toggleFavorite = (soundId: string) => {
     setFavorites((prev) => {
-      const next = prev.includes(soundId)
+      const exists = prev.includes(soundId);
+      const next = exists
         ? prev.filter((id) => id !== soundId)
         : [...prev, soundId];
       try {
         localStorage.setItem('memesounds_favs', JSON.stringify(next));
       } catch {}
+      showToast(exists ? 'Removido dos Favoritos' : 'Adicionado aos Favoritos ❤️');
       return next;
     });
   };
@@ -243,10 +287,20 @@ export default function HomePage() {
 
     // 3. Cria e reproduz o áudio IMEDIATAMENTE (no contexto de clique do usuário)
     const audio = new Audio(sound.audioUrl);
+    audio.volume = masterVolume;
     activeAudiosRef.current.set(sound.id, audio);
     setActivePlayingIds((prev) => (chaosMode ? [...prev, sound.id] : [sound.id]));
     setDeckSound(sound);
     setActiveMasterAudio(audio);
+
+    // Salva nos Recentes (últimos 20)
+    setRecentIds((prev) => {
+      const next = [sound.id, ...prev.filter((id) => id !== sound.id)].slice(0, 20);
+      try {
+        localStorage.setItem('memesounds_recent', JSON.stringify(next));
+      } catch {}
+      return next;
+    });
 
     // Atualização otimista imediata na UI (0ms de latência)
     setSounds((prev) =>
@@ -349,27 +403,47 @@ export default function HomePage() {
   }, [sounds]);
 
   const filteredSounds = useMemo(() => {
-    let result = sounds.filter((item) => {
-      if (selectedCategory === 'favoritos') {
-        if (!favorites.includes(item.id)) return false;
-      } else if (selectedCategory === 'em-alta') {
-        if (!item.isTrending && (!item.plays || item.plays <= 0)) return false;
-      } else if (selectedCategory !== 'todos' && item.category !== selectedCategory) {
-        return false;
-      }
+    let result: SoundItem[];
 
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
+    if (selectedCategory === 'recentes') {
+      const soundMap = new Map(sounds.map((s) => [s.id, s]));
+      result = recentIds
+        .map((id) => soundMap.get(id))
+        .filter((s): s is SoundItem => Boolean(s));
+    } else {
+      result = sounds.filter((item) => {
+        if (selectedCategory === 'favoritos') {
+          if (!favorites.includes(item.id)) return false;
+        } else if (selectedCategory === 'em-alta') {
+          if (!item.isTrending && (!item.plays || item.plays <= 0)) return false;
+        } else if (selectedCategory !== 'todos' && item.category !== selectedCategory) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter((item) => {
         const matchesTitle = item.title.toLowerCase().includes(query);
         const matchesTags = item.tags.some((t) => t.toLowerCase().includes(query));
         return matchesTitle || matchesTags;
-      }
+      });
+    }
 
-      return true;
-    });
+    if (sortBy === 'short') {
+      result = result
+        .filter((item) => (item.duration ?? 99) <= 3.5)
+        .sort((a, b) => (a.duration ?? 99) - (b.duration ?? 99));
+    } else if (sortBy === 'most-played') {
+      result = [...result].sort((a, b) => (b.plays || 0) - (a.plays || 0));
+    } else if (sortBy === 'alpha') {
+      result = [...result].sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
+    }
 
-    // Se estiver na aba 'em-alta', atribui o ranking oficial (1, 2, 3...)
-    if (selectedCategory === 'em-alta') {
+    // Se estiver na aba 'em-alta' (ordem padrão), atribui o ranking oficial (1, 2, 3...)
+    if (selectedCategory === 'em-alta' && sortBy === 'default') {
       result = result.map((item, idx) => ({
         ...item,
         rank: idx + 1,
@@ -377,48 +451,130 @@ export default function HomePage() {
     }
 
     return result;
-  }, [sounds, selectedCategory, favorites, searchQuery]);
+  }, [sounds, selectedCategory, favorites, recentIds, searchQuery, sortBy]);
 
-  // Reset pagination when searching or changing category
+  // Reset pagination when searching, sorting or changing category
   useEffect(() => {
     setVisibleCount(40);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, sortBy]);
 
   const displayedSounds = useMemo(() => {
     return filteredSounds.slice(0, visibleCount);
   }, [filteredSounds, visibleCount]);
 
+  // Infinite scroll automático via IntersectionObserver
+  useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel) return;
+    if (visibleCount >= filteredSounds.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + 40, filteredSounds.length));
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, filteredSounds.length]);
+
+  // Atalhos globais de teclado (1-9, /, Ctrl+K, ESC, Espaço)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isUploadOpen) return;
+
+      const target = e.target as HTMLElement | null;
+      const isTyping =
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable);
+
+      // Ctrl+K / Cmd+K ou '/' foca a busca
+      if (((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') || (!isTyping && e.key === '/')) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+        return;
+      }
+
+      // ESC: se estiver digitando limpa/desfoca; senão Panic Stop
+      if (e.key === 'Escape') {
+        if (isTyping) {
+          if (searchQuery) setSearchQuery('');
+          (target as HTMLInputElement).blur();
+        } else if (activeAudiosRef.current.size > 0) {
+          stopAllSounds();
+          showToast('Todos os sons interrompidos (ESC)');
+        }
+        return;
+      }
+
+      if (isTyping || e.ctrlKey || e.metaKey || e.altKey) return;
+
+      // Teclas 1-9 disparam os 9 primeiros sons visíveis
+      if (/^[1-9]$/.test(e.key)) {
+        const idx = parseInt(e.key, 10) - 1;
+        const sound = displayedSounds[idx];
+        if (sound) {
+          e.preventDefault();
+          playSound(sound);
+        }
+        return;
+      }
+
+      // Espaço fora de botões toca/pausa o som do deck principal
+      if (e.key === ' ' && target?.tagName !== 'BUTTON' && target?.getAttribute('role') !== 'button') {
+        if (deckSound) {
+          e.preventDefault();
+          playSound(deckSound);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  });
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-rose-500 selection:text-white">
-      {/* Top Banner */}
-      <div className="bg-gradient-to-r from-rose-950/40 via-zinc-900 to-zinc-950 border-b border-zinc-800/60 px-4 py-1.5 text-center text-xs text-zinc-400">
-        <span className="font-semibold text-rose-400 mr-1.5">⚡ PlonkMemes:</span>
-        A soundboard definitiva de memes, virais e efeitos sonoros.
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Header */}
-        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-zinc-900">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-600/20">
-                <Disc3 className="w-5 h-5 text-white animate-spin" style={{ animationDuration: '6s' }} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-                  PLONKMEMES
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                    MEMES
-                  </span>
-                </h1>
-                <p className="text-xs text-zinc-400">
-                  A soundboard definitiva de memes, virais e efeitos sonoros.
-                </p>
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        {/* Compact Header */}
+        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-600/20 shrink-0">
+              <Disc3 className="w-5 h-5 text-white animate-spin" style={{ animationDuration: '6s' }} />
+            </div>
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
+                PLONKMEMES
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                  {sounds.length.toLocaleString('pt-BR')} SONS
+                </span>
+              </h1>
+              <p className="text-xs text-zinc-400">
+                A soundboard definitiva de memes, virais e efeitos sonoros.
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2.5">
+            <div
+              className="hidden xl:flex items-center gap-1.5 text-[11px] text-zinc-500 bg-zinc-900/70 border border-zinc-800/80 px-2.5 py-1.5 rounded-xl"
+              title="Atalhos de teclado: 1-9 tocam sons, / busca, ESC para tudo, Espaço toca o deck"
+            >
+              <Keyboard className="w-3.5 h-3.5 text-zinc-400" />
+              <kbd className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[10px]">1-9</kbd>
+              <span>tocar</span>
+              <span className="text-zinc-700">•</span>
+              <kbd className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[10px]">/</kbd>
+              <span>buscar</span>
+              <span className="text-zinc-700">•</span>
+              <kbd className="px-1 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono text-[10px]">ESC</kbd>
+              <span>parar</span>
+            </div>
             {user ? (
               <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
                 {user.user_metadata?.avatar_url ? (
@@ -479,30 +635,71 @@ export default function HomePage() {
             </button>
           </div>
         </header>
+      </div>
 
-        {/* Controls */}
-        <section className="my-6 space-y-4">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      {/* Sticky Command Dock */}
+      <div className="sticky top-0 z-40 bg-zinc-950/85 backdrop-blur-xl border-y border-zinc-800/80 shadow-lg shadow-black/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-2.5">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
             <div className="relative flex-1 max-w-xl">
               <input
+                ref={searchInputRef}
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar som por nome ou tag (ex: faro, chaves, calmo, bill, gol)..."
-                className="w-full rounded-xl bg-zinc-900/90 border border-zinc-800 pl-10 pr-4 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all"
+                placeholder="Buscar som por nome ou tag (ex: faro, chaves, aura, gol)..."
+                className="w-full rounded-xl bg-zinc-900/90 border border-zinc-800 pl-10 pr-16 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition-all"
               />
-              <Search className="absolute left-3.5 top-3 w-4 h-4 text-zinc-500" />
-              {searchQuery && (
+              <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-zinc-500" />
+              {searchQuery ? (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3.5 top-2.5 text-xs text-zinc-500 hover:text-zinc-300 cursor-pointer"
+                  className="absolute right-3 top-2 text-xs text-zinc-400 hover:text-zinc-200 cursor-pointer"
                 >
                   Limpar
                 </button>
+              ) : (
+                <kbd className="hidden sm:inline-block absolute right-3 top-2 px-1.5 py-0.5 rounded bg-zinc-800/90 border border-zinc-700/80 text-[10px] font-mono text-zinc-400 pointer-events-none">
+                  /
+                </kbd>
               )}
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
+              {/* Master Volume Slider */}
+              <div
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-xs"
+                title={`Volume Master: ${Math.round(masterVolume * 100)}%`}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleVolumeChange(masterVolume > 0 ? 0 : 1)}
+                  className="text-zinc-400 hover:text-zinc-100 transition-colors cursor-pointer"
+                  aria-label="Alternar mudo"
+                >
+                  {masterVolume === 0 ? (
+                    <VolumeX className="w-3.5 h-3.5 text-rose-400" />
+                  ) : masterVolume < 0.5 ? (
+                    <Volume1 className="w-3.5 h-3.5 text-zinc-300" />
+                  ) : (
+                    <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+                  )}
+                </button>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={masterVolume}
+                  onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                  aria-label="Volume Master"
+                  className="w-16 sm:w-20 accent-rose-500 h-1 bg-zinc-800 rounded-lg cursor-pointer"
+                />
+                <span className="font-mono text-[10px] text-zinc-400 w-7 text-right">
+                  {Math.round(masterVolume * 100)}%
+                </span>
+              </div>
+
               {/* Object Selector */}
               <div className="flex items-center p-1 rounded-xl bg-zinc-900 border border-zinc-800 text-xs">
                 <button
@@ -510,7 +707,7 @@ export default function HomePage() {
                     setViewMode('cassette');
                     localStorage.setItem('memesounds_view', 'cassette');
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer ${
                     viewMode === 'cassette'
                       ? 'bg-zinc-800 text-rose-400 font-semibold shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200'
@@ -518,14 +715,14 @@ export default function HomePage() {
                   title="Objeto Fita Cassete com bobinas giratórias"
                 >
                   <Disc3 className="w-3.5 h-3.5" />
-                  <span>Fita Cassete</span>
+                  <span className="hidden sm:inline">Cassete</span>
                 </button>
                 <button
                   onClick={() => {
                     setViewMode('waveform');
                     localStorage.setItem('memesounds_view', 'waveform');
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer ${
                     viewMode === 'waveform'
                       ? 'bg-zinc-800 text-emerald-400 font-semibold shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200'
@@ -533,14 +730,14 @@ export default function HomePage() {
                   title="Objeto Cápsula com barras de equalizador acústico"
                 >
                   <Waves className="w-3.5 h-3.5" />
-                  <span>Cápsula Wave</span>
+                  <span className="hidden sm:inline">Wave</span>
                 </button>
                 <button
                   onClick={() => {
                     setViewMode('pocket');
                     localStorage.setItem('memesounds_view', 'pocket');
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-medium transition-all cursor-pointer ${
                     viewMode === 'pocket'
                       ? 'bg-zinc-800 text-amber-400 font-semibold shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200'
@@ -548,7 +745,7 @@ export default function HomePage() {
                   title="Objeto Retrô Pod em alumínio colorido com Click Wheel tátil"
                 >
                   <Disc className="w-3.5 h-3.5" />
-                  <span>Pocket Pod</span>
+                  <span className="hidden sm:inline">Pod</span>
                 </button>
               </div>
 
@@ -563,24 +760,27 @@ export default function HomePage() {
                 title={chaosMode ? 'Modo Caos ativo: múltiplos sons tocam juntos' : 'Modo Solo: toca um som de cada vez'}
               >
                 <Zap className={`w-3.5 h-3.5 ${chaosMode ? 'text-amber-400 fill-amber-400' : ''}`} />
-                <span>{chaosMode ? 'Modo Caos (DJ)' : 'Modo Solo'}</span>
+                <span>{chaosMode ? 'Caos (DJ)' : 'Solo'}</span>
               </button>
 
-              {/* Stop All Button */}
+              {/* Stop All Button (Panic Stop) */}
               {activePlayingIds.length > 0 && (
                 <button
                   onClick={stopAllSounds}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all animate-pulse cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-red-500/15 border border-red-500/40 text-red-400 hover:bg-red-500/25 transition-all cursor-pointer"
+                  title="Parar todos os sons (tecla ESC)"
                 >
                   <VolumeX className="w-3.5 h-3.5" />
-                  <span>Parar Tudo ({activePlayingIds.length})</span>
+                  <span>Parar ({activePlayingIds.length})</span>
+                  <kbd className="hidden sm:inline text-[9px] font-mono px-1 rounded bg-red-950/80 text-red-300">ESC</kbd>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Categories */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
+          {/* Categories + Sort Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none text-xs">
             <button
               onClick={() => setSelectedCategory('em-alta')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
@@ -699,10 +899,42 @@ export default function HomePage() {
               <Heart className={`w-3 h-3 ${favorites.length > 0 ? 'fill-rose-400 text-rose-400' : ''}`} />
               <span>Favoritos ({favorites.length})</span>
             </button>
-          </div>
-        </section>
 
-        {/* Master Retro Cassette Deck (dqnamo style) */}
+            <button
+              onClick={() => setSelectedCategory('recentes')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+                selectedCategory === 'recentes'
+                  ? 'bg-cyan-600 text-white font-bold shadow'
+                  : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 border border-zinc-800/80'
+              }`}
+            >
+              <Clock className="w-3 h-3" />
+              <span>Recentes ({recentIds.length})</span>
+            </button>
+            </div>
+
+            {/* Compact Sort Selector */}
+            <div className="flex items-center gap-1.5 shrink-0 text-xs">
+              <ArrowUpDown className="w-3.5 h-3.5 text-zinc-500" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                aria-label="Ordenar sons"
+                className="bg-zinc-900 border border-zinc-800 rounded-xl px-2.5 py-1.5 text-xs text-zinc-200 focus:outline-none focus:border-rose-500 cursor-pointer"
+              >
+                <option value="default">Padrão / Ranking</option>
+                <option value="most-played">Mais Tocados</option>
+                <option value="short">Curtos (&le; 3.5s)</option>
+                <option value="alpha">Ordem A–Z</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-6">
+        {/* Master Retro Cassette Deck (Compact by default for cleaner above-the-fold) */}
         {deckSound && (
           <CassettePlayer
             sound={deckSound}
@@ -711,30 +943,24 @@ export default function HomePage() {
             onTogglePlay={playSound}
             onShuffle={handleShuffleTape}
             onStopAll={stopAllSounds}
+            isMinimizedDefault={true}
           />
         )}
 
-        {/* Trending Live Banner */}
+        {/* Compact Trending Live Bar */}
         {selectedCategory === 'em-alta' && (
-          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900/60 border border-amber-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg shadow-amber-500/5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-                <Flame className="w-5 h-5 fill-amber-400" />
-              </div>
-              <div>
-                <h2 className="text-sm font-black tracking-tight text-amber-200 flex items-center gap-2">
-                  EM ALTA NO BRASIL • TOP MEMES & TENDÊNCIAS
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
-                    AO VIVO BRASIL
-                  </span>
-                </h2>
-                <p className="text-xs text-zinc-400">
-                  Ranking oficial dos sons mais virais no Brasil sincronizado com MyInstants.
-                </p>
-              </div>
+          <div className="mb-4 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-zinc-900 to-zinc-900/60 border border-amber-500/20 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5">
+              <Flame className="w-4 h-4 fill-amber-400 text-amber-400 shrink-0" />
+              <h2 className="text-xs font-black tracking-tight text-amber-200 flex items-center gap-2">
+                EM ALTA NO BRASIL • TOP MEMES
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">
+                  AO VIVO
+                </span>
+              </h2>
             </div>
-            <div className="flex items-center gap-2 text-xs text-zinc-400 shrink-0 bg-zinc-950/70 px-3.5 py-2 rounded-xl border border-zinc-800">
-              <TrendingUp className="w-4 h-4 text-amber-400" />
+            <div className="flex items-center gap-2 text-xs text-zinc-400">
+              <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
               <span>Plays na plataforma:</span>
               <strong className="text-amber-300 font-mono font-bold">
                 {formatPlays(totalPlatformPlays)}
@@ -761,9 +987,10 @@ export default function HomePage() {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3.5">
-              {displayedSounds.map((sound) => {
+              {displayedSounds.map((sound, idx) => {
                 const isPlaying = activePlayingIds.includes(sound.id);
                 const isFav = favorites.includes(sound.id);
+                const hotkey = idx < 9 ? idx + 1 : undefined;
 
                 if (viewMode === 'cassette') {
                   return (
@@ -775,6 +1002,8 @@ export default function HomePage() {
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
                       onDelete={handleDeleteCustomSound}
+                      hotkey={hotkey}
+                      onNotify={showToast}
                     />
                   );
                 } else if (viewMode === 'waveform') {
@@ -787,6 +1016,8 @@ export default function HomePage() {
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
                       onDelete={handleDeleteCustomSound}
+                      hotkey={hotkey}
+                      onNotify={showToast}
                     />
                   );
                 } else {
@@ -799,15 +1030,17 @@ export default function HomePage() {
                       isFavorite={isFav}
                       onToggleFavorite={toggleFavorite}
                       onDelete={handleDeleteCustomSound}
+                      hotkey={hotkey}
+                      onNotify={showToast}
                     />
                   );
                 }
               })}
             </div>
 
-            {/* Load More Button */}
+            {/* Infinite Scroll Sentinel & Fallback Load More */}
             {visibleCount < filteredSounds.length && (
-              <div className="flex justify-center mt-10">
+              <div ref={loadMoreRef} className="flex justify-center mt-10">
                 <button
                   onClick={() => setVisibleCount((prev) => prev + 40)}
                   className="px-6 py-2.5 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-850 text-zinc-200 border border-zinc-800 hover:border-zinc-700 shadow-md cursor-pointer transition-all"
@@ -837,6 +1070,18 @@ export default function HomePage() {
         user={user}
         onLoginGoogle={handleLoginGoogle}
       />
+
+      {/* Toast Feedback */}
+      {toastMessage && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-5 right-5 z-50 plonk-toast-in px-4 py-2.5 rounded-xl bg-zinc-900/95 border border-zinc-700/80 text-xs font-semibold text-zinc-100 shadow-2xl shadow-black/60 backdrop-blur-md flex items-center gap-2"
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </div>
   );
 }

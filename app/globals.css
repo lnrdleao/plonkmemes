@@ -28,3 +28,33 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+@keyframes plonkCardProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.plonk-card-progress {
+  animation-name: plonkCardProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes plonkToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.plonk-toast-in {
+  animation: plonkToastIn 0.18s ease-out forwards;
+}

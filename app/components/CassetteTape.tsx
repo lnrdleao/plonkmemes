@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Share2, Download, Heart, Check, Play, Square, Trash2 } from 'lucide-react';
 import { SoundItem } from '../types';
 import { formatPlays } from '../lib/formatters';
+import { downloadSoundMp3 } from '../lib/downloadAudio';
 
 interface CassetteTapeProps {
   sound: SoundItem;
@@ -12,6 +13,8 @@ interface CassetteTapeProps {
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
   onDelete?: (id: string) => void;
+  hotkey?: number;
+  onNotify?: (message: string) => void;
 }
 
 const REEL_SPOKES = [0, 60, 120, 180, 240, 300] as const;
@@ -63,21 +66,26 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
   isFavorite = false,
   onToggleFavorite,
   onDelete,
+  hotkey,
+  onNotify,
 }) => {
   const [copied, setCopied] = useState(false);
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (typeof window !== 'undefined') {
-      navigator.clipboard.writeText(`${window.location.origin}#${sound.id}`);
+      const slug = encodeURIComponent(sound.slug || sound.id);
+      navigator.clipboard.writeText(`${window.location.origin}/?sound=${slug}`);
       setCopied(true);
+      onNotify?.(`Link de "${sound.title}" copiado!`);
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  const handleDownload = (e: React.MouseEvent) => {
+  const handleDownload = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.open(sound.audioUrl, '_blank');
+    onNotify?.(`Baixando "${sound.title}.mp3"...`);
+    await downloadSoundMp3(sound.audioUrl, sound.slug || sound.id);
   };
 
   const handleFavorite = (e: React.MouseEvent) => {
@@ -100,13 +108,28 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
       onClick={() => onPlay(sound)}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ' ? onPlay(sound) : null)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onPlay(sound);
+        }
+      }}
       className={`group relative select-none rounded-xl p-2.5 sm:p-3 transition-all duration-200 cursor-pointer overflow-hidden ${
         isPlaying
           ? 'scale-[1.02] shadow-2xl shadow-rose-500/25 ring-2 ring-rose-500 bg-[linear-gradient(165deg,#323230_0%,#1f1f1e_52%,#121211_100%)]'
           : 'bg-[linear-gradient(165deg,#262624_0%,#181817_52%,#0e0e0d_100%)] border border-zinc-800/90 hover:border-zinc-700 hover:shadow-xl hover:scale-[1.01]'
       }`}
     >
+      {/* Hotkey Badge (1-9) */}
+      {hotkey !== undefined && (
+        <span
+          aria-hidden="true"
+          title={`Atalho: tecla ${hotkey}`}
+          className="hidden sm:inline-flex items-center justify-center absolute top-1.5 right-1.5 z-20 min-w-[18px] h-[18px] px-1 rounded bg-zinc-950/90 border border-zinc-700/80 text-[9px] font-mono font-bold text-zinc-400 group-hover:text-amber-300 group-hover:border-amber-500/50 transition-colors pointer-events-none"
+        >
+          {hotkey}
+        </span>
+      )}
       {/* 4 Authentic Chassis Screws */}
       <MiniScrew className="top-2 left-2" />
       <MiniScrew className="top-2 right-2" />
@@ -261,6 +284,19 @@ export const CassetteTape: React.FC<CassetteTapeProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Real-time Bottom Progress Bar */}
+      {isPlaying && (
+        <div className="absolute bottom-0 inset-x-0 h-[3px] bg-zinc-900/80 overflow-hidden pointer-events-none">
+          <div
+            className="h-full origin-left plonk-card-progress"
+            style={{
+              backgroundColor: categoryColor,
+              animationDuration: `${Math.max(sound.duration || 2, 0.5)}s`,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
